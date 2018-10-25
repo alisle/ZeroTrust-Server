@@ -22,6 +22,7 @@ public class ConnectionCloseDTOTest {
     @Test
     public void testJSON() throws Exception {
         String json = "{" +
+                "            \"uuid\":\"b2f0281d-da73-4116-8639-8a1c693511b0\",\n" +
                 "            \"hash\" : 1334410269481100237,\n" +
                 "            \"timestamp\" : \"2018-10-22T10:07:36.651838320+00:00\",\n" +
                 "            \"protocol\" : \"TCP\",\n" +
@@ -35,6 +36,7 @@ public class ConnectionCloseDTOTest {
         mapper.registerModule(new JavaTimeModule());
 
         ConnectionCloseDTO closed = mapper.readValue(json, ConnectionCloseDTO.class);
+        Assert.assertEquals("b2f0281d-da73-4116-8639-8a1c693511b0", closed.getId().toString());
         Assert.assertEquals(1334410269481100237L, closed.getHash());
         Assert.assertEquals("2018-10-22T10:07:36.651838320Z", closed.getTimestamp().toString());
         Assert.assertEquals("TCP", closed.getProtocol());

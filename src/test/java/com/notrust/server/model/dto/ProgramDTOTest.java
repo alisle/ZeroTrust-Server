@@ -37,4 +37,5 @@ public class ProgramDTOTest {
         Assert.assertEquals("NetworkManager", program.getProccessName());
         Assert.assertArrayEquals(new String[] { "/usr/sbin/NetworkManager", "--no-daemon" }, program.getCommandLine());
     }
+
 }

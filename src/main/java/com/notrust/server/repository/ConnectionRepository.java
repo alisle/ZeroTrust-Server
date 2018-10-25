@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.data.rest.core.annotation.RestResource;
 
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -16,7 +17,11 @@ public interface ConnectionRepository extends JpaRepository<Connection, UUID> {
     @RestResource(exported = true)
     Page<Connection> findAll(Pageable pageable);
 
+    @RestResource(exported = false)
+    ArrayList<Connection> findAll();
+
     @RestResource(exported = true)
     Optional<Connection> findById(UUID id);
+
 
 }

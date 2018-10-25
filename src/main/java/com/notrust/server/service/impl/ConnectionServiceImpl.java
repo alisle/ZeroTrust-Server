@@ -3,32 +3,50 @@ package com.notrust.server.service.impl;
 import com.notrust.server.mapper.ConnectionMapper;
 import com.notrust.server.mapper.ProgramMapper;
 import com.notrust.server.model.Connection;
+import com.notrust.server.model.Program;
 import com.notrust.server.model.dto.ConnectionCloseDTO;
 import com.notrust.server.model.dto.ConnectionOpenDTO;
 import com.notrust.server.repository.ConnectionRepository;
+import com.notrust.server.repository.ProgramRepository;
 import com.notrust.server.service.ConnectionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Slf4j
 @Service
 public class ConnectionServiceImpl implements ConnectionService {
     private final ConnectionMapper connectionMapper;
     private final ProgramMapper programMapper;
-    private final ConnectionRepository repository;
+    private final ConnectionRepository connectionRepository;
+    private final ProgramRepository programRepository;
 
-    public ConnectionServiceImpl(ConnectionMapper connectionMapper, ProgramMapper programMapper, ConnectionRepository repository) {
+    public ConnectionServiceImpl(ConnectionMapper connectionMapper, ProgramMapper programMapper, ConnectionRepository repository, ProgramRepository programRepository) {
         this.connectionMapper = connectionMapper;
         this.programMapper = programMapper;
-        this.repository = repository;
+        this.connectionRepository = repository;
+        this.programRepository = programRepository;
     }
 
     @Override
     public Optional<Connection> open(ConnectionOpenDTO dto) {
         Connection connection = connectionMapper.OpenDTOtoConnection(dto);
-        connection = repository.save(connection);
+        if(connection.getId() == null) {
+            return Optional.empty();
+        }
+
+        if(connection.getProgram() != null) {
+            Program program = programRepository.save(connection.getProgram());
+            if(program == null) {
+                return Optional.empty();
+            }
+
+            connection.setProgram(program);
+        }
+
+        connection = connectionRepository.save(connection);
         return Optional.ofNullable(connection);
     }
 
@@ -40,7 +58,7 @@ public class ConnectionServiceImpl implements ConnectionService {
         }
 
 
-        Optional<Connection> option = repository.findById(dto.getId());
+        Optional<Connection> option = connectionRepository.findById(dto.getId());
         if(!option.isPresent()) {
             // We donn't seem to have the connection in our DB.
             return Optional.empty();
@@ -49,8 +67,13 @@ public class ConnectionServiceImpl implements ConnectionService {
         Connection connection = option.get();
         connection.setEnd(dto.getTimestamp());
         connection.setDuration(connection.getEnd().toEpochMilli() - connection.getStart().toEpochMilli());
-        connection = repository.save(connection);
+        connection = connectionRepository.save(connection);
 
         return Optional.ofNullable(connection);
+    }
+
+    @Override
+    public Optional<Connection> get(UUID id) {
+        return connectionRepository.findById(id);
     }
 }

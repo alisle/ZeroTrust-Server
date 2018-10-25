@@ -36,4 +36,10 @@ public class ProgramMapperTest {
         Assert.assertEquals(String.join(" ", dto.getCommandLine()), program.getCommandLine());
 
     }
+
+    @Test
+    public void testNull() throws Exception {
+        Assert.assertNull(mapper.DTOtoProgram(null));
+    }
+
 }

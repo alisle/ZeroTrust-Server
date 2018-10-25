@@ -7,6 +7,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class ProgramMapper {
     public Program DTOtoProgram(ProgramDTO dto) {
+        if(dto == null) {
+            return null;
+        }
+
         Program program = new Program();
         program.setInode(dto.getInode());
         program.setPid(dto.getPid());

@@ -23,6 +23,7 @@ public class ConnectionOpenDTOTest {
     @Test
     public void testJSON() throws Exception {
         String json = "{\n" +
+                "            \"uuid\":\"b2f0281d-da73-4116-8639-8a1c693511b0\",\n" +
                 "            \"hash\" : 950265093776986234,\n" +
                 "            \"timestamp\" : \"2018-10-22T10:40:34.763563458+00:00\",\n" +
                 "            \"protocol\" : \"TCP\",\n" +
@@ -47,6 +48,7 @@ public class ConnectionOpenDTOTest {
         mapper.registerModule(new JavaTimeModule());
         ConnectionOpenDTO dto = mapper.readValue(json, ConnectionOpenDTO.class);
 
+        Assert.assertEquals("b2f0281d-da73-4116-8639-8a1c693511b0", dto.getId().toString());
         Assert.assertEquals(950265093776986234L, dto.getHash());
         Assert.assertEquals("2018-10-22T10:40:34.763563458Z", dto.getTimestamp().toString());
         Assert.assertEquals("TCP", dto.getProtocol());
