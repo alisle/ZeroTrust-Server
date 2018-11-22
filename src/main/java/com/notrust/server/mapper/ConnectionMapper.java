@@ -15,6 +15,7 @@ public class ConnectionMapper {
     public Connection OpenDTOtoConnection(ConnectionOpenDTO dto) {
         Connection connection = new Connection();
         connection.setId(dto.getId());
+        connection.setAgent(dto.getAgent());
         connection.setStart(dto.getTimestamp());
         connection.setProtocol(dto.getProtocol());
         connection.setSource(dto.getSource());

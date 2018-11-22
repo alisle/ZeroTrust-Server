@@ -29,6 +29,11 @@ databaseChangeLog:
               primaryKey: true
               nullable: false
         - column:
+            name: agent_id
+            type: uuid
+            constraints:
+                nullable: false
+        - column:
             name: connection_started
             type: timestamp
             constraints:
@@ -82,7 +87,6 @@ databaseChangeLog:
             name: program_id
             type: bigint
             constraints:
-                unique: true
                 nullable: false
 
     - addForeignKeyConstraint:
@@ -92,5 +96,11 @@ databaseChangeLog:
         referencedColumnNames: id
         referencedTableName: program
 
+    - addForeignKeyConstraint:
+        baseColumnNames: agent_id
+        baseTableName: connection
+        constraintName: fk_connection_agent_id
+        referencedColumnNames: id
+        referencedTableName: agent
 
 

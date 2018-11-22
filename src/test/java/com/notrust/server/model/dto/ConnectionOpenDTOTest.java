@@ -3,6 +3,7 @@ package com.notrust.server.model.dto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.notrust.server.ServerApplication;
+import com.notrust.server.model.Protocol;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,6 +25,7 @@ public class ConnectionOpenDTOTest {
     public void testJSON() throws Exception {
         String json = "{\n" +
                 "            \"uuid\":\"b2f0281d-da73-4116-8639-8a1c693511b0\",\n" +
+                "            \"agent\":\"b15da2a9-67dd-446c-82ce-9512174bc16f\",\n" +
                 "            \"hash\" : 950265093776986234,\n" +
                 "            \"timestamp\" : \"2018-10-22T10:40:34.763563458+00:00\",\n" +
                 "            \"protocol\" : \"TCP\",\n" +
@@ -50,8 +52,9 @@ public class ConnectionOpenDTOTest {
 
         Assert.assertEquals("b2f0281d-da73-4116-8639-8a1c693511b0", dto.getId().toString());
         Assert.assertEquals(950265093776986234L, dto.getHash());
+        Assert.assertEquals("b15da2a9-67dd-446c-82ce-9512174bc16f", dto.getAgent().toString());
         Assert.assertEquals("2018-10-22T10:40:34.763563458Z", dto.getTimestamp().toString());
-        Assert.assertEquals("TCP", dto.getProtocol());
+        Assert.assertEquals(Protocol.TCP, dto.getProtocol());
         Assert.assertEquals("172.16.144.102", dto.getSource());
         Assert.assertEquals("104.197.3.80", dto.getDestination());
         Assert.assertEquals(59325, dto.getSourcePort());

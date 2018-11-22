@@ -60,8 +60,8 @@ public class ConnectionServiceImplTest {
         Connection closeConnection = service.close(close).orElseThrow(() -> new RuntimeException("oh dear"));
 
         Assert.assertEquals(open.getId(), closeConnection.getId());
-        Assert.assertEquals(open.getTimestamp(), closeConnection.getStart());
-        Assert.assertEquals(close.getTimestamp(), openConnection.getStart());
+        Assert.assertEquals(open.getTimestamp(), openConnection.getStart());
+        Assert.assertEquals(close.getTimestamp(), closeConnection.getStart());
         Assert.assertEquals(open.getTimestamp().toEpochMilli() - close.getTimestamp().toEpochMilli(), closeConnection.getDuration());
     }
 

@@ -1,6 +1,7 @@
 package com.notrust.server.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.notrust.server.model.Protocol;
 import lombok.Data;
 
 import java.time.Instant;
@@ -11,6 +12,9 @@ public class ConnectionOpenDTO {
     @JsonProperty("uuid")
     private UUID id;
 
+    @JsonProperty("agent")
+    private UUID agent;
+
     @JsonProperty("hash")
     private long hash;
 
@@ -18,7 +22,7 @@ public class ConnectionOpenDTO {
     private Instant timestamp;
 
     @JsonProperty("protocol")
-    private String protocol;
+    private Protocol protocol;
 
     @JsonProperty("source")
     private String source;

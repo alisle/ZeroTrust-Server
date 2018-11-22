@@ -1,5 +1,6 @@
 package com.notrust.server;
 
+import com.notrust.server.model.Protocol;
 import com.notrust.server.model.dto.ConnectionCloseDTO;
 import com.notrust.server.model.dto.ConnectionOpenDTO;
 import com.notrust.server.model.dto.ProgramDTO;
@@ -23,9 +24,10 @@ public class CreationUtils {
     public static ConnectionCloseDTO ConnectionCloseDTO() {
             ConnectionCloseDTO dto = new ConnectionCloseDTO();
             dto.setId(UUID.randomUUID());
+            dto.setAgent(UUID.randomUUID());
             dto.setHash(1000L);
             dto.setTimestamp(Instant.now());
-            dto.setProtocol("TCP");
+            dto.setProtocol(Protocol.TCP);
             dto.setSource("127.0.0.1");
             dto.setDestination("10.10.10.10");
             dto.setSourcePort(22);
@@ -37,9 +39,10 @@ public class CreationUtils {
     public static ConnectionOpenDTO ConnectionNewDTO() {
         ConnectionOpenDTO dto = new ConnectionOpenDTO();
         dto.setId(UUID.randomUUID());
+        dto.setAgent(UUID.randomUUID());
         dto.setHash(10000L);
         dto.setTimestamp(Instant.now());
-        dto.setProtocol("TCP");
+        dto.setProtocol(Protocol.TCP);
         dto.setSource("127.0.0.1");
         dto.setSourcePort(5123);
         dto.setDestination("10.10.10.10");

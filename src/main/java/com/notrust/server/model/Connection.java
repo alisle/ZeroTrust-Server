@@ -14,9 +14,11 @@ public class Connection {
     private static final long serialVersionUID = 1L;
 
     @Id
-//    @GeneratedValue(generator = "system-uuid")
-//    @GenericGenerator(name = "system-uuid", strategy = "uuid2")
     private UUID id;
+
+    @NotNull
+    @Column(name = "agent_id", nullable = false)
+    private UUID agent;
 
     @NotNull
     @Column(name = "connection_started", nullable = false)
@@ -30,7 +32,7 @@ public class Connection {
 
     @NotNull
     @Column(name="protocol", nullable =  false)
-    private String protocol;
+    private Protocol protocol;
 
     @NotNull
     @Column(name="source_address", nullable = false)
