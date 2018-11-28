@@ -6,7 +6,6 @@ import com.notrust.server.model.dto.ConnectionOpenDTO;
 import com.notrust.server.model.dto.ProgramDTO;
 
 import java.time.Instant;
-import java.util.Random;
 import java.util.UUID;
 
 public class CreationUtils {
@@ -53,4 +52,5 @@ public class CreationUtils {
 
         return dto;
     }
+
 }

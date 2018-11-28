@@ -33,11 +33,17 @@ databaseChangeLog:
             type: varchar(255)
             constraints:
                 nullable: true
+                unique: true
         - column:
             name: registered_at
             type: timestamp
             constraints:
-              nullable: false
+              nullable: true
+        - column:
+            name: first_seen
+            type: timestamp
+            constraints:
+                nullable: true
         - column:
             name: last_seen
             type: timestamp
@@ -45,6 +51,11 @@ databaseChangeLog:
               nullable: true
         - column:
             name: alive
+            type: boolean
+            constraints:
+                nullable: false
+        - column:
+            name: known
             type: boolean
             constraints:
                 nullable: false

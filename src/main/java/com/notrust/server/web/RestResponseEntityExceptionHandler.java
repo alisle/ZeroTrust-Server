@@ -1,6 +1,7 @@
 package com.notrust.server.web;
 
 
+import com.notrust.server.exception.AgentNotFoundException;
 import com.notrust.server.exception.InsertFailedException;
 import com.notrust.server.exception.NoConnectionFoundException;
 import org.springframework.http.HttpStatus;
@@ -21,4 +22,8 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         return new ResponseEntity<>("No Connection Found!", HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(value = {AgentNotFoundException.class})
+    protected ResponseEntity<Object> handleAgentNotFoundException(AgentNotFoundException exception) {
+        return new ResponseEntity<>("Agent not Found!", HttpStatus.NOT_FOUND);
+    }
 }

@@ -8,6 +8,7 @@ import com.notrust.server.model.dto.ConnectionCloseDTO;
 import com.notrust.server.model.dto.ConnectionOpenDTO;
 import com.notrust.server.repository.ConnectionRepository;
 import com.notrust.server.repository.ProgramRepository;
+import com.notrust.server.service.AgentService;
 import com.notrust.server.service.ConnectionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -22,12 +23,14 @@ public class ConnectionServiceImpl implements ConnectionService {
     private final ProgramMapper programMapper;
     private final ConnectionRepository connectionRepository;
     private final ProgramRepository programRepository;
+    private final AgentService agentService;
 
-    public ConnectionServiceImpl(ConnectionMapper connectionMapper, ProgramMapper programMapper, ConnectionRepository repository, ProgramRepository programRepository) {
+    public ConnectionServiceImpl(ConnectionMapper connectionMapper, ProgramMapper programMapper, ConnectionRepository connectionRepository, ProgramRepository programRepository, AgentService agentService) {
         this.connectionMapper = connectionMapper;
         this.programMapper = programMapper;
-        this.connectionRepository = repository;
+        this.connectionRepository = connectionRepository;
         this.programRepository = programRepository;
+        this.agentService = agentService;
     }
 
     @Override
@@ -36,6 +39,8 @@ public class ConnectionServiceImpl implements ConnectionService {
         if(connection.getId() == null) {
             return Optional.empty();
         }
+
+        agentService.seen(connection.getAgent());
 
         if(connection.getProgram() != null) {
             Program program = programRepository.save(connection.getProgram());
@@ -64,7 +69,10 @@ public class ConnectionServiceImpl implements ConnectionService {
             return Optional.empty();
         }
 
+
         Connection connection = option.get();
+        agentService.seen(connection.getAgent());
+
         connection.setEnd(dto.getTimestamp());
         connection.setDuration(connection.getEnd().toEpochMilli() - connection.getStart().toEpochMilli());
         connection = connectionRepository.save(connection);
