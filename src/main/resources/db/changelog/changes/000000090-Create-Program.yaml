@@ -48,6 +48,15 @@ databaseChangeLog:
             name: command_line
             type: varchar(1024)
 
+    - createIndex:
+          columns:
+            - column:
+                name: process_name
+                type: varchar(255)
+          indexName: idx_program_process_name
+          tableName: program
+
+
     - createSequence:
         sequenceName: program_sequence
         startValue: 1

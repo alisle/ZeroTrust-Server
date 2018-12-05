@@ -11,8 +11,19 @@ services:
     networks:
       - notrust-network
 
+  truststore-app:
+      build: ../images/store
+      ports:
+          - 8080:8080
+      environment:
+        - SPRING_PROFILES_ACTIVE=prod
+      depends_on:
+        - truststore-postgresql
+      networks:
+        - notrust-network
+
 
 networks:
   notrust-network:
     driver: bridge
-    name: notrust-network
+    name:  notrust-network
