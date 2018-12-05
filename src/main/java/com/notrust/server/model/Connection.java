@@ -49,7 +49,6 @@ public class Connection {
     @Column(name="destination_port", nullable = false)
     private int destinationPort;
 
-
     @NotNull
     @Column(name = "username", nullable = false)
     private String username;
@@ -58,8 +57,21 @@ public class Connection {
     @Column(name = "uid", nullable = false)
     private int userID;
 
+
     @NotNull
-    @OneToOne
-    @JoinColumn(unique = true, nullable = false)
-    private Program program;
+    @Column(name = "inode", nullable = false)
+    private int inode;
+
+    @NotNull
+    @Column(name = "pid", nullable = false)
+    private int pid;
+
+    @NotNull
+    @Column(name = "process_name", nullable = false)
+    private String processName;
+
+    @NotNull
+    @Column(name = "command_line", nullable = false)
+    private String commandLine;
+
 }

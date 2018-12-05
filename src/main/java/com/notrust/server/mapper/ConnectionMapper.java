@@ -2,14 +2,17 @@ package com.notrust.server.mapper;
 
 import com.notrust.server.model.Connection;
 import com.notrust.server.model.dto.ConnectionOpenDTO;
+import com.notrust.server.model.dto.ProgramDTO;
 import org.springframework.stereotype.Service;
+
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 @Service
 public class ConnectionMapper {
-    private final ProgramMapper programMapper;
 
-    public ConnectionMapper(ProgramMapper programMapper) {
-        this.programMapper = programMapper;
+    public ConnectionMapper() {
+
     }
 
     public Connection OpenDTOtoConnection(ConnectionOpenDTO dto) {
@@ -24,8 +27,17 @@ public class ConnectionMapper {
         connection.setDestinationPort(dto.getDestinationPort());
         connection.setUsername(dto.getUsername());
         connection.setUserID(dto.getUid());
-        connection.setProgram(programMapper.DTOtoProgram(dto.getProgram()));
+
+
+        ProgramDTO programDTO = dto.getProgram();
+        if(programDTO != null) {
+            connection.setCommandLine(Arrays.stream(programDTO.getCommandLine()).collect(Collectors.joining(" ")));
+            connection.setInode(programDTO.getInode());
+            connection.setPid(programDTO.getPid());
+            connection.setProcessName(programDTO.getProccessName());
+        }
 
         return connection;
     }
+
 }

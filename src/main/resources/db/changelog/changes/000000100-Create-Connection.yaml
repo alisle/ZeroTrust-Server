@@ -84,17 +84,33 @@ databaseChangeLog:
             constraints:
                 nullable: false
         - column:
-            name: program_id
-            type: bigint
+            name: inode
+            type: integer
             constraints:
-                nullable: false
+              nullable: false
+        - column:
+            name: pid
+            type: integer
+            constraints:
+              nullable: false
+        - column:
+            name: process_name
+            type: varchar(255)
+            constraints:
+              nullable: false
+        - column:
+            name: command_line
+            type: varchar(1024)
 
-    - addForeignKeyConstraint:
-        baseColumnNames: program_id
-        baseTableName: connection
-        constraintName: fk_connection_program_id
-        referencedColumnNames: id
-        referencedTableName: program
+    - createIndex:
+        columns:
+        - column:
+            name: process_name
+            type: varchar(255)
+        indexName: idx_connection_process_name
+        tableName: connection
+
+
 
     - addForeignKeyConstraint:
         baseColumnNames: agent_id
