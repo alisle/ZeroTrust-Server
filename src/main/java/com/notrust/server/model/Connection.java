@@ -16,6 +16,10 @@ public class Connection {
     private UUID id;
 
     @NotNull
+    @Column(name="connection_hash", nullable = false)
+    private long connectionHash;
+
+    @NotNull
     @Column(name = "agent_id", nullable = false)
     private UUID agent;
 

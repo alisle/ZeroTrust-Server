@@ -27,6 +27,7 @@ public class ConnectionMapper {
         connection.setDestinationPort(dto.getDestinationPort());
         connection.setUsername(dto.getUsername());
         connection.setUserID(dto.getUid());
+        connection.setConnectionHash(dto.getHash());
 
 
         ProgramDTO programDTO = dto.getProgram();

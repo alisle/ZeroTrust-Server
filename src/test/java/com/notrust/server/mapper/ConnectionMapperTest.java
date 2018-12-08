@@ -44,6 +44,7 @@ public class ConnectionMapperTest {
         Assert.assertEquals(dto.getProgram().getInode(), connection.getInode());
         Assert.assertEquals(dto.getProgram().getPid(), connection.getPid());
         Assert.assertEquals(dto.getProgram().getProccessName(), connection.getProcessName());
+        Assert.assertEquals(dto.getHash(), connection.getConnectionHash());
     }
 
 

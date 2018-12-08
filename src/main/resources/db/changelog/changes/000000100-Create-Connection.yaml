@@ -28,6 +28,13 @@ databaseChangeLog:
             constraints:
               primaryKey: true
               nullable: false
+
+        - column:
+            name: connection_hash
+            type: bigint
+            constraints:
+              nullable: false
+
         - column:
             name: agent_id
             type: uuid
