@@ -24,7 +24,7 @@ public class Agent {
     @Column(name = "registered_at", nullable = true)
     private Instant registeredAt;
 
-    @Column(name = "first_seen", nullable = true)
+    @Column(name = "firstSeen", nullable = true)
     private Instant firstSeen;
 
     @Column(name = "alive", nullable = false)

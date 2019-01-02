@@ -22,4 +22,7 @@ public interface ConnectionRepository extends JpaRepository<Connection, UUID> {
 
     @RestResource(exported = true)
     Optional<Connection> findById(UUID id);
+
+    @RestResource(exported = true)
+    Page<Connection> countByAgent
 }
