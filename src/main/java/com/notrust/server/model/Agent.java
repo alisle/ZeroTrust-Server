@@ -1,17 +1,18 @@
 package com.notrust.server.model;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.Instant;
+import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Data
 @Entity
 @Table(name = "agent")
+@EqualsAndHashCode(exclude="connections")
 public class Agent {
     private static final long serialVersionUID = 1L;
 
@@ -36,5 +37,7 @@ public class Agent {
     @Column(name = "last_seen", nullable = false)
     private Instant lastSeen;
 
+    @OneToMany(mappedBy = "agent")
+    private Set<Connection> connections;
 }
 

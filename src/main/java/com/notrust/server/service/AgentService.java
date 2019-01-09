@@ -8,6 +8,7 @@ import java.util.UUID;
 
 public interface AgentService {
     void seen(UUID uuid);
+    void seen(Agent agent);
 
     Agent unknown(UUID uuid, String name);
     Agent unknown(UUID uuid);

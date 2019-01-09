@@ -63,8 +63,7 @@ public class AgentServiceImpl implements AgentService {
     }
 
     @Override
-    public void seen(UUID uuid) {
-        Agent agent = agentRepository.findById(uuid).orElseGet(() -> unknown(uuid));
+    public void seen(Agent agent) {
         if(agent.getFirstSeen() == null) {
             agent.setLastSeen(Instant.now());
         }
@@ -73,5 +72,10 @@ public class AgentServiceImpl implements AgentService {
         agent.setAlive(true);
 
         agentRepository.save(agent);
+    }
+    @Override
+    public void seen(UUID uuid) {
+        Agent agent = agentRepository.findById(uuid).orElseGet(() -> unknown(uuid));
+        seen(agent);
     }
 }

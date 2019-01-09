@@ -1,14 +1,18 @@
 package com.notrust.server.model;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.Instant;
+import java.util.List;
 import java.util.UUID;
 
 @Data
 @Entity
 @Table(name = "connection")
+@EqualsAndHashCode(exclude="agent")
 public class Connection {
     private static final long serialVersionUID = 1L;
 
@@ -19,9 +23,11 @@ public class Connection {
     @Column(name="connection_hash", nullable = false)
     private long connectionHash;
 
+
     @NotNull
-    @Column(name = "agent_id", nullable = false)
-    private UUID agent;
+    @ManyToOne
+    @JoinColumn(name="agent_id", nullable = false)
+    private Agent agent;
 
     @NotNull
     @Column(name = "connection_started", nullable = false)
