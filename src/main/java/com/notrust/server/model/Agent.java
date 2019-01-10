@@ -2,6 +2,7 @@ package com.notrust.server.model;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
 import java.time.Instant;
@@ -39,5 +40,8 @@ public class Agent {
 
     @OneToMany(mappedBy = "agent")
     private Set<Connection> connections;
+
+    @Formula("select count(*) from connection where connection.agent_id = id")
+    private long connectionCount;
 }
 
