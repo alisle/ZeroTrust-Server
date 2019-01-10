@@ -18,6 +18,9 @@ public interface AgentRepository extends JpaRepository<Agent, UUID> {
     @RestResource(exported = true)
     Page<Agent> findAll(Pageable pageable);
 
+    @RestResource(path = "connection", exported = true)
+    Page<Agent> findAllOrderByConnections(Pageable pageable);
+
     @RestResource(exported = false)
     ArrayList<Agent> findAll();
 

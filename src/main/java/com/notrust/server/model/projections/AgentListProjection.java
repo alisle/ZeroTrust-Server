@@ -8,7 +8,7 @@ import java.time.Instant;
 import java.util.UUID;
 
 @Projection(name = "agentList", types = { Agent.class })
-public interface AgentProjection {
+public interface AgentListProjection {
     @Value("#{target.id}")
     UUID getId();
 

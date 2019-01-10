@@ -2,35 +2,47 @@
   <br>
   <div class="container">
     <div fxLayout="row" fxLayoutAlign="center center" class="content">
-      <mat-card class="card">
+      <mat-card class="card main-container">
         <mat-card-title fxLayout.get-xs="row" fxLayout.xs="column">
           <h3>Agents</h3>
         </mat-card-title>
         <mat-card-content>
           <div class="mat-elevation-z8">
-            <mat-table #table [dataSource]="dataSource">
+            <mat-table #table [dataSource]="dataSource" matSort>
               <ng-container matColumnDef="name">
-                <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
-                <mat-cell *matCellDef="let agent"> {{ agent.name }}</mat-cell>
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
+                <mat-cell *matCellDef="let agent"> {{ agent.name | titlecase }}</mat-cell>
               </ng-container>
               <ng-container matColumnDef="alive">
-                <mat-header-cell *matHeaderCellDef>Alive</mat-header-cell>
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Alive</mat-header-cell>
                 <mat-cell *matCellDef="let agent">
                   <mat-icon *ngIf="agent.alive" class="icon">check</mat-icon>
                   <mat-icon *ngIf="!agent.alive" class="icon">close</mat-icon>
                 </mat-cell>
               </ng-container>
               <ng-container matColumnDef="lastSeen">
-                <mat-header-cell *matHeaderCellDef>Last Seen</mat-header-cell>
-                <mat-cell *matCellDef="let agent"> {{ agent.lastSeen | amTimeAgo}}</mat-cell>
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Last Seen</mat-header-cell>
+                <mat-cell *matCellDef="let agent"> {{ agent.lastSeen | amTimeAgo | titlecase}}</mat-cell>
               </ng-container>
               <ng-container matColumnDef="firstSeen">
-                <mat-header-cell *matHeaderCellDef>First Seen</mat-header-cell>
-                <mat-cell *matCellDef="let agent"> {{ agent.firstSeen | amTimeAgo}}</mat-cell>
+                <mat-header-cell *matHeaderCellDef mat-sort-header>First Seen</mat-header-cell>
+                <mat-cell *matCellDef="let agent"> {{ agent.firstSeen | amTimeAgo | titlecase }}</mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="known">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Registered Agent</mat-header-cell>
+                <mat-cell *matCellDef="let agent">
+                  <mat-icon *ngIf="agent.known" class="icon">check</mat-icon>
+                  <mat-icon *ngIf="!agent.known" class="icon">close</mat-icon>
+                </mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="connectionCount">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Total Connections</mat-header-cell>
+                <mat-cell *matCellDef="let agent">{{agent.connectionCount}}</mat-cell>
               </ng-container>
               <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-              <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+              <mat-row style="align-content: center" *matRowDef="let row; columns: displayedColumns;"></mat-row>
             </mat-table>
+            <mat-paginator [pageSizeOptions]="[10, 20, 50, 100]" showFirstLastButtons></mat-paginator>
           </div>
         </mat-card-content>
       </mat-card>

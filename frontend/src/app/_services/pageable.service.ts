@@ -2,12 +2,14 @@ import {HttpClient, HttpParams} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {map} from "rxjs/operators";
 import {Page} from "../_model/page/page";
+import {LogWriter} from "../log-writer";
 
 export abstract class PageableService<T> {
   protected base_url: string = "http://localhost:8080";
-  public page_size: number = 20;
-  public sort_direction: string = 'ASC';
-  public sort_on: string = 'id';
+  public pageSize: number = 20;
+  public sortDirection: string = 'ASC';
+  public sortOn: string = 'id';
+  private log : LogWriter = new LogWriter("pageable.service");
 
   constructor(protected key: string, protected URL: string, protected http: HttpClient) {}
 
@@ -22,13 +24,14 @@ export abstract class PageableService<T> {
     );
   }
 
-  page(page: number): Observable<Page<T>> {
-    console.log(`page ${page} has been requested for URL:${this.URL}`);
+  page(page: number, projection: string): Observable<Page<T>> {
+    console.log(`page ${page}:${this.pageSize} has been requested for URL:${this.URL}`);
 
     let params = new HttpParams()
-      .append("size", "" + this.page_size)
+      .append("size", "" + this.pageSize)
       .append("page", "" + page)
-      .append("sort", `${this.sort_on},${this.sort_direction}`);
+      .append("sort", `${this.sortOn},${this.sortDirection}`)
+      .append("projection", projection);
 
     return this.http.get(
       `${this.base_url}${this.URL}`,
@@ -36,17 +39,16 @@ export abstract class PageableService<T> {
         params: params
       })
       .pipe(map((res: any) => {
-        console.log(`recieved page object: ${res}`);
+        this.log.debug(`received page object:`, res);
         let page = this.objToPage(res);
         return page;
       }));
   }
 
   private objToPage(obj: any): Page<T> {
-    console.log(`converting object to page, ${this.key}`);
+    this.log.debug(`converting object to page, ${this.key}`);
     let page : Page<T> = new Page<T>(this.key, obj);
-
-    console.log(page);
+    this.log.debug(`converted page:`, page);
     return new Page<T>(this.key, obj);
   }
 

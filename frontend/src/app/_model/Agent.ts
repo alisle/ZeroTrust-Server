@@ -5,4 +5,5 @@ export interface Agent {
   alive: boolean;
   known: boolean;
   lastSeen: Date;
+  connectionCount: number;
 }
