@@ -1,13 +1,13 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
-import {Agent} from "../_model/Agent";
+import {Agent} from "../../_model/Agent";
 import {DataSource} from "@angular/cdk/table";
 import {BehaviorSubject, merge, Observable, of} from "rxjs";
-import {AgentsService} from "../_services/agents/agents.service";
+import {AgentsService} from "../../_services/agents/agents.service";
 import {CollectionViewer} from "@angular/cdk/collections";
 import {catchError, finalize, tap} from "rxjs/operators";
-import {Page} from "../_model/page/page";
+import {Page} from "../../_model/page/page";
 import {MatPaginator, MatSort} from "@angular/material";
-import {LogWriter} from "../log-writer";
+import {LogWriter} from "../../log-writer";
 
 @Component({
   selector: 'app-agents',
@@ -20,6 +20,7 @@ export class AgentsComponent implements OnInit, AfterViewInit {
   constructor(private service: AgentsService) { }
   dataSource = new AgentsDataSource(this.service);
   displayedColumns = ['name', 'alive', 'lastSeen', 'firstSeen', 'known', 'connectionCount' ];
+  selectedRow : Agent = null;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort : MatSort;
@@ -50,6 +51,11 @@ export class AgentsComponent implements OnInit, AfterViewInit {
       ).subscribe();
   }
 
+  selectRow(row) : void {
+    this.log.debug("selected agent:", row);
+    this.selectedRow = row;
+
+  }
 
 }
 

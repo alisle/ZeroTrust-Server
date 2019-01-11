@@ -39,8 +39,11 @@
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Total Connections</mat-header-cell>
                 <mat-cell *matCellDef="let agent">{{agent.connectionCount}}</mat-cell>
               </ng-container>
-              <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-              <mat-row style="align-content: center" *matRowDef="let row; columns: displayedColumns;"></mat-row>
+              <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+              <mat-row
+                (click)="selectRow(row)"
+                [ngClass]="{ 'highlight' : selectedRow != null && selectedRow.id == row.id }"
+                *matRowDef="let row; columns: displayedColumns;"></mat-row>
             </mat-table>
             <mat-paginator [pageSizeOptions]="[10, 20, 50, 100]" showFirstLastButtons></mat-paginator>
           </div>

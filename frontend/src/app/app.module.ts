@@ -6,20 +6,21 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { MaterialModule } from "./material/material.module";
 import { FlexLayoutModule } from "@angular/flex-layout";
-import { WelcomeComponent } from './welcome/welcome.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { DataService} from "./_services/data/data.service";
+import { WelcomeComponent } from './_components/welcome/welcome.component';
+import { DashboardComponent } from './_components/dashboard/dashboard.component';
 import { AgentsService} from "./_services/agents/agents.service";
-import { AgentsComponent } from './agents/agents.component';
+import { AgentsComponent } from './_components/agents/agents.component';
 import {HttpClient, HttpClientModule} from "@angular/common/http";
 import {MomentModule} from "ngx-moment";
+import { AgentDetailsComponent } from './_components/agent-details/agent-details.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     WelcomeComponent,
     DashboardComponent,
-    AgentsComponent
+    AgentsComponent,
+    AgentDetailsComponent
   ],
   imports: [
     BrowserModule,
@@ -31,7 +32,6 @@ import {MomentModule} from "ngx-moment";
     MomentModule
   ],
   providers: [
-    DataService,
     AgentsService,
   ],
   bootstrap: [AppComponent]

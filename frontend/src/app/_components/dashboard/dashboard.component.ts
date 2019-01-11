@@ -1,8 +1,8 @@
-import {DataService} from '../_services/data/data.service';
-import {Post} from '../_model/Post';
+import {Post} from '../../_model/Post';
 import {DataSource} from '@angular/cdk/table';
 import {Observable} from 'rxjs/Observable';
 import {Component} from "@angular/core";
+import {AgentsService} from "../../_services/agents/agents.service";
 
 @Component({
   selector: 'app-dashboard',
@@ -10,7 +10,7 @@ import {Component} from "@angular/core";
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent {
-  constructor(private dataService: DataService) {
+  constructor(private dataService: AgentsService) {
   }
 
   displayedColumns = ['date_posted', 'title', 'category', 'delete'];
@@ -18,12 +18,12 @@ export class DashboardComponent {
 }
 
 export class PostDataSource extends DataSource<any> {
-  constructor(private dataService: DataService) {
+  constructor(private dataService: AgentsService) {
     super();
   }
 
   connect(): Observable<Post[]> {
-    return this.dataService.getData();
+    return this.dataService.get(null);
   }
 
   disconnect() {
