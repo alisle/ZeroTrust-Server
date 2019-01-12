@@ -1,3 +1,18 @@
-<p>
-  agent-details works!
-</p>
+<mat-card>
+  <div *ngIf="loading"> I am loading </div>
+  <div *ngIf="!loading">
+    <mat-card-title>{{agent.name | titlecase }}</mat-card-title>
+    <mat-card-subtitle>Last seen: {{agent.lastSeen | amTimeAgo | titlecase }}</mat-card-subtitle>
+    <mat-card-content>
+      I am content
+
+      <span class="h2">Connections:</span>
+      <mat-tab-group>
+        <mat-tab label="Alive">I am alive connections</mat-tab>
+        <mat-tab label="Ingress">I am ingress connections</mat-tab>
+        <mat-tab label="Egress">I am egress connections</mat-tab>
+        <mat-tab label="All">I am source connections</mat-tab>
+      </mat-tab-group>
+    </mat-card-content>
+  </div>
+</mat-card>

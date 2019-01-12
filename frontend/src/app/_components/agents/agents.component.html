@@ -35,6 +35,10 @@
                   <mat-icon *ngIf="!agent.known" class="icon">close</mat-icon>
                 </mat-cell>
               </ng-container>
+              <ng-container matColumnDef="aliveConnectionCount">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Alive Connections</mat-header-cell>
+                <mat-cell *matCellDef="let agent">{{agent.aliveConnectionCount}}</mat-cell>
+              </ng-container>
               <ng-container matColumnDef="connectionCount">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Total Connections</mat-header-cell>
                 <mat-cell *matCellDef="let agent">{{agent.connectionCount}}</mat-cell>
@@ -42,7 +46,7 @@
               <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
               <mat-row
                 (click)="selectRow(row)"
-                [ngClass]="{ 'highlight' : selectedRow != null && selectedRow.id == row.id }"
+                [ngClass]="{ 'highlight' : (selectedRow != null) && (row == selectedRow ) }"
                 *matRowDef="let row; columns: displayedColumns;"></mat-row>
             </mat-table>
             <mat-paginator [pageSizeOptions]="[10, 20, 50, 100]" showFirstLastButtons></mat-paginator>

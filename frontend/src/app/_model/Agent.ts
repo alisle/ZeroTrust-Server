@@ -6,4 +6,5 @@ export interface Agent {
   known: boolean;
   lastSeen: Date;
   connectionCount: number;
+  aliveConnectionCount: number;
 }

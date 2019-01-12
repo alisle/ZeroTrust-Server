@@ -13,6 +13,7 @@ import { AgentsComponent } from './_components/agents/agents.component';
 import {HttpClient, HttpClientModule} from "@angular/common/http";
 import {MomentModule} from "ngx-moment";
 import { AgentDetailsComponent } from './_components/agent-details/agent-details.component';
+import { ConnectionsComponent } from './_components/connections/connections.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { AgentDetailsComponent } from './_components/agent-details/agent-details
     WelcomeComponent,
     DashboardComponent,
     AgentsComponent,
-    AgentDetailsComponent
+    AgentDetailsComponent,
+    ConnectionsComponent
   ],
   imports: [
     BrowserModule,

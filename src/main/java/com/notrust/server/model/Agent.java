@@ -43,5 +43,8 @@ public class Agent {
 
     @Formula("select count(*) from connection where connection.agent_id = id")
     private long connectionCount;
+
+    @Formula("select count(*) from connection where connection.agent_id = id and connection.duration = null")
+    private long aliveConnectionCount;
 }
 

@@ -15,7 +15,7 @@ export abstract class PageableService<T> {
 
   get(id: string): Observable<T> {
     return this.http.get(
-      `http://${this.base_url}${this.URL}/${id}`
+      `${this.base_url}${this.URL}/${id}`
     ).pipe(
       map((res: any) => {
         let object = res as T;
