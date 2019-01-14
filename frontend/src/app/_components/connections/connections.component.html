@@ -1,3 +1,64 @@
-<p>
-  connections works!
-</p>
+<div>
+  <br>
+  <div class="container">
+    <div fxLayout="row" fxLayoutAlign="center center" class="content">
+      <mat-card class="card main-container">
+        <mat-card-title fxLayout.get-xs="row" fxLayout.xs="column">
+          <h3>Connections</h3>
+        </mat-card-title>
+        <mat-card-content>
+          <div class="mat-elevation-z8">
+            <mat-table #table [dataSource]="dataSource" matSort>
+              <ng-container matColumnDef="start">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Started</mat-header-cell>
+                <mat-cell *matCellDef="let connection"> {{ connection.start | amLocal | amDateFormat: 'YYYY-MM-DD HH:mm' }}</mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="end">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Ended</mat-header-cell>
+                <mat-cell *matCellDef="let connection">{{ connection.end | amLocal | amDateFormat: 'YYYY-MM-DD HH:mm' }}</mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="duration">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Duration</mat-header-cell>
+                <mat-cell *matCellDef="let connection"> {{ connection.duration / 1000 }}</mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="protocol">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Protocol</mat-header-cell>
+                <mat-cell *matCellDef="let connection"> {{ connection.protocol | uppercase }}</mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="source">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Source</mat-header-cell>
+                <mat-cell *matCellDef="let connection"> {{ connection.source }}</mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="sourcePort">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Source Port</mat-header-cell>
+                <mat-cell *matCellDef="let connection"> {{ connection.sourcePort }}</mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="destination">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Destination</mat-header-cell>
+                <mat-cell *matCellDef="let connection"> {{ connection.destination }}</mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="destinationPort">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Destination Port</mat-header-cell>
+                <mat-cell *matCellDef="let connection"> {{ connection.destinationPort }}</mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="username">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Username</mat-header-cell>
+                <mat-cell *matCellDef="let connection"> {{ connection.username}}</mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="processName">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Process</mat-header-cell>
+                <mat-cell *matCellDef="let connection"> {{ connection.processName}}</mat-cell>
+              </ng-container>
+              <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+              <mat-row
+                (click)="selectRow(row)"
+                [ngClass]="{ 'highlight' : (selectedRow != null) && (row == selectedRow ) }"
+                *matRowDef="let row; columns: displayedColumns;"></mat-row>
+            </mat-table>
+            <mat-paginator [pageSizeOptions]="[10, 20, 50, 100]" showFirstLastButtons></mat-paginator>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

@@ -1,13 +1,11 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {Agent} from "../../_model/Agent";
-import {DataSource} from "@angular/cdk/table";
-import {BehaviorSubject, merge, Observable, of} from "rxjs";
+import {merge } from "rxjs";
 import {AgentsService} from "../../_services/agents/agents.service";
-import {CollectionViewer} from "@angular/cdk/collections";
-import {catchError, finalize, tap} from "rxjs/operators";
-import {Page} from "../../_model/page/page";
+import {tap} from "rxjs/operators";
 import {MatPaginator, MatSort} from "@angular/material";
 import {LogWriter} from "../../log-writer";
+import {PageableDataSource} from "../../_services/pageable-data-source";
 
 @Component({
   selector: 'app-agents',
@@ -18,9 +16,9 @@ export class AgentsComponent implements OnInit, AfterViewInit {
   private log : LogWriter = new LogWriter("agents.component");
 
   constructor(private service: AgentsService) { }
-  dataSource = new AgentsDataSource(this.service);
+  dataSource = new PageableDataSource<Agent>(this.service);
   displayedColumns = ['name', 'alive', 'lastSeen', 'firstSeen', 'known', 'aliveConnectionCount', 'connectionCount' ];
-  selectedRow : Agent = null
+  selectedRow : Agent = null;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort : MatSort;
@@ -58,56 +56,3 @@ export class AgentsComponent implements OnInit, AfterViewInit {
   }
 
 }
-
-export class AgentsDataSource extends DataSource<Agent> {
-  private getSubject = new BehaviorSubject<Agent[]>([]);
-  private loadingSubject = new BehaviorSubject<boolean>(false);
-  private sizeSubject = new BehaviorSubject<number>(0);
-  private  pageSizeSubject = new BehaviorSubject<number>(20);
-
-  public loading$ = this.loadingSubject.asObservable();
-  public length$ = this.sizeSubject.asObservable();
-  public pageSize$ = this.pageSizeSubject.asObservable();
-
-  constructor(private agentService: AgentsService) {
-    super();
-  }
-
-  connect(collectionViewer: CollectionViewer): Observable<Agent[]> {
-    return this.getSubject.asObservable();
-  }
-
-  pageSize(size: number) {
-    this.agentService.pageSize = size;
-  }
-
-  sortOn(element: string) {
-    this.agentService.sortOn = element;
-  }
-
-  sortDirection(direction: string) {
-    this.agentService.sortDirection = direction;
-  }
-
-  get(page: number)  {
-    this.loadingSubject.next(true);
-    this.agentService.page(page, "agentList")
-      .pipe(
-        catchError(() => of([])),
-        finalize(() => this.loadingSubject.next(false))
-      ).subscribe((page: Page<Agent>) => {
-        this.sizeSubject.next(page.page.totalElements);
-        this.pageSizeSubject.next(page.page.size);
-        return this.getSubject.next(page.items);
-      });
-
-  }
-
-
-  disconnect() {
-    this.getSubject.complete();
-    this.loadingSubject.complete();
-    this.sizeSubject.complete();
-  }
-}
-

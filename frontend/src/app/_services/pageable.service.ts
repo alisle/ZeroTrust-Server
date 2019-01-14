@@ -3,6 +3,7 @@ import {Observable} from "rxjs";
 import {map} from "rxjs/operators";
 import {Page} from "../_model/page/page";
 import {LogWriter} from "../log-writer";
+import {extractStyleParams} from "@angular/animations/browser/src/util";
 
 export abstract class PageableService<T> {
   protected base_url: string = "http://localhost:8080";
@@ -24,14 +25,17 @@ export abstract class PageableService<T> {
     );
   }
 
-  page(page: number, projection: string): Observable<Page<T>> {
+  page(page: number, projection: string = null): Observable<Page<T>> {
     console.log(`page ${page}:${this.pageSize} has been requested for URL:${this.URL}`);
 
     let params = new HttpParams()
       .append("size", "" + this.pageSize)
       .append("page", "" + page)
-      .append("sort", `${this.sortOn},${this.sortDirection}`)
-      .append("projection", projection);
+      .append("sort", `${this.sortOn},${this.sortDirection}`);
+
+    if (projection != null) {
+      params = params.append("projection", projection);
+    }
 
     return this.http.get(
       `${this.base_url}${this.URL}`,

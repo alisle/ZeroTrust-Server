@@ -14,6 +14,7 @@ import {HttpClient, HttpClientModule} from "@angular/common/http";
 import {MomentModule} from "ngx-moment";
 import { AgentDetailsComponent } from './_components/agent-details/agent-details.component';
 import { ConnectionsComponent } from './_components/connections/connections.component';
+import {ConnectionsService} from "./_services/connections/connections.service";
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { ConnectionsComponent } from './_components/connections/connections.comp
   ],
   providers: [
     AgentsService,
+    ConnectionsService,
   ],
   bootstrap: [AppComponent]
 })
