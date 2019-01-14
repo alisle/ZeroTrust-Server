@@ -2,6 +2,7 @@ package com.notrust.server.model;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -35,6 +36,9 @@ public class Connection {
 
     @Column(name = "connection_ended", nullable = true)
     private Instant end;
+
+    @Formula("connection_ended IS NULL")
+    private boolean alive;
 
     @Column(name="duration", nullable = true)
     private long duration;

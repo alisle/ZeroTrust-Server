@@ -20,7 +20,7 @@ export class ConnectionsComponent implements OnInit, AfterViewInit {
   constructor(private service: ConnectionsService) { }
 
   dataSource = new PageableDataSource<Connection>(this.service);
-  displayedColumns = ['start', 'end', 'duration', 'protocol', 'source', 'sourcePort', 'destination', 'destinationPort' , 'username', 'processName' ];
+  displayedColumns = ['alive', 'start', 'end', 'duration', 'protocol', 'source', 'sourcePort', 'destination', 'destinationPort' , 'username', 'processName' ];
   selectedRow : Connection = null;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;

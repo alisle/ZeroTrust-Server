@@ -9,6 +9,13 @@
         <mat-card-content>
           <div class="mat-elevation-z8">
             <mat-table #table [dataSource]="dataSource" matSort>
+              <ng-container matColumnDef="alive">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Alive</mat-header-cell>
+                <mat-cell *matCellDef="let connection">
+                  <mat-icon *ngIf="connection.alive" class="icon">check</mat-icon>
+                  <mat-icon *ngIf="!connection.alive" class="icon">close</mat-icon>
+                </mat-cell>
+              </ng-container>
               <ng-container matColumnDef="start">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Started</mat-header-cell>
                 <mat-cell *matCellDef="let connection"> {{ connection.start | amLocal | amDateFormat: 'YYYY-MM-DD HH:mm' }}</mat-cell>
