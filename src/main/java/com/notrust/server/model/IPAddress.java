@@ -19,7 +19,10 @@ public class IPAddress {
 
     @Id
     @Column(name = "address", nullable = false)
-    private String address;
+    private int address;
+
+    @Column(name = "address_string", nullable = false)
+    private String addressString;
 
     @Enumerated(EnumType.STRING)
     @NotNull

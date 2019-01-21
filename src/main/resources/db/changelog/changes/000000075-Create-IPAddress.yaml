@@ -24,10 +24,16 @@ databaseChangeLog:
             columns:
               - column:
                   name: address
-                  type: varchar(255)
+                  type: bigint
                   constraints:
                     unique: true
                     primaryKey: true
+                    nullable: false
+              - column:
+                  name: address_string
+                  type: varchar(255)
+                  constraints:
+                    unique: true
                     nullable: false
               - column:
                   name: version

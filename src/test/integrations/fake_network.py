@@ -45,7 +45,8 @@ def unleash_agents(number_of_agents, names, headers):
     for sample in samples:
         agent_uuid = uuid.uuid4()
         agent_name = names[sample]
-        agent_online = { 'name' : agent_name, 'uuid' : str(agent_uuid) }
+        agent_ip = "10.0." + str(random.randint(0, 254)) + "." + str(random.randint(0, 254))
+        agent_online = { 'name' : agent_name, 'uuid' : str(agent_uuid), 'interfaces': [ agent_ip ] }
         agent_online_response = requests.post(SERVER + "/agents/online", json=agent_online, headers=headers)
         if agent_online_response.status_code != 200:
             print "Unable to set agent online", agent_online_response.status_code
@@ -53,8 +54,7 @@ def unleash_agents(number_of_agents, names, headers):
             agent = {}
             agent["name"] = agent_name
             agent["uuid"] = agent_uuid
-            agent["ip"] = "10.0." + str(random.randint(0, 254)) + "." + str(random.randint(0, 254))
-
+            agent["ip"] = agent_ip
             agents.append(agent)
     return agents
 

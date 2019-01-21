@@ -36,7 +36,7 @@ public class AgentDTOTest {
         Assert.assertEquals("7637efe6-fcbb-4d19-aa62-973b2461e634", dto.getId().toString());
         Assert.assertEquals("unknown", dto.getName());
         Assert.assertEquals(1, dto.getInterfaces().length);
-        Assert.assertEquals("192.168.1.35", dto.getInterfaces()[1]);
+        Assert.assertEquals("192.168.1.35", dto.getInterfaces()[0]);
     }
 
     @Test

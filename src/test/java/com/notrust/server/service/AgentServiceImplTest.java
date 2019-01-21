@@ -1,5 +1,6 @@
 package com.notrust.server.service;
 
+import com.google.common.net.InetAddresses;
 import com.notrust.server.ServerApplication;
 import com.notrust.server.exception.AgentNotFoundException;
 import com.notrust.server.model.Agent;
@@ -111,14 +112,14 @@ public class AgentServiceImplTest {
         Set<IPAddress> secondTemplate = new HashSet<>();
 
 
-        firstTemplate.add(new IPAddress("192.168.0.1", IPAddress.Version.V4));
-        firstTemplate.add(new IPAddress("192.168.0.2", IPAddress.Version.V4));
-        firstTemplate.add(new IPAddress("192.168.0.3", IPAddress.Version.V4));
-        firstTemplate.add(new IPAddress("192.168.0.4", IPAddress.Version.V4));
+        firstTemplate.add(new IPAddress(InetAddresses.coerceToInteger(InetAddresses.forString("192.168.0.1")), "192.168.0.1", IPAddress.Version.V4));
+        firstTemplate.add(new IPAddress(InetAddresses.coerceToInteger(InetAddresses.forString("192.168.0.2")), "192.168.0.2", IPAddress.Version.V4));
+        firstTemplate.add(new IPAddress(InetAddresses.coerceToInteger(InetAddresses.forString("192.168.0.3")), "192.168.0.3", IPAddress.Version.V4));
+        firstTemplate.add(new IPAddress(InetAddresses.coerceToInteger(InetAddresses.forString("192.168.0.4")), "192.168.0.4", IPAddress.Version.V4));
 
 
-        secondTemplate.add(new IPAddress("192.168.0.5", IPAddress.Version.V4));
-        secondTemplate.add(new IPAddress("192.168.0.6", IPAddress.Version.V4));
+        secondTemplate.add(new IPAddress(InetAddresses.coerceToInteger(InetAddresses.forString("192.168.0.5")),"192.168.0.5", IPAddress.Version.V4));
+        secondTemplate.add(new IPAddress(InetAddresses.coerceToInteger(InetAddresses.forString("192.168.0.6")),"192.168.0.6", IPAddress.Version.V4));
 
         service.online(uuid, name);
         service.updateIPs(uuid, firstTemplate.toArray(new IPAddress[firstTemplate.size()]));
