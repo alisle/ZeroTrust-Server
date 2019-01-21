@@ -1,0 +1,53 @@
+databaseChangeLog:
+  - property:
+      name: now
+      value: now()
+      dbms: h2
+  - property:
+      name: now
+      value: current_timestamp
+      dbms: postgresql
+  - property:
+      name: floatType
+      value: float4
+      dbms: postgres, h2
+  - property:
+      name: floatType
+      value: float
+      dbms: mysql, oracle, mssql
+  - changeSet:
+      id: 000000075-Create-Agent-IPAddress
+      author: alisle
+      changes:
+        - createTable:
+            tableName: agent_ip_address
+            columns:
+              - column:
+                  name: agent_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+              - column:
+                  name: ip_address
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+
+        - addPrimaryKey:
+            columnNames: agent_id, ip_address
+            tableName: agent_ip_address
+
+        - addForeignKeyConstraint:
+            baseColumnNames: agent_id
+            baseTableName: agent_ip_address
+            constraintName: fk_agent_ip_address_agent_id
+            referencedColumnNames: id
+            referencedTableName: agent
+
+        - addForeignKeyConstraint:
+            baseColumnNames: ip_address
+            baseTableName: agent_ip_address
+            constraintName: fk_agent_ip_address_address_ip
+            referencedColumnNames: address
+            referencedTableName: ip_address
+

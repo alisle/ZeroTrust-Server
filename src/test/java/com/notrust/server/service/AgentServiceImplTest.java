@@ -3,6 +3,7 @@ package com.notrust.server.service;
 import com.notrust.server.ServerApplication;
 import com.notrust.server.exception.AgentNotFoundException;
 import com.notrust.server.model.Agent;
+import com.notrust.server.model.IPAddress;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @RunWith(SpringRunner.class)
@@ -93,5 +96,55 @@ public class AgentServiceImplTest {
     @Test(expected = AgentNotFoundException.class)
     public void testOfflineNotFound() throws Exception {
         service.offline(UUID.randomUUID());
+    }
+
+    @Test(expected = AgentNotFoundException.class)
+    public void testUpdateIPsNotFound() throws Exception {
+        service.updateIPs(UUID.randomUUID(), null);
+    }
+
+    @Test
+    public void testUpdateIPs() throws Exception {
+        String name = "IP Update";
+        UUID uuid = UUID.randomUUID();
+        Set<IPAddress> firstTemplate = new HashSet<>();
+        Set<IPAddress> secondTemplate = new HashSet<>();
+
+
+        firstTemplate.add(new IPAddress("192.168.0.1", IPAddress.Version.V4));
+        firstTemplate.add(new IPAddress("192.168.0.2", IPAddress.Version.V4));
+        firstTemplate.add(new IPAddress("192.168.0.3", IPAddress.Version.V4));
+        firstTemplate.add(new IPAddress("192.168.0.4", IPAddress.Version.V4));
+
+
+        secondTemplate.add(new IPAddress("192.168.0.5", IPAddress.Version.V4));
+        secondTemplate.add(new IPAddress("192.168.0.6", IPAddress.Version.V4));
+
+        service.online(uuid, name);
+        service.updateIPs(uuid, firstTemplate.toArray(new IPAddress[firstTemplate.size()]));
+
+
+        Agent agent = service.get(uuid).orElseThrow(() -> new RuntimeException());
+        Set<IPAddress> addresses = agent.getAddresses();
+
+        Assert.assertEquals(4, addresses.size());
+        for( IPAddress address : addresses) {
+            Assert.assertTrue(firstTemplate.contains(address));
+            firstTemplate.remove(address);
+        }
+
+        service.updateIPs(uuid, secondTemplate.toArray(new IPAddress[secondTemplate.size()]));
+        agent = service.get(uuid).orElseThrow(() -> new RuntimeException());
+        addresses = agent.getAddresses();
+        Assert.assertEquals(2, addresses.size());
+
+        for( IPAddress address : addresses) {
+            Assert.assertTrue(secondTemplate.contains(address));
+            firstTemplate.remove(address);
+        }
+
+
+
+
     }
 }

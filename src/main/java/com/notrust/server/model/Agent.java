@@ -6,6 +6,7 @@ import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -46,5 +47,16 @@ public class Agent {
 
     @Formula("select count(*) from connection where connection.agent_id = id and connection.connection_ended IS NULL")
     private long aliveConnectionCount;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE,
+            CascadeType.DETACH
+    })
+    @JoinTable(name = "agent_ip_address",
+            joinColumns = @JoinColumn(name = "agent_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "ip_address", referencedColumnName = "address"))
+    private Set<IPAddress> addresses = new HashSet<>();
+
 }
 

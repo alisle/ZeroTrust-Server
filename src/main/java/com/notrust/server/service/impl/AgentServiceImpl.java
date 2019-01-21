@@ -2,12 +2,14 @@ package com.notrust.server.service.impl;
 
 import com.notrust.server.exception.AgentNotFoundException;
 import com.notrust.server.model.Agent;
+import com.notrust.server.model.IPAddress;
 import com.notrust.server.repository.AgentRepository;
 import com.notrust.server.service.AgentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -73,9 +75,23 @@ public class AgentServiceImpl implements AgentService {
 
         agentRepository.save(agent);
     }
+
     @Override
     public void seen(UUID uuid) {
         Agent agent = agentRepository.findById(uuid).orElseGet(() -> unknown(uuid));
         seen(agent);
+    }
+
+    @Override
+    public void updateIPs(UUID uuid, IPAddress[] ips) throws AgentNotFoundException {
+        Agent agent = agentRepository.findById(uuid).orElseThrow(() -> new AgentNotFoundException());
+        updateIPs(agent, ips);
+    }
+
+    @Override
+    public void updateIPs(Agent agent, IPAddress[] ips) {
+        agent.getAddresses().clear();
+        agent.getAddresses().addAll(Arrays.asList(ips));
+        agentRepository.save(agent);
     }
 }

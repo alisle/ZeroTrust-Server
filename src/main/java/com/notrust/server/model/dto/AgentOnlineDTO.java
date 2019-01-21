@@ -12,4 +12,7 @@ public class AgentOnlineDTO {
 
     @JsonProperty("name")
     private String name;
+
+    @JsonProperty("interfaces")
+    private String[] interfaces;
 }

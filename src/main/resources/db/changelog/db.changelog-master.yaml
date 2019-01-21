@@ -1,6 +1,10 @@
 databaseChangeLog:
 - include:
+    file: db/changelog/changes/000000075-Create-IPAddress.yaml
+- include:
     file: db/changelog/changes/000000080-Create-Agent.yaml
+- include:
+    file: db/changelog/changes/000000085-Create-Agent-IPAddress.yaml
 - include:
     file: db/changelog/changes/000000090-Create-Program.yaml
 - include:
