@@ -1,0 +1,58 @@
+databaseChangeLog:
+  - property:
+      name: now
+      value: now()
+      dbms: h2
+  - property:
+      name: now
+      value: current_timestamp
+      dbms: postgresql
+  - property:
+      name: floatType
+      value: float4
+      dbms: postgres, h2
+  - property:
+      name: floatType
+      value: float
+      dbms: mysql, oracle, mssql
+  - changeSet:
+      id: 000000100-Create-Connection
+      author: alisle
+      changes:
+        - createTable:
+            tableName: connection_link
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+
+              - column:
+                  name: connection_hash
+                  type: bigint
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: created_on
+                  type: timestamp
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: source_agent_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: destination_agent_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+
+
+
+

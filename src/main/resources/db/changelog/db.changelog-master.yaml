@@ -9,3 +9,5 @@ databaseChangeLog:
     file: db/changelog/changes/000000090-Create-Program.yaml
 - include:
     file: db/changelog/changes/000000100-Create-Connection.yaml
+- include:
+    file: db/changelog/changes/000000110-Create-Connection-Link.yaml

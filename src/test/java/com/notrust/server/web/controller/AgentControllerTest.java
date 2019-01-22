@@ -1,7 +1,10 @@
 package com.notrust.server.web.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.notrust.server.ServerApplication;
 import com.notrust.server.model.Agent;
+import com.notrust.server.model.dto.AgentOnlineDTO;
+import com.notrust.server.model.dto.UpdateInterfacesDTO;
 import com.notrust.server.service.AgentService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
@@ -66,6 +69,38 @@ public class AgentControllerTest {
         Assert.assertEquals(true, agent.getKnown());
         Assert.assertEquals(false, agent.getAlive());
 
+    }
+
+    @Test
+    public void testUpdateInterfaces() throws Exception {
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        AgentOnlineDTO agentdto = new AgentOnlineDTO();
+        agentdto.setName("Agent");
+        agentdto.setId(UUID.randomUUID());
+        String agentJSON = objectMapper.writeValueAsString(agentdto);
+
+        UpdateInterfacesDTO interfacesDTO = new UpdateInterfacesDTO();
+        interfacesDTO.setInterfaces(new String[] {
+                "192.168.0.1",
+                "192.168.0.2"
+        });
+        String interfaceJSON = objectMapper.writeValueAsString(interfacesDTO);
+
+        MvcResult result = mockMvc.perform(post("/agents/online")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(agentJSON))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        result = mockMvc.perform(post("/agents/" + agentdto.getId().toString() + "/interfaces")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(interfaceJSON))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Agent agent  = service.get(agentdto.getId()).orElseThrow(() -> new RuntimeException("oh dear"));
+        Assert.assertEquals(2, agent.getAddresses().size());
     }
 
 }

@@ -6,6 +6,7 @@ import com.notrust.server.mapper.IPMapper;
 import com.notrust.server.model.Agent;
 import com.notrust.server.model.IPAddress;
 import com.notrust.server.model.dto.AgentOnlineDTO;
+import com.notrust.server.model.dto.UpdateInterfacesDTO;
 import com.notrust.server.service.AgentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.hateoas.MediaTypes;
@@ -43,6 +44,13 @@ public class AgentController {
         agentService.updateIPs(id, new IPAddress[] {});
         agentService.offline(id);
 
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/{id}/interfaces", method = RequestMethod.POST, produces = MediaTypes.HAL_JSON_VALUE)
+    public ResponseEntity updateInterfaces(@PathVariable("id") UUID id, @Valid @RequestBody UpdateInterfacesDTO dto) throws AgentNotFoundException, InvalidIPAddress {
+        log.debug("REST Request to update interfaces for agent: " + id);
+        agentService.updateIPs(id, ipMapper.convertStrings(dto.getInterfaces()));
         return new ResponseEntity(HttpStatus.OK);
     }
 }
