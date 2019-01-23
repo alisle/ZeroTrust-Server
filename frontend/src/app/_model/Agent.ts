@@ -1,3 +1,5 @@
+import {IPAddress} from "./IPAddress";
+
 export interface Agent {
   id: string;
   name: string;
@@ -7,4 +9,7 @@ export interface Agent {
   lastSeen: Date;
   connectionCount: number;
   aliveConnectionCount: number;
+  addresses: IPAddress[];
 }
+
+

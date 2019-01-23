@@ -4,6 +4,7 @@ package com.notrust.server.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -12,8 +13,6 @@ import java.util.UUID;
 
 @Data
 @Entity
-@NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "ip_address")
 public class IPAddress {
     private static final long serialVersionUID = 1L;
@@ -21,6 +20,9 @@ public class IPAddress {
     @Id
     @Column(name = "address", nullable = false)
     private int address;
+
+    @Formula("address")
+    private int addressInt;
 
     @Column(name = "address_string", nullable = false)
     private String addressString;
@@ -60,5 +62,14 @@ public class IPAddress {
     @Override
     public int hashCode() {
         return Objects.hash(address, version);
+    }
+
+    public IPAddress() {
+    }
+
+    public IPAddress(int address, String addressString, @NotNull Version version) {
+        this.address = address;
+        this.addressString = addressString;
+        this.version = version;
     }
 }

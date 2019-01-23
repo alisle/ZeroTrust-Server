@@ -15,6 +15,8 @@ import {MomentModule} from "ngx-moment";
 import { AgentDetailsComponent } from './_components/agent-details/agent-details.component';
 import { ConnectionsComponent } from './_components/connections/connections.component';
 import {ConnectionsService} from "./_services/connections/connections.service";
+import {ConnectionlinkService} from "./_services/connectionlinks/connectionlink.service";
+import { ConnectionlinksComponent } from './_components/connectionlinks/connectionlinks.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +25,8 @@ import {ConnectionsService} from "./_services/connections/connections.service";
     DashboardComponent,
     AgentsComponent,
     AgentDetailsComponent,
-    ConnectionsComponent
+    ConnectionsComponent,
+    ConnectionlinksComponent
   ],
   imports: [
     BrowserModule,
@@ -37,6 +40,7 @@ import {ConnectionsService} from "./_services/connections/connections.service";
   providers: [
     AgentsService,
     ConnectionsService,
+    ConnectionlinkService,
   ],
   bootstrap: [AppComponent]
 })
