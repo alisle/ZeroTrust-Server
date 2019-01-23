@@ -1,5 +1,8 @@
 package com.notrust.server.service.impl;
 
+import com.google.common.cache.CacheLoader;
+import com.notrust.server.events.NewOpenConnection;
+import com.notrust.server.exception.InvalidIPAddress;
 import com.notrust.server.mapper.ConnectionMapper;
 import com.notrust.server.model.Connection;
 import com.notrust.server.model.dto.ConnectionCloseDTO;
@@ -8,8 +11,10 @@ import com.notrust.server.repository.ConnectionRepository;
 import com.notrust.server.service.AgentService;
 import com.notrust.server.service.ConnectionService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -19,24 +24,37 @@ public class ConnectionServiceImpl implements ConnectionService {
     private final ConnectionMapper connectionMapper;
     private final ConnectionRepository connectionRepository;
     private final AgentService agentService;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
-    public ConnectionServiceImpl(ConnectionMapper connectionMapper, ConnectionRepository connectionRepository, AgentService agentService) {
+    public ConnectionServiceImpl(ConnectionMapper connectionMapper, ConnectionRepository connectionRepository, AgentService agentService, ApplicationEventPublisher applicationEventPublisher) {
         this.connectionMapper = connectionMapper;
         this.connectionRepository = connectionRepository;
         this.agentService = agentService;
+        this.applicationEventPublisher = applicationEventPublisher;
     }
 
     @Override
     public Optional<Connection> open(ConnectionOpenDTO dto) {
-        Connection connection = connectionMapper.OpenDTOtoConnection(dto);
-        if(connection.getId() == null) {
+        try {
+            Connection connection = connectionMapper.OpenDTOtoConnection(dto);
+            if(connection.getId() == null) {
+                return Optional.empty();
+            }
+
+            agentService.seen(connection.getAgent());
+
+            connection = connectionRepository.save(connection);
+
+            if(connection != null) {
+                applicationEventPublisher.publishEvent(new NewOpenConnection(this, connection));
+            }
+
+            return Optional.ofNullable(connection);
+        } catch (InvalidIPAddress exception ) {
+            log.error("unable to create connection, ip address are invalid!");
             return Optional.empty();
         }
 
-        agentService.seen(connection.getAgent());
-
-        connection = connectionRepository.save(connection);
-        return Optional.ofNullable(connection);
     }
 
     @Override
@@ -67,5 +85,10 @@ public class ConnectionServiceImpl implements ConnectionService {
     @Override
     public Optional<Connection> get(UUID id) {
         return connectionRepository.findById(id);
+    }
+
+    @Override
+    public List<Connection> findConnectionHash(long connectionHash) {
+        return connectionRepository.findByConnectionHash(connectionHash);
     }
 }

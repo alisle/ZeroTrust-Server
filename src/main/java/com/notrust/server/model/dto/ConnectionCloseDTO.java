@@ -25,10 +25,10 @@ public class ConnectionCloseDTO {
     @JsonProperty("protocol")
     private Protocol protocol;
 
-    @JsonProperty("source")
+    @JsonProperty("sourceString")
     private String source;
 
-    @JsonProperty("destination")
+    @JsonProperty("destinationString")
     private String destination;
 
     @JsonProperty("source_port")

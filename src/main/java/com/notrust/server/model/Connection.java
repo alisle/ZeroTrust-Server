@@ -49,11 +49,19 @@ public class Connection {
 
     @NotNull
     @Column(name="source_address", nullable = false)
-    private String source;
+    private int source;
+
+    @NotNull
+    @Column(name="source_address_string", nullable = false)
+    private String sourceString;
 
     @NotNull
     @Column(name="destination_address", nullable = false)
-    private String destination;
+    private int destination;
+
+    @NotNull
+    @Column(name="destination_address_string", nullable = false)
+    private String destinationString;
 
     @NotNull
     @Column(name="source_port", nullable = false)

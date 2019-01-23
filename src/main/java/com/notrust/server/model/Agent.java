@@ -2,6 +2,7 @@ package com.notrust.server.model;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
@@ -39,15 +40,19 @@ public class Agent {
     @Column(name = "last_seen", nullable = false)
     private Instant lastSeen;
 
+    @ToString.Exclude
     @OneToMany(mappedBy = "agent")
     private Set<Connection> connections;
 
+    @ToString.Exclude
     @Formula("select count(*) from connection where connection.agent_id = id")
     private long connectionCount;
 
+    @ToString.Exclude
     @Formula("select count(*) from connection where connection.agent_id = id and connection.connection_ended IS NULL")
     private long aliveConnectionCount;
 
+    @ToString.Exclude
     @ManyToMany(fetch = FetchType.EAGER, cascade = {
             CascadeType.PERSIST,
             CascadeType.MERGE,

@@ -34,4 +34,14 @@ public class ConnectionLink {
     @JoinColumn(name="destination_agent_id", nullable = false)
     private Agent destinationAgent;
 
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name="source_connection_id", nullable = false)
+    private Connection sourceConnection;
+
+
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name="destination_connection_id", nullable = false)
+    private Connection destinationConnection;
 }

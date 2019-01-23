@@ -29,8 +29,8 @@ public class ConnectionOpenDTOTest {
                 "            \"hash\" : 950265093776986234,\n" +
                 "            \"timestamp\" : \"2018-10-22T10:40:34.763563458+00:00\",\n" +
                 "            \"protocol\" : \"TCP\",\n" +
-                "            \"source\" : \"172.16.144.102\",\n" +
-                "            \"destination\" : \"104.197.3.80\",\n" +
+                "            \"sourceString\" : \"172.16.144.102\",\n" +
+                "            \"destinationString\" : \"104.197.3.80\",\n" +
                 "            \"source_port\" : 59325,\n" +
                 "            \"destination_port\" : 80,\n" +
                 "            \"username\" : \"root\",\n" +

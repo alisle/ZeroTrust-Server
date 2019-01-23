@@ -26,7 +26,7 @@ public class ConnectionMapperTest {
     }
 
     @Test
-    public void testOpenDTOConnection() {
+    public void testOpenDTOConnection() throws Exception {
         ConnectionOpenDTO dto = CreationUtils.ConnectionNewDTO();
 
         Connection connection = mapper.OpenDTOtoConnection(dto);
@@ -35,9 +35,9 @@ public class ConnectionMapperTest {
         Assert.assertEquals(0L, connection.getDuration());
         Assert.assertNull(connection.getEnd());
         Assert.assertEquals(dto.getProtocol(), connection.getProtocol());
-        Assert.assertEquals(dto.getSource(), connection.getSource());
+        Assert.assertEquals(dto.getSource(), connection.getSourceString());
         Assert.assertEquals(dto.getSourcePort(), connection.getSourcePort());
-        Assert.assertEquals(dto.getDestination(), connection.getDestination());
+        Assert.assertEquals(dto.getDestination(), connection.getDestinationString());
         Assert.assertEquals(dto.getDestinationPort(), connection.getDestinationPort());
         Assert.assertEquals(dto.getUsername(), connection.getUsername());
         Assert.assertEquals(dto.getUid(), connection.getUserID());

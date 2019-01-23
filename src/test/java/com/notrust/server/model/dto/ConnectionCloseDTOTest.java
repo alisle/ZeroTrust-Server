@@ -28,8 +28,8 @@ public class ConnectionCloseDTOTest {
                 "            \"hash\" : 1334410269481100237,\n" +
                 "            \"timestamp\" : \"2018-10-22T10:07:36.651838320+00:00\",\n" +
                 "            \"protocol\" : \"TCP\",\n" +
-                "            \"source\" : \"172.16.144.102\",\n" +
-                "            \"destination\" : \"104.198.143.177\",\n" +
+                "            \"sourceString\" : \"172.16.144.102\",\n" +
+                "            \"destinationString\" : \"104.198.143.177\",\n" +
                 "            \"source_port\" : 50351,\n" +
                 "            \"destination_port\" : 80" +
                 "}";

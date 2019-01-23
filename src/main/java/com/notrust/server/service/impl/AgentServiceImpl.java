@@ -92,6 +92,6 @@ public class AgentServiceImpl implements AgentService {
     public void updateIPs(Agent agent, IPAddress[] ips) {
         agent.getAddresses().clear();
         agent.getAddresses().addAll(Arrays.asList(ips));
-        agentRepository.save(agent);
+        seen(agent);
     }
 }

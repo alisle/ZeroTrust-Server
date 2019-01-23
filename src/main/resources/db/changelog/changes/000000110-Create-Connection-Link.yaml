@@ -53,6 +53,43 @@ databaseChangeLog:
                   constraints:
                     nullable: false
 
+              - column:
+                  name: source_connection_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: destination_connection_id
+                  type: uuid
+                  constraints:
+                    nullable: false
 
 
+  - addForeignKeyConstraint:
+      baseColumnNames: source_agent_id
+      baseTableName: connection_link
+      constraintName: fk_connection_link_source_agent_id
+      referencedColumnNames: id
+      referencedTableName: agent
 
+  - addForeignKeyConstraint:
+      baseColumnNames: destination_agent_id
+      baseTableName: connection_link
+      constraintName: fk_connection_link_destination_agent_id
+      referencedColumnNames: id
+      referencedTableName: agent
+
+  - addForeignKeyConstraint:
+      baseColumnNames: source_connection
+      baseTableName: connection_link
+      constraintName: fk_connection_link_source_connection_id
+      referencedColumnNames: id
+      referencedTableName: connection
+
+  - addForeignKeyConstraint:
+      baseColumnNames: destination_connection
+      baseTableName: connection_link
+      constraintName: fk_connection_link_destination_connection_id
+      referencedColumnNames: id
+      referencedTableName: connection

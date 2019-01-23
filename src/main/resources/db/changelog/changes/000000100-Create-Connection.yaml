@@ -62,11 +62,21 @@ databaseChangeLog:
                   nullable: true
         - column:
             name: source_address
+            type: int
+            constraints:
+                nullable: false
+        - column:
+            name: source_address_string
             type: varchar(255)
             constraints:
-              nullable: false
+                nullable: false
         - column:
             name: destination_address
+            type: int
+            constraints:
+                nullable: false
+        - column:
+            name: destination_address_string
             type: varchar(255)
             constraints:
               nullable: false

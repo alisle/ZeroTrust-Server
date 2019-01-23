@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Objects;
 import java.util.UUID;
 
 @Data
@@ -47,5 +48,17 @@ public class IPAddress {
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        IPAddress address1 = (IPAddress) o;
+        return address == address1.address &&
+                version == address1.version;
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(address, version);
+    }
 }

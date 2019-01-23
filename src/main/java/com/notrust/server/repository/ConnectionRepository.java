@@ -8,6 +8,7 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.data.rest.core.annotation.RestResource;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -25,4 +26,6 @@ public interface ConnectionRepository extends JpaRepository<Connection, UUID> {
     @RestResource(exported = true)
     Optional<Connection> findById(UUID id);
 
+    @RestResource(exported = false)
+    List<Connection> findByConnectionHash(long connectionHash);
 }
