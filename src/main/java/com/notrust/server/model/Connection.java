@@ -2,6 +2,7 @@ package com.notrust.server.model;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
@@ -23,7 +24,6 @@ public class Connection {
     @NotNull
     @Column(name="connection_hash", nullable = false)
     private long connectionHash;
-
 
     @NotNull
     @ManyToOne

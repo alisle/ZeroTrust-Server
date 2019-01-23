@@ -40,7 +40,6 @@ databaseChangeLog:
                   type: timestamp
                   constraints:
                     nullable: false
-
               - column:
                   name: source_agent_id
                   type: uuid

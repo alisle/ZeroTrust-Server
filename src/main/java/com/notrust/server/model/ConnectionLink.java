@@ -1,6 +1,7 @@
 package com.notrust.server.model;
 
 import lombok.Data;
+import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
