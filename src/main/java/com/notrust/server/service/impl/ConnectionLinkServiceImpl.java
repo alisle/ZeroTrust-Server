@@ -79,13 +79,15 @@ public class ConnectionLinkServiceImpl implements ConnectionLinkService, Applica
         } else if (secondAgentAddresses.contains(sourceAddress)) {
             source = Optional.of(second);
         } else {
-            log.error("unable to map source ip to a particular agents");
+            log.error("unable to map source ip to a particular agent:" + sourceAddress.getAddressString());
         }
 
         if(firstAgentAddresses.contains(destinationAddress)) {
             destination = Optional.of(first);
         } else if (secondAgentAddresses.contains(destinationAddress)) {
             destination = Optional.of(second);
+        } else {
+            log.error("unable to map destination ip to a particular agent:" + destinationAddress.getAddressString());
         }
 
         if(destination.isPresent() && source.isPresent()) {
