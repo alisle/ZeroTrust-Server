@@ -9,16 +9,16 @@
         <mat-card-content>
           <div class="mat-elevation-z8">
             <mat-table #table [dataSource]="dataSource" matSort>
-              <ng-container matColumnDef="timestamp">
-                <mat-header-cell *matHeaderCellDef mat-sort-header>Timestamp</mat-header-cell>
-                <mat-cell *matCellDef="let link">{{link.timestamp | amTimeAgo }}</mat-cell>
-              </ng-container>
               <ng-container matColumnDef="alive">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Alive</mat-header-cell>
                 <mat-cell *matCellDef="let link">
                   <mat-icon *ngIf="link.alive" class="icon">check</mat-icon>
                   <mat-icon *ngIf="!link.alive" class="icon">close</mat-icon>
                 </mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="timestamp">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Timestamp</mat-header-cell>
+                <mat-cell *matCellDef="let link">{{link.timestamp | amTimeAgo }}</mat-cell>
               </ng-container>
               <ng-container matColumnDef="sourceAgentName">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Source Agent</mat-header-cell>

@@ -6,9 +6,11 @@ export interface Connection {
   duration: number;
   protocol: string;
   sourcePort: number;
-  source: string;
+  source: number;
+  sourceString: string;
   destinationPort: number;
-  destination: string;
+  destination: number;
+  destinationString: string;
   username: string;
   userID: number;
   inode: number;

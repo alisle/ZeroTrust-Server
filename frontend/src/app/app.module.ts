@@ -17,6 +17,7 @@ import { ConnectionsComponent } from './_components/connections/connections.comp
 import {ConnectionsService} from "./_services/connections/connections.service";
 import {ConnectionlinkService} from "./_services/connectionlinks/connectionlink.service";
 import { ConnectionlinksComponent } from './_components/connectionlinks/connectionlinks.component';
+import { ConnectionLinkDetailsComponent } from './_components/connectionlinks-details/connection-link-details.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { ConnectionlinksComponent } from './_components/connectionlinks/connecti
     AgentsComponent,
     AgentDetailsComponent,
     ConnectionsComponent,
-    ConnectionlinksComponent
+    ConnectionlinksComponent,
+    ConnectionLinkDetailsComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,38 @@
+<mat-card class="overview">
+  <mat-card-title>Connection Link: {{connectionLink.sourceConnection.sourceString}}:{{connectionLink.sourceConnection.sourcePort}} -> {{connectionLink.destinationConnection.destinationString}}:{{connectionLink.destinationConnection.destinationPort}}</mat-card-title>
+  <mat-card-subtitle>Happened: Some Time Ago, Still Alive: No</mat-card-subtitle>
+  <mat-card-content>
+
+    <div fxLayout="column" fxFlex>
+      <div fxFlex class="picture">I am a picture</div>
+
+      <!-- Program Details -->
+      <div fxFlex>Program Details</div>
+      <div fxFlex>
+        <div fxLayout="row">
+          <div fxFlex class="source-program-details">I am source program details</div>
+          <div fxFlex class="destination-program-details">I am destination program details</div>
+        </div>
+      </div>
+
+      <!-- User Details -->
+      <div fxFlex>User Details</div>
+      <div fxFlex>
+        <div fxLayout="row">
+          <div fxFlex class="source-user-details">I am the source user details</div>
+          <div fxFlex class="destination-user-details">I m destination user details</div>
+        </div>
+      </div>
+
+      <!-- Agent Details -->
+      <div fxFlex>Agent Details</div>
+      <div fxFlex>
+        <div fxLayout="row">
+          <div fxFlex class="source-agent-details">I am the source agent details</div>
+          <div fxFlex class="destination-agent-details">I am the destination agent details</div>
+        </div>
+      </div>
+
+    </div>
+  </mat-card-content>
+</mat-card>

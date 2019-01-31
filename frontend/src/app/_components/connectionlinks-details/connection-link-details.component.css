@@ -1,0 +1,33 @@
+.overview {
+  overflow: auto;
+  background-color: bisque;
+}
+
+.picture {
+  min-height: 40px;
+  background-color: aquamarine;
+}
+
+.source-program-details {
+  background-color: azure;
+}
+
+.destination-program-details {
+  background-color: aqua;
+}
+
+.source-user-details {
+  background-color: steelblue;
+}
+
+.destination-user-details {
+  background-color: blue;
+}
+
+.source-agent-details {
+  background-color: red;
+}
+
+.destination-agent-details {
+  background-color: mediumvioletred;
+}
