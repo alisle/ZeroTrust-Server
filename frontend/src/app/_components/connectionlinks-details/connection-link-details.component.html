@@ -1,6 +1,6 @@
 <mat-card class="overview">
-  <mat-card-title>Connection Link: {{connectionLink.sourceConnection.sourceString}}:{{connectionLink.sourceConnection.sourcePort}} -> {{connectionLink.destinationConnection.destinationString}}:{{connectionLink.destinationConnection.destinationPort}}</mat-card-title>
-  <mat-card-subtitle>Happened: Some Time Ago, Still Alive: No</mat-card-subtitle>
+  <mat-card-title><mat-icon class="icon">fingerprint</mat-icon>Connection Link: {{connectionLink.sourceAgent.name}}:{{connectionLink.sourceConnection.sourcePort}}<mat-icon class="icon">arrow_right_alt</mat-icon>{{connectionLink.destinationAgent.name}}:{{connectionLink.destinationConnection.destinationPort}}</mat-card-title>
+  <mat-card-subtitle>Occured: {{connectionLink.sourceConnection.start | amTimeAgo}}, Still Alive: No</mat-card-subtitle>
   <mat-card-content>
 
     <div fxLayout="column" fxFlex>
