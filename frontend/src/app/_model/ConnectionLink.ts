@@ -10,4 +10,6 @@ export interface ConnectionLink {
   destinationAgent: Agent;
   sourceConnection: Connection;
   destinationConnection: Connection;
+  sourceProcessName: string;
+  destinationProcessName: string;
 }

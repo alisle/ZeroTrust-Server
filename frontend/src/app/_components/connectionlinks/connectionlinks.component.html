@@ -11,7 +11,7 @@
             <mat-table #table [dataSource]="dataSource" matSort>
               <ng-container matColumnDef="timestamp">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Timestamp</mat-header-cell>
-                <mat-cell *matCellDef="let link">{{link.timestamp | amLocal | amDateFormat: 'YYYY-MM-DD HH:mm'}}</mat-cell>
+                <mat-cell *matCellDef="let link">{{link.timestamp | amTimeAgo }}</mat-cell>
               </ng-container>
               <ng-container matColumnDef="alive">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Alive</mat-header-cell>
@@ -20,21 +20,21 @@
                   <mat-icon *ngIf="!link.alive" class="icon">close</mat-icon>
                 </mat-cell>
               </ng-container>
-              <ng-container matColumnDef="sourceAgent">
+              <ng-container matColumnDef="sourceAgentName">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Source Agent</mat-header-cell>
                 <mat-cell *matCellDef="let link">{{link.sourceAgent.name}}</mat-cell>
               </ng-container>
-              <ng-container matColumnDef="sourceProgram">
+              <ng-container matColumnDef="sourceProcessName">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Source Process Name</mat-header-cell>
-                <mat-cell *matCellDef="let link">{{link.sourceConnection.processName}}</mat-cell>
+                <mat-cell *matCellDef="let link">{{link.sourceProcessName}}</mat-cell>
               </ng-container>
-              <ng-container matColumnDef="destinationAgent">
+              <ng-container matColumnDef="destinationAgentName">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Destination Agent</mat-header-cell>
                 <mat-cell *matCellDef="let link">{{link.destinationAgent.name}}</mat-cell>
               </ng-container>
-              <ng-container matColumnDef="destinationProgram">
+              <ng-container matColumnDef="destinationProcessName">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Destination Process Name</mat-header-cell>
-                <mat-cell *matCellDef="let link">{{link.destinationConnection.processName}}</mat-cell>
+                <mat-cell *matCellDef="let link">{{link.destinationProcessName}}</mat-cell>
               </ng-container>
               <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
               <mat-row
