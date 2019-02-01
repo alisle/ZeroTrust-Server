@@ -1,6 +1,5 @@
 .overview {
   overflow: auto;
-  background-color: bisque;
 }
 
 .picture {
@@ -8,12 +7,12 @@
   background-color: aquamarine;
 }
 
-.source-program-details {
-  background-color: azure;
+.source-details-panel {
+  margin-right: 5px;
 }
 
-.destination-program-details {
-  background-color: aqua;
+.destination-details-panel {
+  margin-left: 5px;
 }
 
 .source-user-details {
@@ -32,7 +31,31 @@
   background-color: mediumvioletred;
 }
 
+.right-value {
+  background-color: lightgrey;
+  margin-top: 1px;
+  font-weight: bolder;
+  text-align: right;
+  padding-right: 2px;
+  margin-right: 2px;
+  margin-left: 2px;
+  margin-bottom: 1px;
+}
 
+.sub-title {
+  background-color: lightgrey;
+  margin-bottom: 5px;
+  margin-top: 5px;
+  padding: 5px;
+  font-weight: bolder;
+}
+
+.header {
+  background-color: lightgrey;
+  margin: 1px 2px 2px 1px;
+  padding: 5px;
+  font-weight: bolder;
+}
 
 .icon {
   display: inline-block;
