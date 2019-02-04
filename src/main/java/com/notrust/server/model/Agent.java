@@ -52,6 +52,11 @@ public class Agent {
     @Formula("select count(*) from connection where connection.agent_id = id and connection.connection_ended IS NULL")
     private long aliveConnectionCount;
 
+
+    @ToString.Exclude
+    @Formula("id")
+    private UUID uuid;
+
     @ToString.Exclude
     @ManyToMany(fetch = FetchType.EAGER, cascade = {
             CascadeType.PERSIST,

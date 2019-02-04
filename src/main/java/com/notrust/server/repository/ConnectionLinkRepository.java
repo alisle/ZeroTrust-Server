@@ -27,4 +27,7 @@ public interface ConnectionLinkRepository extends JpaRepository<ConnectionLink, 
 
     @RestResource(exported = true)
     Page<ConnectionLink> findAllByConnectionHash(Pageable pageable, @Param("hash") long ConnectionHash);
+
+    @RestResource(exported = true, path="source-destination-agent-id", rel = "findBySourceAndDestinationAgentID")
+    Page<ConnectionLink> findAllBySourceAgentIdAndDestinationAgentId(Pageable pageable, @Param("source_agent_id") UUID source, @Param("destination_agent_id") UUID destiantion);
 }

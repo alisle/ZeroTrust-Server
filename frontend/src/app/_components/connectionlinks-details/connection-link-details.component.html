@@ -1,11 +1,13 @@
-<mat-card class="overview mat-elevation-z8">
+<mat-card *ngIf="!loading" class="overview mat-elevation-z8">
   <mat-card-header>
     <mat-card-title><mat-icon class="icon">fingerprint</mat-icon> Connection Link: {{connectionLink.sourceAgent.name}}:{{connectionLink.sourceConnection.sourcePort}}<mat-icon class="icon">arrow_right_alt</mat-icon>{{connectionLink.destinationAgent.name}}:{{connectionLink.destinationConnection.destinationPort}}</mat-card-title>
     <mat-card-subtitle>Occurred: {{connectionLink.sourceConnection.start | amTimeAgo}}, Still Alive: <span *ngIf="connectionLink.alive">Yes</span><span *ngIf="!connectionLink.alive">No, Duration: {{connectionLink.sourceConnection.duration | amDuration : 'ms' }}</span> </mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
     <div fxLayout="column" fxFlex>
-      <div fxFlex class="picture">I am a picture</div>
+      <div fxFlex="100" class="diagram-box">
+        <div #diagram></div>
+      </div>
 
       <!-- Program Details -->
       <div fxFlex class="mat-title sub-title">Process Details</div>
@@ -15,19 +17,19 @@
             <div fxLayout="column">
               <div fxFlex="100" class="header">Source Process</div>
               <div fxLayout="row">
-                <div fxFlex="25" class="right-value">Process:</div>
+                <div fxFlex="25" class="right-value">Process</div>
                 <div fxFlex="75" >{{connectionLink.sourceConnection.processName}}</div>
               </div>
               <div fxLayout="row">
-                <div fxFlex="25" class="right-value">Command Line:</div>
+                <div fxFlex="25" class="right-value">Command Line</div>
                 <div fxFlex="75">{{connectionLink.sourceConnection.commandLine}}</div>
               </div>
               <div fxLayout="row">
-                <div fxFlex="25" class="right-value">PID:</div>
+                <div fxFlex="25" class="right-value">PID</div>
                 <div fxFlex="75">{{connectionLink.sourceConnection.pid}}</div>
               </div>
               <div fxLayout="row">
-                <div fxFlex="25" class="right-value">INode:</div>
+                <div fxFlex="25" class="right-value">INode</div>
                 <div fxFlex="75">{{connectionLink.sourceConnection.inode}}</div>
               </div>
             </div>
@@ -36,19 +38,19 @@
             <div fxLayout="column">
               <div fxFlex="100" class="header">Destination Process</div>
               <div fxLayout="row">
-                <div fxFlex="25" class="right-value">Process:</div>
+                <div fxFlex="25" class="right-value">Process</div>
                 <div fxFlex="75" >{{connectionLink.destinationConnection.processName}}</div>
               </div>
               <div fxLayout="row">
-                <div fxFlex="25" class="right-value">Command Line:</div>
+                <div fxFlex="25" class="right-value">Command Line</div>
                 <div fxFlex="75">{{connectionLink.destinationConnection.commandLine}}</div>
               </div>
               <div fxLayout="row">
-                <div fxFlex="25" class="right-value">PID:</div>
+                <div fxFlex="25" class="right-value">PID</div>
                 <div fxFlex="75">{{connectionLink.destinationConnection.pid}}</div>
               </div>
               <div fxLayout="row">
-                <div fxFlex="25" class="right-value">INode:</div>
+                <div fxFlex="25" class="right-value">INode</div>
                 <div fxFlex="75">{{connectionLink.destinationConnection.inode}}</div>
               </div>
             </div>
@@ -64,11 +66,11 @@
             <div fxLayout="column">
               <div fxFlex="100" class="header">Source Username</div>
               <div fxLayout="row">
-                <div fxFlex="25" class="right-value">Username:</div>
+                <div fxFlex="25" class="right-value">Username</div>
                 <div fxFlex="75" >{{connectionLink.sourceConnection.username}}</div>
               </div>
               <div fxLayout="row">
-                <div fxFlex="25" class="right-value">User ID:</div>
+                <div fxFlex="25" class="right-value">User ID</div>
                 <div fxFlex="75">{{connectionLink.sourceConnection.userID}}</div>
               </div>
             </div>
@@ -77,11 +79,11 @@
             <div fxLayout="column">
               <div fxFlex="100" class="header">Destination Username</div>
               <div fxLayout="row">
-                <div fxFlex="25" class="right-value">Username:</div>
+                <div fxFlex="25" class="right-value">Username</div>
                 <div fxFlex="75" >{{connectionLink.destinationConnection.username}}</div>
               </div>
               <div fxLayout="row">
-                <div fxFlex="25" class="right-value">User ID:</div>
+                <div fxFlex="25" class="right-value">User ID</div>
                 <div fxFlex="75">{{connectionLink.destinationConnection.userID}}</div>
               </div>
             </div>
@@ -97,19 +99,19 @@
             <div fxLayout="column">
               <div fxFlex="100" class="header">Source Agent</div>
               <div fxLayout="row">
-                <div fxFlex="25" class="right-value">Name:</div>
+                <div fxFlex="25" class="right-value">Name</div>
                 <div fxFlex="75" >{{connectionLink.sourceAgent.name}}</div>
               </div>
               <div fxLayout="row">
-                <div fxFlex="25" class="right-value">Last Seen:</div>
+                <div fxFlex="25" class="right-value">Last Seen</div>
                 <div fxFlex="75">{{connectionLink.sourceAgent.lastSeen | amTimeAgo | titlecase }}</div>
               </div>
               <div fxLayout="row">
-                <div fxFlex="25" class="right-value">Addresses:</div>
+                <div fxFlex="25" class="right-value">Addresses</div>
                 <div fxFlex="75"><div *ngFor="let address of connectionLink.sourceAgent.addresses">{{address.addressString}}</div></div>
               </div>
               <div fxLayout="row">
-                <div fxFlex="25" class="right-value">Total Connections:</div>
+                <div fxFlex="25" class="right-value">Total Connections</div>
                 <div fxFlex="75">{{connectionLink.sourceAgent.connectionCount}}</div>
               </div>
             </div>
@@ -118,19 +120,19 @@
             <div fxLayout="column">
               <div fxFlex="100" class="header">Destination Agent</div>
               <div fxLayout="row">
-                <div fxFlex="25" class="right-value">Name:</div>
+                <div fxFlex="25" class="right-value">Name</div>
                 <div fxFlex="75" >{{connectionLink.destinationAgent.name}}</div>
               </div>
               <div fxLayout="row">
-                <div fxFlex="25" class="right-value">Last Seen:</div>
+                <div fxFlex="25" class="right-value">Last Seen</div>
                 <div fxFlex="75">{{connectionLink.destinationAgent.lastSeen | amTimeAgo | titlecase }}</div>
               </div>
               <div fxLayout="row">
-                <div fxFlex="25" class="right-value">Addresses:</div>
+                <div fxFlex="25" class="right-value">Addresses</div>
                 <div fxFlex="75"><div *ngFor="let address of connectionLink.destinationAgent.addresses">{{address.addressString}}</div></div>
               </div>
               <div fxLayout="row">
-                <div fxFlex="25" class="right-value">Total Connections:</div>
+                <div fxFlex="25" class="right-value">Total Connections</div>
                 <div fxFlex="75">{{connectionLink.destinationAgent.connectionCount}}</div>
               </div>
             </div>
@@ -140,4 +142,8 @@
 
     </div>
   </mat-card-content>
+</mat-card>
+
+<mat-card *ngIf="loading" class="overview mat-elevation-z8" fxLayout="column" fxLayoutAlign="center center">
+  <div class="lds-dual-ring"></div>
 </mat-card>

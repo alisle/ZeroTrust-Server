@@ -13,7 +13,7 @@ import java.util.UUID;
 public interface DefaultConnectionLinkProjection {
 
     @Value("#{target.id}")
-    UUID getId();
+    UUID getUUID();
 
     Instant getTimestamp();
     long getConnectionHash();

@@ -2,48 +2,32 @@
   overflow: auto;
 }
 
-.picture {
-  min-height: 40px;
+.diagram-box {
+  min-height: 400px;
+  max-height: 400px;
   background-color: aquamarine;
 }
 
 .source-details-panel {
   margin-right: 5px;
+  border-right: solid 1px #dfdfdf;
+  margin-bottom: 15px;
 }
 
 .destination-details-panel {
   margin-left: 5px;
 }
 
-.source-user-details {
-  background-color: steelblue;
-}
-
-.destination-user-details {
-  background-color: blue;
-}
-
-.source-agent-details {
-  background-color: red;
-}
-
-.destination-agent-details {
-  background-color: mediumvioletred;
-}
-
 .right-value {
-  background-color: lightgrey;
   margin-top: 1px;
-  font-weight: bolder;
+  font-weight: bold;
   text-align: right;
   padding-right: 2px;
-  margin-right: 2px;
-  margin-left: 2px;
-  margin-bottom: 1px;
+  margin-right: 10px;
 }
 
 .sub-title {
-  background-color: lightgrey;
+  border-bottom: 2px solid #dfdfdf;
   margin-bottom: 5px;
   margin-top: 5px;
   padding: 5px;
@@ -51,10 +35,9 @@
 }
 
 .header {
-  background-color: lightgrey;
   margin: 1px 2px 2px 1px;
   padding: 5px;
-  font-weight: bolder;
+  font-weight: bolder;;
 }
 
 .icon {
@@ -64,3 +47,29 @@
   text-align: center;
   vertical-align: middle;
  }
+
+
+.lds-dual-ring {
+  display: inline-block;
+  width: 128px;
+  height: 128px;
+}
+.lds-dual-ring:after {
+  content: " ";
+  display: block;
+  width: 92px;
+  height: 92px;
+  margin: 1px;
+  border-radius: 50%;
+  border: 5px solid #000000;
+  border-color: #595959 transparent #595959 transparent;
+  animation: lds-dual-ring 1.2s linear infinite;
+}
+@keyframes lds-dual-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
