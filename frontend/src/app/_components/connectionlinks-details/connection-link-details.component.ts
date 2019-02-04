@@ -21,7 +21,11 @@ export class ConnectionLinkDetailsComponent implements OnInit, AfterViewInit {
   error: boolean = false;
   connectionLink : ConnectionLink = null;
 
-  @ViewChildren('diagram', { read: ElementRef })  diagramElementContainer: QueryList<ElementRef>;
+
+  connectionCountLoading : boolean = true;
+  connectionCount : number = 0;
+
+  //@ViewChildren('diagram', { read: ElementRef })  diagramElementContainer: QueryList<ElementRef>;
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
@@ -38,12 +42,34 @@ export class ConnectionLinkDetailsComponent implements OnInit, AfterViewInit {
       ).subscribe(link => {
         console.log("got connection link:", link);
         this.connectionLink = link;
+        this.populateCount(link);
     })
+
 
 
   }
 
+  populateCount(link: ConnectionLink) {
+    if(link != null) {
+      this.service.countConnectionsBetween(link.sourceAgent.uuid, link.destinationAgent.uuid)
+        .pipe(
+          catchError(() => {
+            this.log.error("unable to get the connection count between source and destination")
+            this.error = true;
+            return of(null);
+          }),
+          finalize(() => {
+            this.connectionCountLoading = false;
+          })
+        ).subscribe(count => {
+          console.log(`got count ${count}`);
+          this.connectionCount = count;
+      })
+    }
+  }
+
   ngAfterViewInit(): void {
+    /*
     this.diagramElementContainer.changes.subscribe((components: QueryList<ElementRef>) => {
       if(components.length >= 1) {
         this.log.debug("creating svg on id");
@@ -52,6 +78,7 @@ export class ConnectionLinkDetailsComponent implements OnInit, AfterViewInit {
         this.log.debug("haven't got a component yet, skipping");
       }
     });
+    */
   }
 
   createPicture(diagramElement: ElementRef) {

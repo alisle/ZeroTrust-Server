@@ -30,4 +30,7 @@ public interface ConnectionLinkRepository extends JpaRepository<ConnectionLink, 
 
     @RestResource(exported = true, path="source-destination-agent-id", rel = "findBySourceAndDestinationAgentID")
     Page<ConnectionLink> findAllBySourceAgentIdAndDestinationAgentId(Pageable pageable, @Param("source_agent_id") UUID source, @Param("destination_agent_id") UUID destiantion);
+
+    @RestResource(exported = true, path="count-source-destination-agent-id", rel = "countBySourceAndDestinationAgentID")
+    long countBySourceAgentIdAndDestinationAgentId(@Param("source_agent_id") UUID source, @Param("destination_agent_id") UUID destination);
 }

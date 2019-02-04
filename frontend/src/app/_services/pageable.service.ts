@@ -5,13 +5,13 @@ import {Page} from "../_model/page/page";
 import {LogWriter} from "../log-writer";
 
 export abstract class PageableService<T> {
+  protected log : LogWriter = new LogWriter("pageable.service");
   protected base_url: string = "http://localhost:8080";
   public pageSize: number = 20;
   public sortDirection: string = 'ASC';
   public sortOn: string = 'id';
-  private log : LogWriter = new LogWriter("pageable.service");
 
-  constructor(protected key: string, protected URL: string, protected http: HttpClient) {}
+  protected constructor(protected key: string, protected URL: string, protected http: HttpClient) {}
 
   get(id: string, projection: string = null): Observable<T> {
     let params = new HttpParams();

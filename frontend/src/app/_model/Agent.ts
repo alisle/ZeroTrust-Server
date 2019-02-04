@@ -1,7 +1,7 @@
 import {IPAddress} from "./IPAddress";
 
 export interface Agent {
-  id: string;
+  uuid: string;
   name: string;
   firstSeen: Date;
   alive: boolean;
