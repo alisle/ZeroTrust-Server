@@ -4,6 +4,7 @@ import {PageableService} from "../pageable.service";
 import {ConnectionLink} from "../../_model/ConnectionLink";
 import {Observable} from "rxjs";
 import {map} from "rxjs/operators";
+import {Page} from "../../_model/page/page";
 
 @Injectable()
 export class ConnectionlinkService extends PageableService<ConnectionLink> {
@@ -11,6 +12,20 @@ export class ConnectionlinkService extends PageableService<ConnectionLink> {
     super("connection_links", "/connection_links", http);
   }
 
+  connectionsBetween(sourceAgent: string, destinationAgent: string) : Observable<Page<ConnectionLink>> {
+    console.log(`requesting connections between ${sourceAgent} and ${destinationAgent}`);
+
+    let params = new HttpParams()
+      .append("size", "" + 1000)
+      .append("page", "" + 0)
+      .append("sort", `timestamp,ASC`)
+      .append("source_agent_id", sourceAgent)
+      .append("destination_agent_id", destinationAgent);
+
+    let url = `${this.base_url}${this.URL}/search/source-destination-agent-id`;
+
+    return this._page(0, params, url);
+  }
   countConnectionsBetween(sourceAgent: string, destinationAgent: string) : Observable<number> {
     console.log(`requesting number of connections between ${sourceAgent} and ${destinationAgent}`);
 

@@ -3,9 +3,10 @@ import {LogWriter} from "../../log-writer";
 import {ActivatedRoute} from "@angular/router";
 import {ConnectionlinkService} from "../../_services/connectionlinks/connectionlink.service";
 import {ConnectionLink} from "../../_model/ConnectionLink";
-import {catchError, finalize} from "rxjs/operators";
-import {of} from "rxjs";
-import * as d3 from 'd3';
+import {FlowGraphService} from "../../_services/flowgraph/FlowGraphService";
+import {LoadableObject} from "../../_model/LoadableObject";
+import {Page} from "../../_model/page/page";
+import {forkJoin, merge} from "rxjs";
 
 @Component({
   selector: 'app-connection-link-details',
@@ -13,93 +14,113 @@ import * as d3 from 'd3';
   styleUrls: ['./connection-link-details.component.css']
 })
 export class ConnectionLinkDetailsComponent implements OnInit, AfterViewInit {
-
+  private flowGraph : FlowGraphService = new FlowGraphService();
   private log: LogWriter = new LogWriter("connectionlinks-details-component");
+
   constructor(private route: ActivatedRoute, private service: ConnectionlinkService) { }
 
-  loading : boolean = true;
-  error: boolean = false;
+  linkLoad : LoadableObject<ConnectionLink> = new LoadableObject();
+  connectionCountLoad : LoadableObject<number> = new LoadableObject(true);
+  graphLoad : LoadableObject<Page<ConnectionLink>> = new LoadableObject(true);
+
   connectionLink : ConnectionLink = null;
-
-
-  connectionCountLoading : boolean = true;
   connectionCount : number = 0;
 
-  //@ViewChildren('diagram', { read: ElementRef })  diagramElementContainer: QueryList<ElementRef>;
+
+  @ViewChildren('diagram', { read: ElementRef })  diagramElementContainer: QueryList<ElementRef>;
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
-    this.service.get(id, "DefaultConnectionLinkProjection")
-      .pipe(
-        catchError(() => {
-          this.log.error("unable to find connection link!");
-          this.error = true;
-          return of(null);
-        }),
-        finalize(() => {
-          this.loading = false;
-        })
-      ).subscribe(link => {
-        console.log("got connection link:", link);
-        this.connectionLink = link;
-        this.populateCount(link);
-    })
 
+    this.linkLoad.bind(this.service.get(id, "DefaultConnectionLinkProjection"));
+    this.linkLoad.value$.subscribe((link : ConnectionLink) => {
+      this.connectionLink = link;
+    });
 
+    this.linkLoad.value$.subscribe((link : ConnectionLink) => {
+      if( link != null) {
+        this.connectionCountLoad.bind(this.service.countConnectionsBetween(link.sourceAgent.uuid, link.destinationAgent.uuid));
+      }
+    });
 
-  }
+    this.linkLoad.value$.subscribe((link : ConnectionLink) => {
+      if(link != null) {
+        this.graphLoad.bind(this.service.connectionsBetween(link.sourceAgent.uuid, link.destinationAgent.uuid))
+      }
+    });
 
-  populateCount(link: ConnectionLink) {
-    if(link != null) {
-      this.service.countConnectionsBetween(link.sourceAgent.uuid, link.destinationAgent.uuid)
-        .pipe(
-          catchError(() => {
-            this.log.error("unable to get the connection count between source and destination")
-            this.error = true;
-            return of(null);
-          }),
-          finalize(() => {
-            this.connectionCountLoading = false;
-          })
-        ).subscribe(count => {
-          console.log(`got count ${count}`);
-          this.connectionCount = count;
-      })
-    }
+    this.connectionCountLoad.value$.subscribe((value : number) => {
+      this.connectionCount = value;
+    });
+
+    this.graphLoad.value$.subscribe((page : Page<ConnectionLink>) => {
+      if( page != null) {
+        this.log.debug("creating graph", page);
+        this.populateFlowGraph(400, 400, page);
+      }
+    });
+
   }
 
   ngAfterViewInit(): void {
-    /*
     this.diagramElementContainer.changes.subscribe((components: QueryList<ElementRef>) => {
       if(components.length >= 1) {
-        this.log.debug("creating svg on id");
-        this.createPicture(components.first);
+        this.log.debug("found svg with id, starting to create the picture");
+        this.flowGraph.setElement(components.first);
       } else {
         this.log.debug("haven't got a component yet, skipping");
       }
     });
-    */
   }
 
-  createPicture(diagramElement: ElementRef) {
-    this.log.debug("my element", diagramElement);
 
-    let div = d3.select(diagramElement.nativeElement);
-    this.log.debug("creating component diagram on element", div);
-    let svg = div.append("svg")
-      .attr("width", 400)
-      .attr("height", 400);
+  populateFlowGraph(width: number, height: number, page: Page<ConnectionLink>) : void {
+    page.items.forEach((link) => {
+      let sourceAgent = link.sourceAgent.name;
+      let destinationAgent = link.destinationAgent.name;
+      let sourceUser = link.sourceConnection.username;
+      let destinationUser = link.destinationConnection.username;
+      let sourceProcess = link.sourceConnection.processName;
+      let destinationProcess = link.destinationConnection.processName;
 
-    svg.append("circle")
-      .attr("cx", 50)
-      .attr("cy", 50)
-      .attr("r", 50)
-      .style("fill", "red");
+      let sourceAgentID = "source_agent_" + link.sourceAgent.uuid;
+      let destinationAgentID = "destination_agent_" +  link.destinationAgent.uuid;
+      let sourceUserID = "source_user_" + link.sourceConnection.username;
+      let destinationUserID = "destination_user_" + link.destinationConnection.username;
+      let sourceProcessID = "source_process_" + link.sourceConnection.processName;
+      let destinationProcessID = "destination_process_" + link.destinationConnection.processName;
 
+      this.flowGraph.addNode(sourceAgentID, sourceAgent);
+      this.flowGraph.addNode(destinationAgentID, destinationAgent);
+      this.flowGraph.addNode(sourceUserID, sourceUser);
+      this.flowGraph.addNode(destinationUserID, destinationUser);
+      this.flowGraph.addNode(sourceProcessID, sourceProcess);
+      this.flowGraph.addNode(destinationProcessID, destinationProcess);
+
+      this.flowGraph.addEdge(sourceAgentID, sourceUserID);
+      this.flowGraph.addEdge(sourceUserID, sourceProcessID);
+      this.flowGraph.addEdge(sourceProcessID, destinationProcessID);
+      this.flowGraph.addEdge(destinationProcessID, destinationUserID);
+      this.flowGraph.addEdge(destinationUserID, destinationAgentID);
+    });
+
+    this.flowGraph.draw();
+/*
+    this.flowGraph.addNode("source_agent");
+    this.flowGraph.addNode("source_user_1");
+    this.flowGraph.addNode("source_user_2");
+    this.flowGraph.addNode("source_process_1");
+    this.flowGraph.addNode("destination_process_1");
+    this.flowGraph.addNode("destination_user_1");
+    this.flowGraph.addNode("destination_agent");
+
+    this.flowGraph.addEdge("source_agent", "source_user_1");
+    this.flowGraph.addEdge("source_agent", "source_user_2");
+    this.flowGraph.addEdge("source_user_1", "source_process_1");
+    this.flowGraph.addEdge("source_user_2", "source_process_1");
+    this.flowGraph.addEdge("source_process_1", "destination_process_1");
+    this.flowGraph.addEdge("destination_process_1", "destination_user_1");
+    this.flowGraph.addEdge("destination_user_1", "destination_agent");
+*/
   }
-
-  svghandle(event: any) {
-    this.log.debug("I am doing stuff", event);
-  }
-
 }

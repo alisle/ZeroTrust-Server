@@ -18,6 +18,7 @@ import {ConnectionsService} from "./_services/connections/connections.service";
 import {ConnectionlinkService} from "./_services/connectionlinks/connectionlink.service";
 import { ConnectionlinksComponent } from './_components/connectionlinks/connectionlinks.component';
 import { ConnectionLinkDetailsComponent } from './_components/connectionlinks-details/connection-link-details.component';
+import {FlowGraphService} from "./_services/flowgraph/FlowGraphService";
 
 @NgModule({
   declarations: [
@@ -37,12 +38,13 @@ import { ConnectionLinkDetailsComponent } from './_components/connectionlinks-de
     AppRoutingModule,
     FlexLayoutModule,
     HttpClientModule,
-    MomentModule
+    MomentModule,
   ],
   providers: [
     AgentsService,
     ConnectionsService,
     ConnectionlinkService,
+    FlowGraphService,
   ],
   bootstrap: [AppComponent]
 })

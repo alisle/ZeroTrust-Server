@@ -1,12 +1,27 @@
-<mat-card *ngIf="!loading" class="overview mat-elevation-z8">
+<ng-template #loading>
+  <mat-card *ngIf="linkLoad.loading$ | async" class="overview mat-elevation-z8" fxLayout="column" fxLayoutAlign="center center">
+    <div class="lds-dual-ring"></div>
+  </mat-card>
+</ng-template>
+
+<ng-template #loadingCount>
+  <div fxLayout="row" fxFlex="100">Loading Details...</div>
+</ng-template>
+
+
+
+<mat-card *ngIf="!(linkLoad.loading$ | async) else loading" class="overview mat-elevation-z8">
   <mat-card-header>
     <mat-card-title><mat-icon class="icon">fingerprint</mat-icon> Connection Link: {{connectionLink.sourceAgent.name}}:{{connectionLink.sourceConnection.sourcePort}}<mat-icon class="icon">arrow_right_alt</mat-icon>{{connectionLink.destinationAgent.name}}:{{connectionLink.destinationConnection.destinationPort}}</mat-card-title>
     <mat-card-subtitle>Occurred: {{connectionLink.sourceConnection.start | amTimeAgo}}, Still Alive: <span *ngIf="connectionLink.alive">Yes</span><span *ngIf="!connectionLink.alive">No, Duration: {{connectionLink.sourceConnection.duration | amDuration : 'ms' }}</span> </mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
     <div fxLayout="column" fxFlex>
-      <div fxLayout="row" fxFlex="100">
-        I am stuff
+      <div *ngIf="!(connectionCountLoad.loading$ | async) else loadingCount">
+        <span>These two machines have spoken {{ connectionCount }} times</span>
+      </div>
+      <div *ngIf="!(graphLoad.loading$ | async) else loading" fxLayoutAlign="center center">
+        <svg #diagram></svg>
       </div>
 
       <!-- Program Details -->
@@ -144,6 +159,3 @@
   </mat-card-content>
 </mat-card>
 
-<mat-card *ngIf="loading" class="overview mat-elevation-z8" fxLayout="column" fxLayoutAlign="center center">
-  <div class="lds-dual-ring"></div>
-</mat-card>

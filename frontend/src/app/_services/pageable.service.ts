@@ -33,6 +33,18 @@ export abstract class PageableService<T> {
     );
   }
 
+  protected _page(page: number, params: HttpParams, url : string) : Observable<Page<T>> {
+    return this.http.get(
+      `${url}`,
+      {
+        params: params
+      })
+      .pipe(map((res: any) => {
+        this.log.debug(`received page object:`, res);
+        let page = this.objToPage(res);
+        return page;
+      }));
+  }
   page(page: number, projection: string = null): Observable<Page<T>> {
     console.log(`page ${page}:${this.pageSize} has been requested for URL:${this.URL}`);
 
@@ -45,16 +57,8 @@ export abstract class PageableService<T> {
       params = params.append("projection", projection);
     }
 
-    return this.http.get(
-      `${this.base_url}${this.URL}`,
-      {
-        params: params
-      })
-      .pipe(map((res: any) => {
-        this.log.debug(`received page object:`, res);
-        let page = this.objToPage(res);
-        return page;
-      }));
+    let url = `${this.base_url}${this.URL}`;
+    return this._page(page, params, url);
   }
 
   private objToPage(obj: any): Page<T> {

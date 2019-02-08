@@ -37,6 +37,14 @@ def create_machine_names():
     return names
 
 
+def create_usernames() :
+    usernames = []
+    with open("./resources/usernames.txt") as file_pointer:
+        for line in file_pointer:
+            usernames.append(line.strip().lower())
+
+    return usernames
+
 def unleash_agents(number_of_agents, names, headers):
     samples = random.sample(range(0, len(names)), number_of_agents)
 
@@ -95,7 +103,8 @@ def post_open(is_source, payload, timestamp, service, headers):
     payload["timestamp"] = timestamp + "+00:00"
 
     if is_source:
-        payload["username"] = "harry"
+        sample = random.sample(range(0, len(usernames)), 1)
+        payload["username"] = usernames[sample[0]]
         payload["uid"] = 1001
     else:
         payload["username"] = service["destination_user_name"]
@@ -132,9 +141,14 @@ def make_connection(source_agent, destination_agent, service, duration, headers)
 
 print "Loading Machine Names"
 names = create_machine_names()
+print "Loaded " + str(len(names)) + " machine names"
+
+print "Loading Usernames"
+usernames = create_usernames()
+print "Loaded " + str(len(usernames)) + " usernames"
 
 print "Onlining Agents"
-agents = unleash_agents(100, names, HEADERS)
+agents = unleash_agents(10, names, HEADERS)
 
 while True:
     sample = random.sample(range(0, len(agents)), 2)
