@@ -1,5 +1,6 @@
 .overview {
   overflow: auto;
+  box-shadow: none;
 }
 
 .diagram-box {

@@ -153,7 +153,7 @@ export class FlowGraphService {
 
     width += 20;
     height += 20;
-    
+
     svg.attr("width", width + "px");
     svg.attr("height", height + "px");
   }

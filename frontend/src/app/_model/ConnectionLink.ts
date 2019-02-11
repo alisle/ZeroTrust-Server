@@ -3,6 +3,7 @@ import {Agent} from "./Agent";
 import {Connection} from "./Connection";
 
 export interface ConnectionLink {
+  uuid: string;
   timestamp: Date;
   connectionHash: number;
   alive: boolean;

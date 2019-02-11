@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, Input, OnInit, QueryList, ViewChild, ViewChildren} from '@angular/core';
 import {LogWriter} from "../../log-writer";
 import {ActivatedRoute} from "@angular/router";
 import {ConnectionlinkService} from "../../_services/connectionlinks/connectionlink.service";
@@ -6,7 +6,6 @@ import {ConnectionLink} from "../../_model/ConnectionLink";
 import {FlowGraphService} from "../../_services/flowgraph/FlowGraphService";
 import {LoadableObject} from "../../_model/LoadableObject";
 import {Page} from "../../_model/page/page";
-import {forkJoin, merge} from "rxjs";
 
 @Component({
   selector: 'app-connection-link-details',
@@ -23,6 +22,9 @@ export class ConnectionLinkDetailsComponent implements OnInit, AfterViewInit {
   connectionCountLoad : LoadableObject<number> = new LoadableObject(true);
   graphLoad : LoadableObject<Page<ConnectionLink>> = new LoadableObject(true);
 
+  @Input()
+  connectionID ? : string;
+
   connectionLink : ConnectionLink = null;
   connectionCount : number = 0;
 
@@ -30,7 +32,7 @@ export class ConnectionLinkDetailsComponent implements OnInit, AfterViewInit {
   @ViewChildren('diagram', { read: ElementRef })  diagramElementContainer: QueryList<ElementRef>;
 
   ngOnInit() {
-    const id = this.route.snapshot.paramMap.get('id');
+    const id = (this.connectionID == null) ? this.route.snapshot.paramMap.get('id') : this.connectionID;
 
     this.linkLoad.bind(this.service.get(id, "DefaultConnectionLinkProjection"));
     this.linkLoad.value$.subscribe((link : ConnectionLink) => {
@@ -61,6 +63,8 @@ export class ConnectionLinkDetailsComponent implements OnInit, AfterViewInit {
     });
 
   }
+
+  load
 
   ngAfterViewInit(): void {
     this.diagramElementContainer.changes.subscribe((components: QueryList<ElementRef>) => {
@@ -105,22 +109,5 @@ export class ConnectionLinkDetailsComponent implements OnInit, AfterViewInit {
     });
 
     this.flowGraph.draw();
-/*
-    this.flowGraph.addNode("source_agent");
-    this.flowGraph.addNode("source_user_1");
-    this.flowGraph.addNode("source_user_2");
-    this.flowGraph.addNode("source_process_1");
-    this.flowGraph.addNode("destination_process_1");
-    this.flowGraph.addNode("destination_user_1");
-    this.flowGraph.addNode("destination_agent");
-
-    this.flowGraph.addEdge("source_agent", "source_user_1");
-    this.flowGraph.addEdge("source_agent", "source_user_2");
-    this.flowGraph.addEdge("source_user_1", "source_process_1");
-    this.flowGraph.addEdge("source_user_2", "source_process_1");
-    this.flowGraph.addEdge("source_process_1", "destination_process_1");
-    this.flowGraph.addEdge("destination_process_1", "destination_user_1");
-    this.flowGraph.addEdge("destination_user_1", "destination_agent");
-*/
   }
 }

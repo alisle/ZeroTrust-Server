@@ -16,7 +16,10 @@ import { AgentDetailsComponent } from './_components/agent-details/agent-details
 import { ConnectionsComponent } from './_components/connections/connections.component';
 import {ConnectionsService} from "./_services/connections/connections.service";
 import {ConnectionlinkService} from "./_services/connectionlinks/connectionlink.service";
-import { ConnectionlinksComponent } from './_components/connectionlinks/connectionlinks.component';
+import {
+  ConnectionlinksComponent,
+  ConnectionLinksDetailsDialog
+} from './_components/connectionlinks/connectionlinks.component';
 import { ConnectionLinkDetailsComponent } from './_components/connectionlinks-details/connection-link-details.component';
 import {FlowGraphService} from "./_services/flowgraph/FlowGraphService";
 
@@ -29,7 +32,8 @@ import {FlowGraphService} from "./_services/flowgraph/FlowGraphService";
     AgentDetailsComponent,
     ConnectionsComponent,
     ConnectionlinksComponent,
-    ConnectionLinkDetailsComponent
+    ConnectionLinkDetailsComponent,
+    ConnectionLinksDetailsDialog
   ],
   imports: [
     BrowserModule,
@@ -45,6 +49,9 @@ import {FlowGraphService} from "./_services/flowgraph/FlowGraphService";
     ConnectionsService,
     ConnectionlinkService,
     FlowGraphService,
+  ],
+  entryComponents: [
+    ConnectionLinksDetailsDialog
   ],
   bootstrap: [AppComponent]
 })

@@ -22,6 +22,16 @@ SERVICES = [
         "destination_port": 22,
         "destination_uid": 0,
         "protocol" : "TCP"
+    },
+    {
+        "source_process_name": "psql",
+        "source_command_line" : [ "/usr/lib/postgresql/9.4/bin/psql", "-h", "%DEST_IP%"],
+        "destination_process_name" : "postgres",
+        "destination_command_line" : [ "/usr/lib/postgresql/9.4/bin/postgres", "-D", "/var/lib/postgresql/9.4/main", "-c", "config_file=/etc/postgresql/9.4/main/postgresql.conf" ],
+        "destination_user_name" : "postgres",
+        "destination_port" : 5432,
+        "destination_uid" : 108,
+        "protocol": "TCP"
     }
 ]
 
@@ -152,8 +162,10 @@ agents = unleash_agents(10, names, HEADERS)
 
 while True:
     sample = random.sample(range(0, len(agents)), 2)
+    process_sample = random.sample(range(0, len(SERVICES)), 1)
+
     source_agent = agents[sample[0]]
     destination_agent = agents[sample[1]]
     print "Creating connection between "  + str(source_agent["uuid"]) + " -> " + str(destination_agent["uuid"])
-    make_connection(source_agent, destination_agent, SERVICES[0], random.randint(0, 10800), HEADERS)
+    make_connection(source_agent, destination_agent, SERVICES[process_sample[0]], random.randint(0, 10800), HEADERS)
     time.sleep(1)

@@ -10,9 +10,9 @@
 
 
 
-<mat-card *ngIf="!(linkLoad.loading$ | async) else loading" class="overview mat-elevation-z8">
+<mat-card *ngIf="!(linkLoad.loading$ | async) else loading" class="overview">
   <mat-card-header>
-    <mat-card-title><mat-icon class="icon">fingerprint</mat-icon> Connection Link: {{connectionLink.sourceAgent.name}}:{{connectionLink.sourceConnection.sourcePort}}<mat-icon class="icon">arrow_right_alt</mat-icon>{{connectionLink.destinationAgent.name}}:{{connectionLink.destinationConnection.destinationPort}}</mat-card-title>
+    <mat-card-title><mat-icon class="icon">fingerprint</mat-icon> Connection Link: {{connectionLink.sourceAgent.name}}:{{connectionLink.sourceConnection.processName}}<mat-icon class="icon">arrow_right_alt</mat-icon>{{connectionLink.destinationAgent.name}}:{{connectionLink.destinationConnection.processName}}</mat-card-title>
     <mat-card-subtitle>Occurred: {{connectionLink.sourceConnection.start | amTimeAgo}}, Still Alive: <span *ngIf="connectionLink.alive">Yes</span><span *ngIf="!connectionLink.alive">No, Duration: {{connectionLink.sourceConnection.duration | amDuration : 'ms' }}</span> </mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
