@@ -1,9 +1,7 @@
 package com.notrust.server.model;
 
-import com.google.errorprone.annotations.FormatMethod;
 import lombok.Data;
 import org.hibernate.annotations.Formula;
-import org.springframework.beans.factory.annotation.Value;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -37,13 +35,10 @@ public class ConnectionLink {
     @JoinColumn(name="destination_agent_id", nullable = false)
     private Agent destinationAgent;
 
-    @NotNull
     @ManyToOne
     @JoinColumn(name="source_connection_id", nullable = false)
     private Connection sourceConnection;
 
-
-    @NotNull
     @ManyToOne
     @JoinColumn(name="destination_connection_id", nullable = false)
     private Connection destinationConnection;
@@ -56,15 +51,15 @@ public class ConnectionLink {
     @Formula("SELECT agent.name FROM agent agent WHERE agent.id = destination_agent_id")
     private String destinationAgentName;
 
-    // Really fucking horrible.
-    @Formula("SELECT connection.connection_ended IS NULL FROM connection connection WHERE connection.id = source_connection_id")
+
+    @NotNull
+    @Column(name = "alive")
     private boolean alive;
 
-    // Christ, does it never end?!
-    @Formula("SELECT connection.process_name FROM connection connection WHERE connection.id = source_connection_id")
+
+    @Column(name = "source_process_name")
     private String sourceProcessName;
 
-    // Seriously lads, what's going on?
-    @Formula("SELECT connection.process_name FROM connection connection WHERE connection.id = destination_connection_id")
+    @Column(name = "destination_process_name")
     private String destinationProcessName;
 }

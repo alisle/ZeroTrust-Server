@@ -3,10 +3,12 @@ package com.notrust.server.service.impl;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.notrust.server.events.NewOpenConnection;
+import com.notrust.server.model.Agent;
 import com.notrust.server.model.Connection;
 import com.notrust.server.model.ConnectionLink;
 import com.notrust.server.model.IPAddress;
 import com.notrust.server.repository.ConnectionLinkRepository;
+import com.notrust.server.service.AgentService;
 import com.notrust.server.service.ConnectionLinkService;
 import com.notrust.server.service.ConnectionService;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +16,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Service;
 
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -22,31 +25,47 @@ import java.util.UUID;
 @Slf4j
 @Service
 public class ConnectionLinkServiceImpl implements ConnectionLinkService, ApplicationListener<NewOpenConnection> {
+    private static final UUID unknownAgentID = UUID.fromString("00000000-0000-0000-0000-000000000000");
+
     private final ConnectionLinkRepository repository;
     private final ConnectionService connectionService;
-    private final Cache<Long, Connection> cache;
+    private final AgentService agentService;
 
-    public ConnectionLinkServiceImpl(ConnectionLinkRepository repository, ConnectionService connectionService) {
+    private final Cache<Long, Connection> cache;
+    private final Cache<Long, ConnectionLink> linkCache;
+
+    public ConnectionLinkServiceImpl(ConnectionLinkRepository repository, ConnectionService connectionService, AgentService agentService) {
         this.repository = repository;
         this.connectionService = connectionService;
+        this.agentService = agentService;
         this.cache = CacheBuilder.newBuilder().maximumSize(100).build();
+        this.linkCache = CacheBuilder.newBuilder().maximumSize(2048).build();
     }
 
-    private Optional<Connection> findCompanions(Connection connection) {
-        Connection potential = cache.getIfPresent(connection.getConnectionHash());
+
+    private Optional<ConnectionLink> findLinks(Connection connection) {
+        ConnectionLink potential = linkCache.getIfPresent(connection.getConnectionHash());
         if( potential != null) {
-            log.debug("found matching connection in cache, returning");
+            log.debug("found matching link in cache");
             return Optional.of(potential);
         }
 
-        log.debug("looking in the DB for possible connections");
-        List<Connection> potentials = connectionService.findConnectionHash(connection.getConnectionHash());
-
-        Optional<Connection> best = Optional.empty();
-        for (Connection conn: potentials) {
-            if(conn.isAlive() && connection.getId() != conn.getId()) {
-                if(best.orElse(conn).getStart().isBefore(conn.getStart())) {
-                    best = Optional.of(conn);
+        log.debug("unable to find link in cache, looking in the DB");
+        List<ConnectionLink> potentials = repository.findAllByConnectionHashAndSourceAgentIdOrDestinationAgentId(connection.getConnectionHash(), unknownAgentID, unknownAgentID);
+        Optional<ConnectionLink> best = Optional.empty();
+        Instant bestTime = Instant.MIN;
+        for (ConnectionLink link : potentials) {
+            boolean alive = (link.getSourceConnection() != null && link.getSourceConnection().isAlive())  | (link.getDestinationConnection() != null && link.getDestinationConnection().isAlive());
+            if(alive) {
+                Instant time = (link.getSourceConnection() != null) ? link.getSourceConnection().getStart() : link.getDestinationConnection().getStart();
+                if(!best.isPresent()) {
+                    best = Optional.of(link);
+                    bestTime = time;
+                } else {
+                    if(bestTime.isBefore(time)) {
+                        best = Optional.of(link);
+                        bestTime = time;
+                    }
                 }
             }
         }
@@ -54,69 +73,104 @@ public class ConnectionLinkServiceImpl implements ConnectionLinkService, Applica
         return best;
     }
 
-    private Optional<ConnectionLink> populateLink(Connection first, Connection second) {
+
+    private Optional<ConnectionLink> updateLink(ConnectionLink link, Connection connection) {
+        Optional<Connection> source = Optional.empty();
+        Optional<Connection> destination = Optional.empty();
+
+        IPAddress sourceAddress = new IPAddress(connection.getSource(), connection.getSourceString(), IPAddress.Version.V4);
+        IPAddress destinationAddress = new IPAddress(connection.getDestination(), connection.getDestinationString(), IPAddress.Version.V4);
+        Set<IPAddress> addresses  = connection.getAgent().getAddresses();
+
+        if(addresses.contains(sourceAddress)) {
+            source = Optional.of(connection);
+        }
+
+        if(addresses.contains(destinationAddress)) {
+            destination = Optional.of(connection);
+        }
+
+        source.ifPresent(con -> {
+            link.setTimestamp(con.getStart());
+            link.setSourceConnection(con);
+            link.setSourceAgent(con.getAgent());
+        });
+
+        destination.ifPresent(con -> {
+            link.setDestinationConnection(con);
+            link.setDestinationAgent(con.getAgent());
+        });
+
+
+        return Optional.of(link);
+    }
+
+
+    private Optional<ConnectionLink> createLink(Connection connection) {
         Optional<Connection> source = Optional.empty();
         Optional<Connection> destination = Optional.empty();
 
         final ConnectionLink link = new ConnectionLink();
+        link.setTimestamp(connection.getStart());
+        link.setId(UUID.randomUUID());
+        link.setConnectionHash(connection.getConnectionHash());
+        link.setAlive(true);
 
-        if(!first.getSourceString().equals(second.getSourceString())) {
-            log.error("sourceString addresses aren't the same, this really should NOT happen!");
+        IPAddress sourceAddress = new IPAddress(connection.getSource(), connection.getSourceString(), IPAddress.Version.V4);
+        IPAddress destinationAddress = new IPAddress(connection.getDestination(), connection.getDestinationString(), IPAddress.Version.V4);
+        Set<IPAddress> addresses  = connection.getAgent().getAddresses();
+
+
+        if(addresses.contains(sourceAddress)) {
+            source = Optional.of(connection);
         }
 
-        if(!first.getDestinationString().equals(second.getDestinationString())) {
-            log.error("destinationString addresses aren't the same, this really should NOT happen!");
+        if(addresses.contains(destinationAddress)) {
+            destination = Optional.of(connection);
         }
 
-        IPAddress sourceAddress = new IPAddress(first.getSource(), first.getSourceString(), IPAddress.Version.V4);
-        IPAddress destinationAddress = new IPAddress(first.getDestination(), first.getDestinationString(), IPAddress.Version.V4);
-
-        Set<IPAddress> firstAgentAddresses  = first.getAgent().getAddresses();
-        Set<IPAddress> secondAgentAddresses = second.getAgent().getAddresses();
-
-        if(firstAgentAddresses.contains(sourceAddress)) {
-            source = Optional.of(first);
-        } else if (secondAgentAddresses.contains(sourceAddress)) {
-            source = Optional.of(second);
-        } else {
-            log.error("unable to map source ip to a particular agent:" + sourceAddress.getAddressString());
+        if(!destination.isPresent() && !source.isPresent()) {
+            return Optional.empty();
         }
 
-        if(firstAgentAddresses.contains(destinationAddress)) {
-            destination = Optional.of(first);
-        } else if (secondAgentAddresses.contains(destinationAddress)) {
-            destination = Optional.of(second);
-        } else {
-            log.error("unable to map destination ip to a particular agent:" + destinationAddress.getAddressString());
-        }
+        source.ifPresentOrElse(con -> {
+            link.setSourceConnection(con);
+            link.setSourceAgent(con.getAgent());
+            link.setSourceProcessName(con.getProcessName());
+            link.setTimestamp(con.getStart());
+        }, () -> agentService.get(unknownAgentID).ifPresent(agent -> link.setSourceAgent(agent)));
 
-        if(destination.isPresent() && source.isPresent()) {
-            link.setId(UUID.randomUUID());
-            link.setConnectionHash(first.getConnectionHash());
-            link.setDestinationAgent(destination.get().getAgent());
-            link.setSourceAgent(source.get().getAgent());
-            link.setSourceConnection(source.get());
-            link.setDestinationConnection(destination.get());
-            link.setTimestamp(source.get().getStart());
+        destination.ifPresentOrElse(con -> {
+            link.setDestinationConnection(con);
+            link.setDestinationAgent(con.getAgent());
+            link.setDestinationProcessName(con.getProcessName());
+        }, () -> agentService.get(unknownAgentID).ifPresent(agent -> link.setDestinationAgent(agent)));
 
-            return Optional.ofNullable(link);
-        }
 
-        return Optional.empty();
+        return Optional.of(link);
+
     }
+
 
     @Override
     public void open(Connection connection) {
-        Optional<Connection> potential = findCompanions(connection);
+        Optional<ConnectionLink> potential = findLinks(connection);
         potential.ifPresentOrElse(
-                companion -> {
-                        Optional<ConnectionLink> possible = populateLink(connection, companion);
-                        possible.ifPresent(link -> repository.save(link));
-                    },
-                () -> cache.put(connection.getConnectionHash(), connection)
+                link -> {
+                    Optional<ConnectionLink> updated = updateLink(link, connection);
+                    updated.ifPresent(update-> repository.save(update));
+                    linkCache.invalidate(connection.getConnectionHash());
+                },
+                () -> {
+                    Optional<ConnectionLink> link = createLink(connection);
+                    link.ifPresent(connectionLink -> {
+                        connectionLink = repository.save(connectionLink);
+                        linkCache.put(connection.getConnectionHash(), connectionLink);
+                    });
+                }
         );
-
     }
+
 
     @Override
     public void close(Connection connection) {

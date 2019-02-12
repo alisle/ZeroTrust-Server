@@ -10,6 +10,7 @@ import org.springframework.data.rest.core.annotation.RestResource;
 
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 @SuppressWarnings("unused")
@@ -21,7 +22,7 @@ public interface AgentRepository extends JpaRepository<Agent, UUID> {
     @RestResource(path = "connection", exported = true)
     Page<Agent> findAllOrderByConnections(Pageable pageable);
 
-    @RestResource(exported = false)
+
     ArrayList<Agent> findAll();
 
     @RestResource(exported = true)

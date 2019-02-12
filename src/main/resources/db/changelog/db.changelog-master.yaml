@@ -11,3 +11,7 @@ databaseChangeLog:
     file: db/changelog/changes/000000100-Create-Connection.yaml
 - include:
     file: db/changelog/changes/000000110-Create-Connection-Link.yaml
+- include:
+    file: db/changelog/changes/001000000-Add-Unknown-Agent.yaml
+- include:
+    file: db/changelog/changes/001000010-Add-Internet-Agent.yaml

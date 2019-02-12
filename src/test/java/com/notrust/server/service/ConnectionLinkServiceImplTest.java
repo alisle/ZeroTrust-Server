@@ -21,6 +21,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @RunWith(SpringRunner.class)
@@ -81,7 +83,9 @@ public class ConnectionLinkServiceImplTest {
 
         connectionLinkRepository.deleteAll();
         connectionRepository.deleteAll();
-        agentRepository.deleteAll();
+
+        agentRepository.deleteById(sourceAgent.getId());
+        agentRepository.deleteById(destinationAgent.getId());
     }
     @Test
     public void testNewLinkSourceFirst() throws Exception {
@@ -120,7 +124,9 @@ public class ConnectionLinkServiceImplTest {
 
         connectionLinkRepository.deleteAll();
         connectionRepository.deleteAll();
-        agentRepository.deleteAll();
+
+        agentRepository.deleteById(sourceAgent.getId());
+        agentRepository.deleteById(destinationAgent.getId());
     }
 
     @Test
@@ -161,7 +167,9 @@ public class ConnectionLinkServiceImplTest {
 
         connectionLinkRepository.deleteAll();
         connectionRepository.deleteAll();
-        agentRepository.deleteAll();
+
+        agentRepository.deleteById(sourceAgent.getId());
+        agentRepository.deleteById(destinationAgent.getId());
     }
 
 }

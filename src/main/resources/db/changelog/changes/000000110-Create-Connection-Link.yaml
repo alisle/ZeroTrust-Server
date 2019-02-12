@@ -56,13 +56,31 @@ databaseChangeLog:
                   name: source_connection_id
                   type: uuid
                   constraints:
+                    nullable: true
+
+              - column:
+                  name: alive
+                  type: boolean
+                  constraints:
                     nullable: false
 
               - column:
                   name: destination_connection_id
                   type: uuid
                   constraints:
-                    nullable: false
+                    nullable: true
+
+              - column:
+                  name: source_process_name
+                  type: varchar(255)
+                  constraints:
+                    nullable: true
+
+              - column:
+                  name: destination_process_name
+                  type: varchar(255)
+                  constraints:
+                     nullable: true
 
 
   - addForeignKeyConstraint:
