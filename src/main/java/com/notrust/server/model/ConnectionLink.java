@@ -25,21 +25,25 @@ public class ConnectionLink {
     @Column(name = "created_on")
     private Instant timestamp;
 
-    @NotNull
+    @Column(name = "ended_on")
+    private Instant ended;
+
+    @Column(name = "duration")
+    private long duration;
+
     @ManyToOne
     @JoinColumn(name="source_agent_id", nullable = false)
     private Agent sourceAgent;
 
-    @NotNull
     @ManyToOne
     @JoinColumn(name="destination_agent_id", nullable = false)
     private Agent destinationAgent;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name="source_connection_id", nullable = false)
     private Connection sourceConnection;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name="destination_connection_id", nullable = false)
     private Connection destinationConnection;
 

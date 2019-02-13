@@ -40,17 +40,30 @@ databaseChangeLog:
                   type: timestamp
                   constraints:
                     nullable: false
+
+              - column:
+                  name: ended_on
+                  type: timestamp
+                  constraints:
+                    nullable: true
+
+              - column:
+                  name: duration
+                  type: bigint
+                  constraints:
+                    nullable: true
+
               - column:
                   name: source_agent_id
                   type: uuid
                   constraints:
-                    nullable: false
+                    nullable: true
 
               - column:
                   name: destination_agent_id
                   type: uuid
                   constraints:
-                    nullable: false
+                    nullable: true
 
               - column:
                   name: source_connection_id

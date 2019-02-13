@@ -2,8 +2,8 @@ package com.notrust.server.service.impl;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import com.notrust.server.events.NewCloseConnection;
 import com.notrust.server.events.NewOpenConnection;
-import com.notrust.server.model.Agent;
 import com.notrust.server.model.Connection;
 import com.notrust.server.model.ConnectionLink;
 import com.notrust.server.model.IPAddress;
@@ -12,7 +12,7 @@ import com.notrust.server.service.AgentService;
 import com.notrust.server.service.ConnectionLinkService;
 import com.notrust.server.service.ConnectionService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.ApplicationListener;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 
@@ -24,7 +24,7 @@ import java.util.UUID;
 
 @Slf4j
 @Service
-public class ConnectionLinkServiceImpl implements ConnectionLinkService, ApplicationListener<NewOpenConnection> {
+public class ConnectionLinkServiceImpl implements ConnectionLinkService  {
     private static final UUID unknownAgentID = UUID.fromString("00000000-0000-0000-0000-000000000000");
 
     private final ConnectionLinkRepository repository;
@@ -73,14 +73,14 @@ public class ConnectionLinkServiceImpl implements ConnectionLinkService, Applica
         return best;
     }
 
-
-    private Optional<ConnectionLink> updateLink(ConnectionLink link, Connection connection) {
+    private ConnectionLink populateLink(ConnectionLink link, Connection connection) {
         Optional<Connection> source = Optional.empty();
         Optional<Connection> destination = Optional.empty();
 
         IPAddress sourceAddress = new IPAddress(connection.getSource(), connection.getSourceString(), IPAddress.Version.V4);
         IPAddress destinationAddress = new IPAddress(connection.getDestination(), connection.getDestinationString(), IPAddress.Version.V4);
         Set<IPAddress> addresses  = connection.getAgent().getAddresses();
+
 
         if(addresses.contains(sourceAddress)) {
             source = Optional.of(connection);
@@ -94,58 +94,30 @@ public class ConnectionLinkServiceImpl implements ConnectionLinkService, Applica
             link.setTimestamp(con.getStart());
             link.setSourceConnection(con);
             link.setSourceAgent(con.getAgent());
+            link.setSourceProcessName(con.getProcessName());
         });
 
         destination.ifPresent(con -> {
             link.setDestinationConnection(con);
             link.setDestinationAgent(con.getAgent());
+            link.setDestinationProcessName(con.getProcessName());
         });
 
 
-        return Optional.of(link);
+        return link;
     }
 
-
     private Optional<ConnectionLink> createLink(Connection connection) {
-        Optional<Connection> source = Optional.empty();
-        Optional<Connection> destination = Optional.empty();
-
-        final ConnectionLink link = new ConnectionLink();
+        ConnectionLink link = new ConnectionLink();
         link.setTimestamp(connection.getStart());
         link.setId(UUID.randomUUID());
         link.setConnectionHash(connection.getConnectionHash());
         link.setAlive(true);
 
-        IPAddress sourceAddress = new IPAddress(connection.getSource(), connection.getSourceString(), IPAddress.Version.V4);
-        IPAddress destinationAddress = new IPAddress(connection.getDestination(), connection.getDestinationString(), IPAddress.Version.V4);
-        Set<IPAddress> addresses  = connection.getAgent().getAddresses();
-
-
-        if(addresses.contains(sourceAddress)) {
-            source = Optional.of(connection);
-        }
-
-        if(addresses.contains(destinationAddress)) {
-            destination = Optional.of(connection);
-        }
-
-        if(!destination.isPresent() && !source.isPresent()) {
+        link = populateLink(link, connection);
+        if(link.getDestinationAgent() == null && link.getSourceAgent() == null) {
             return Optional.empty();
         }
-
-        source.ifPresentOrElse(con -> {
-            link.setSourceConnection(con);
-            link.setSourceAgent(con.getAgent());
-            link.setSourceProcessName(con.getProcessName());
-            link.setTimestamp(con.getStart());
-        }, () -> agentService.get(unknownAgentID).ifPresent(agent -> link.setSourceAgent(agent)));
-
-        destination.ifPresentOrElse(con -> {
-            link.setDestinationConnection(con);
-            link.setDestinationAgent(con.getAgent());
-            link.setDestinationProcessName(con.getProcessName());
-        }, () -> agentService.get(unknownAgentID).ifPresent(agent -> link.setDestinationAgent(agent)));
-
 
         return Optional.of(link);
 
@@ -157,8 +129,8 @@ public class ConnectionLinkServiceImpl implements ConnectionLinkService, Applica
         Optional<ConnectionLink> potential = findLinks(connection);
         potential.ifPresentOrElse(
                 link -> {
-                    Optional<ConnectionLink> updated = updateLink(link, connection);
-                    updated.ifPresent(update-> repository.save(update));
+                    ConnectionLink updated = populateLink(link, connection);
+                    repository.save(updated);
                     linkCache.invalidate(connection.getConnectionHash());
                 },
                 () -> {
@@ -174,7 +146,22 @@ public class ConnectionLinkServiceImpl implements ConnectionLinkService, Applica
 
     @Override
     public void close(Connection connection) {
-        // I don't want to do anything with this yet.
+        ConnectionLink link = repository.findBySourceConnectionId(connection.getId());
+        if(link == null) {
+            link = repository.findByDestinationConnectionId(connection.getId());
+        }
+
+        if(link == null) {
+            log.error("can not find a corresponding connection link to connection " + connection.getId());
+            return;
+        }
+
+        link.setAlive(false);
+        link.setEnded(connection.getEnd());
+        link.setDuration(link.getEnded().getEpochSecond() - link.getTimestamp().getEpochSecond());
+
+        repository.save(link);
+
     }
 
     @Override
@@ -182,9 +169,15 @@ public class ConnectionLinkServiceImpl implements ConnectionLinkService, Applica
         return repository.findAll();
     }
 
-    @Override
+    @EventListener
     public void onApplicationEvent(NewOpenConnection newOpenConnection) {
         log.debug("processing new open connection");
         open(newOpenConnection.getConnection());
+    }
+
+    @EventListener
+    public void onApplicationEvent(NewCloseConnection newCloseConnection) {
+        log.debug("processing new close connection");
+        close(newCloseConnection.getConnection());
     }
 }

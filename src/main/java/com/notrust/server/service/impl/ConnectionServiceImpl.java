@@ -1,6 +1,7 @@
 package com.notrust.server.service.impl;
 
 import com.google.common.cache.CacheLoader;
+import com.notrust.server.events.NewCloseConnection;
 import com.notrust.server.events.NewOpenConnection;
 import com.notrust.server.exception.InvalidIPAddress;
 import com.notrust.server.mapper.ConnectionMapper;
@@ -78,6 +79,7 @@ public class ConnectionServiceImpl implements ConnectionService {
         connection.setEnd(dto.getTimestamp());
         connection.setDuration(connection.getEnd().toEpochMilli() - connection.getStart().toEpochMilli());
         connection = connectionRepository.save(connection);
+        applicationEventPublisher.publishEvent(new NewCloseConnection(this, connection));
 
         return Optional.ofNullable(connection);
     }
