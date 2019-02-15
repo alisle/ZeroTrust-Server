@@ -12,6 +12,7 @@ import com.notrust.server.service.AgentService;
 import com.notrust.server.service.ConnectionLinkService;
 import com.notrust.server.service.ConnectionService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
@@ -25,33 +26,34 @@ import java.util.UUID;
 @Slf4j
 @Service
 public class ConnectionLinkServiceImpl implements ConnectionLinkService  {
-    private static final UUID unknownAgentID = UUID.fromString("00000000-0000-0000-0000-000000000000");
-
     private final ConnectionLinkRepository repository;
     private final ConnectionService connectionService;
     private final AgentService agentService;
 
-    private final Cache<Long, Connection> cache;
+    @Value("${connection-link-service.use-cache}")
+    private boolean useCache;
+
     private final Cache<Long, ConnectionLink> linkCache;
 
     public ConnectionLinkServiceImpl(ConnectionLinkRepository repository, ConnectionService connectionService, AgentService agentService) {
         this.repository = repository;
         this.connectionService = connectionService;
         this.agentService = agentService;
-        this.cache = CacheBuilder.newBuilder().maximumSize(100).build();
         this.linkCache = CacheBuilder.newBuilder().maximumSize(2048).build();
     }
 
 
     private Optional<ConnectionLink> findLinks(Connection connection) {
-        ConnectionLink potential = linkCache.getIfPresent(connection.getConnectionHash());
-        if( potential != null) {
-            log.debug("found matching link in cache");
-            return Optional.of(potential);
+        if(useCache) {
+            ConnectionLink potential = linkCache.getIfPresent(connection.getConnectionHash());
+            if( potential != null) {
+                log.debug("found matching link in cache");
+                return Optional.of(potential);
+            }
         }
 
         log.debug("unable to find link in cache, looking in the DB");
-        List<ConnectionLink> potentials = repository.findAllByConnectionHashAndSourceAgentIdOrDestinationAgentId(connection.getConnectionHash(), unknownAgentID, unknownAgentID);
+        List<ConnectionLink> potentials = repository.findAllByConnectionHashAndSourceConnectionIsNullOrDestinationConnectionIsNull(connection.getConnectionHash());
         Optional<ConnectionLink> best = Optional.empty();
         Instant bestTime = Instant.MIN;
         for (ConnectionLink link : potentials) {
@@ -131,13 +133,17 @@ public class ConnectionLinkServiceImpl implements ConnectionLinkService  {
                 link -> {
                     ConnectionLink updated = populateLink(link, connection);
                     repository.save(updated);
-                    linkCache.invalidate(connection.getConnectionHash());
+                    if(useCache) {
+                        linkCache.invalidate(connection.getConnectionHash());
+                    }
                 },
                 () -> {
                     Optional<ConnectionLink> link = createLink(connection);
                     link.ifPresent(connectionLink -> {
                         connectionLink = repository.save(connectionLink);
-                        linkCache.put(connection.getConnectionHash(), connectionLink);
+                        if(useCache) {
+                            linkCache.put(connection.getConnectionHash(), connectionLink);
+                        }
                     });
                 }
         );
@@ -180,4 +186,5 @@ public class ConnectionLinkServiceImpl implements ConnectionLinkService  {
         log.debug("processing new close connection");
         close(newCloseConnection.getConnection());
     }
+
 }

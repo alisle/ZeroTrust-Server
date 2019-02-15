@@ -1,13 +1,13 @@
 package com.notrust.server.service;
 
 
-import com.google.common.net.InetAddresses;
 import com.notrust.server.CreationUtils;
 import com.notrust.server.ServerApplication;
 import com.notrust.server.mapper.IPMapper;
 import com.notrust.server.model.Agent;
-import com.notrust.server.model.Connection;
+import com.notrust.server.model.ConnectionLink;
 import com.notrust.server.model.IPAddress;
+import com.notrust.server.model.dto.ConnectionCloseDTO;
 import com.notrust.server.model.dto.ConnectionOpenDTO;
 import com.notrust.server.repository.AgentRepository;
 import com.notrust.server.repository.ConnectionLinkRepository;
@@ -21,8 +21,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
 
 @RunWith(SpringRunner.class)
@@ -52,6 +50,159 @@ public class ConnectionLinkServiceImplTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
+    }
+
+    @Test
+    public void testSourceNoDestination() throws Exception {
+        IPAddress sourceAddress = ipMapper.convertString("192.168.0.1");
+        Agent sourceAgent = agentService.online(UUID.randomUUID(), "SOURCE_AGENT");
+        agentService.updateIPs(sourceAgent, new IPAddress[] { sourceAddress });
+
+        ConnectionOpenDTO sourceConnectionDTO = CreationUtils.ConnectionNewDTO();
+        sourceConnectionDTO.setAgent(sourceAgent.getId());
+        sourceConnectionDTO.setSource(sourceAddress.getAddressString());
+        sourceConnectionDTO.setDestination("192.168.0.200");
+        sourceConnectionDTO.setHash(0L);
+        connectionService.open(sourceConnectionDTO);
+
+
+        ConnectionLink link = linkService.findAll().get(0);
+
+        Assert.assertEquals(1, linkService.findAll().size());
+        Assert.assertEquals(0L, link.getConnectionHash());
+        Assert.assertNull(link.getDestinationAgent());
+        Assert.assertEquals(sourceAgent.getId(), link.getSourceAgent().getId());
+
+        Assert.assertNull(link.getDestinationConnection());
+        Assert.assertEquals(sourceConnectionDTO.getId(), link.getSourceConnection().getId());
+
+        Assert.assertEquals(sourceConnectionDTO.getTimestamp(), link.getTimestamp());
+        Assert.assertTrue(link.isAlive());
+
+        connectionLinkRepository.deleteAll();
+        connectionRepository.deleteAll();
+
+        agentRepository.deleteById(sourceAgent.getId());
+    }
+
+    @Test
+    public void testDestinationNoSource() throws Exception {
+        IPAddress address = ipMapper.convertString("192.168.0.1");
+        Agent agent = agentService.online(UUID.randomUUID(), "SOURCE_AGENT");
+        agentService.updateIPs(agent, new IPAddress[] { address });
+
+        ConnectionOpenDTO connectionNewDTO = CreationUtils.ConnectionNewDTO();
+        connectionNewDTO.setAgent(agent.getId());
+        connectionNewDTO.setSource("192.168.0.200");
+        connectionNewDTO.setDestination(address.getAddressString());
+        connectionNewDTO.setHash(0L);
+        connectionService.open(connectionNewDTO);
+
+
+        ConnectionLink link = linkService.findAll().get(0);
+
+        Assert.assertEquals(1, linkService.findAll().size());
+        Assert.assertEquals(0L, link.getConnectionHash());
+        Assert.assertNull(link.getSourceAgent());
+        Assert.assertEquals(agent.getId(), link.getDestinationAgent().getId());
+
+        Assert.assertNull(link.getSourceConnection());
+        Assert.assertEquals(connectionNewDTO.getId(), link.getDestinationConnection().getId());
+
+        Assert.assertEquals(connectionNewDTO.getTimestamp(), link.getTimestamp());
+        Assert.assertTrue(link.isAlive());
+
+        connectionLinkRepository.deleteAll();
+        connectionRepository.deleteAll();
+
+        agentRepository.deleteById(agent.getId());
+    }
+
+    @Test
+    public void testCloseSourceAgent() throws Exception {
+        IPAddress sourceAddress = ipMapper.convertString("192.168.0.1");
+        Agent sourceAgent = agentService.online(UUID.randomUUID(), "SOURCE_AGENT");
+        agentService.updateIPs(sourceAgent, new IPAddress[] { sourceAddress });
+
+        IPAddress destinationAddress = ipMapper.convertString("192.168.0.2");
+        Agent destinationAgent = agentService.online(UUID.randomUUID(), "DESTINATION_AGENT");
+        agentService.updateIPs(destinationAgent, new IPAddress[] { destinationAddress });
+
+        ConnectionOpenDTO sourceConnectionDTO = CreationUtils.ConnectionNewDTO();
+        sourceConnectionDTO.setAgent(sourceAgent.getId());
+        sourceConnectionDTO.setSource(sourceAddress.getAddressString());
+        sourceConnectionDTO.setDestination(destinationAddress.getAddressString());
+        sourceConnectionDTO.setHash(0L);
+        connectionService.open(sourceConnectionDTO);
+
+
+        ConnectionOpenDTO destinationConnectionDTO = CreationUtils.ConnectionNewDTO();
+        destinationConnectionDTO.setAgent(destinationAgent.getId());
+        destinationConnectionDTO.setSource(sourceAddress.getAddressString());
+        destinationConnectionDTO.setDestination(destinationAddress.getAddressString());
+        destinationConnectionDTO.setHash(0L);
+        connectionService.open(destinationConnectionDTO);
+
+        ConnectionCloseDTO  closeDTO = CreationUtils.ConnectionCloseDTO();
+        closeDTO.setAgent(sourceAgent.getId());
+        closeDTO.setSource(sourceAddress.getAddressString());
+        closeDTO.setHash(0L);
+        closeDTO.setId(sourceConnectionDTO.getId());
+
+        connectionService.close(closeDTO);
+
+        Assert.assertEquals(1, linkService.findAll().size());
+        Assert.assertEquals(0L, linkService.findAll().get(0).getConnectionHash());
+        Assert.assertFalse(linkService.findAll().get(0).isAlive());
+
+        connectionLinkRepository.deleteAll();
+        connectionRepository.deleteAll();
+
+        agentRepository.deleteById(sourceAgent.getId());
+        agentRepository.deleteById(destinationAgent.getId());
+    }
+
+
+    @Test
+    public void testCloseDestinationAgent() throws Exception {
+        IPAddress sourceAddress = ipMapper.convertString("192.168.0.1");
+        Agent sourceAgent = agentService.online(UUID.randomUUID(), "SOURCE_AGENT");
+        agentService.updateIPs(sourceAgent, new IPAddress[] { sourceAddress });
+
+        IPAddress destinationAddress = ipMapper.convertString("192.168.0.2");
+        Agent destinationAgent = agentService.online(UUID.randomUUID(), "DESTINATION_AGENT");
+        agentService.updateIPs(destinationAgent, new IPAddress[] { destinationAddress });
+
+        ConnectionOpenDTO sourceConnectionDTO = CreationUtils.ConnectionNewDTO();
+        sourceConnectionDTO.setAgent(sourceAgent.getId());
+        sourceConnectionDTO.setSource(sourceAddress.getAddressString());
+        sourceConnectionDTO.setDestination(destinationAddress.getAddressString());
+        sourceConnectionDTO.setHash(0L);
+        connectionService.open(sourceConnectionDTO);
+
+
+        ConnectionOpenDTO destinationConnectionDTO = CreationUtils.ConnectionNewDTO();
+        destinationConnectionDTO.setAgent(destinationAgent.getId());
+        destinationConnectionDTO.setSource(sourceAddress.getAddressString());
+        destinationConnectionDTO.setDestination(destinationAddress.getAddressString());
+        destinationConnectionDTO.setHash(0L);
+        connectionService.open(destinationConnectionDTO);
+
+        ConnectionCloseDTO  closeDTO = CreationUtils.ConnectionCloseDTO();
+        closeDTO.setAgent(destinationAgent.getId());
+        closeDTO.setSource(destinationAddress.getAddressString());
+        closeDTO.setId(sourceConnectionDTO.getId());
+
+        connectionService.close(closeDTO);
+
+        Assert.assertEquals(1, linkService.findAll().size());
+        Assert.assertEquals(0L, linkService.findAll().get(0).getConnectionHash());
+        Assert.assertFalse(linkService.findAll().get(0).isAlive());
+        connectionLinkRepository.deleteAll();
+        connectionRepository.deleteAll();
+
+        agentRepository.deleteById(sourceAgent.getId());
+        agentRepository.deleteById(destinationAgent.getId());
     }
 
     @Test
@@ -121,7 +272,7 @@ public class ConnectionLinkServiceImplTest {
         Assert.assertEquals(sourceConnectionDTO.getId(), linkService.findAll().get(0).getSourceConnection().getId());
 
         Assert.assertEquals(sourceConnectionDTO.getTimestamp(), linkService.findAll().get(0).getTimestamp());
-
+        Assert.assertTrue(linkService.findAll().get(0).isAlive());
         connectionLinkRepository.deleteAll();
         connectionRepository.deleteAll();
 
@@ -164,6 +315,7 @@ public class ConnectionLinkServiceImplTest {
         Assert.assertEquals(sourceConnectionDTO.getId(), linkService.findAll().get(0).getSourceConnection().getId());
 
         Assert.assertEquals(sourceConnectionDTO.getTimestamp(), linkService.findAll().get(0).getTimestamp());
+        Assert.assertTrue(linkService.findAll().get(0).isAlive());
 
         connectionLinkRepository.deleteAll();
         connectionRepository.deleteAll();
