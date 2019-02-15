@@ -35,7 +35,8 @@ SERVICES = [
     }
 ]
 
-CONNECTIONS = []
+CONNECTIONS = {}
+
 
 print "Welcome to the Fake Network!"
 
@@ -126,28 +127,55 @@ def post_open(is_source, payload, timestamp, service, headers):
     if response.status_code != 200:
         print "Unable to post connection", response.status_code
 
+    return payload
 
-def post_close(payload, timestamp, headers):
-    payload["timestamp"] = timestamp + "+00:00"
+def post_close(payload, headers):
     response = requests.post(SERVER + "/connections/close", json=payload, headers=headers)
     if response.status_code != 200:
         print "Unable to post connection", response.status_code
 
+    return payload
 
-def make_connection(source_agent, destination_agent, service, duration, headers):
+
+
+def make_connection(source_agent, destination_agent, service, ticker, duration, headers):
+    end_point = ticker * 1000 + duration
+
     timestamp_start = datetime.now()
     timestamp_end = timestamp_start + timedelta(seconds=duration)
     base = connection_base(source_agent, destination_agent, service)
 
+
     post_open(True, copy.deepcopy(base), timestamp_start.isoformat(), service, headers)
-    post_close(copy.deepcopy(base), timestamp_end.isoformat(), headers)
+    source_payload_close = copy.deepcopy(base)
+    source_payload_close["timestamp"] = timestamp_end.isoformat() + "+00:00"
 
     base["agent"] = str(destination_agent["uuid"])
     base["uuid"] = str(uuid.uuid4())
 
     post_open(False, copy.deepcopy(base), timestamp_start.isoformat(), service, headers)
-    post_close(copy.deepcopy(base), timestamp_end.isoformat(), headers)
+    destination_payload_close = copy.deepcopy(base)
+    destination_payload_close["timestamp"] = timestamp_end.isoformat() + "+00:00"
 
+    if end_point not in CONNECTIONS:
+        CONNECTIONS[end_point] = []
+
+    CONNECTIONS[end_point].append({ "source": source_payload_close, "destination":destination_payload_close})
+
+def process_connections(ticker, headers):
+    current = ticker * 1000
+    dead_markers = []
+    for end_point in CONNECTIONS:
+        if end_point < current:
+            for connection in CONNECTIONS[end_point]:
+                print "Closing connection between " + str(connection["source"]["agent"]) + " -> " + str(connection["destination"]["agent"])
+                post_close(connection["source"], headers)
+                post_close(connection["destination"], headers)
+
+            dead_markers.append(end_point)
+
+    for marker in dead_markers:
+        del CONNECTIONS[marker]
 
 print "Loading Machine Names"
 names = create_machine_names()
@@ -157,15 +185,18 @@ print "Loading Usernames"
 usernames = create_usernames()
 print "Loaded " + str(len(usernames)) + " usernames"
 
-print "Onlining Agents"
+print "Online Agents"
 agents = unleash_agents(10, names, HEADERS)
 
+ticker = 0
 while True:
+    ticker += 1
     sample = random.sample(range(0, len(agents)), 2)
     process_sample = random.sample(range(0, len(SERVICES)), 1)
 
     source_agent = agents[sample[0]]
     destination_agent = agents[sample[1]]
     print "Creating connection between "  + str(source_agent["uuid"]) + " -> " + str(destination_agent["uuid"])
-    make_connection(source_agent, destination_agent, SERVICES[process_sample[0]], random.randint(0, 10800), HEADERS)
+    make_connection(source_agent, destination_agent, SERVICES[process_sample[0]], ticker, random.randint(0, 10800), HEADERS)
+    process_connections(ticker, HEADERS)
     time.sleep(1)
