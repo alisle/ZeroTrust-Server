@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 from datetime import datetime, timedelta
+from ipaddress import IPv4Address
 import random
 import requests
 import time
@@ -12,7 +13,16 @@ import pprint
 SERVER = "http://localhost:8080"
 HEADERS = { "Content-Type": "application/json" }
 
-SERVICES = [
+SERVICES_EXTERNAL = [
+    {
+        "source_process_name" : "chrome",
+        "source_command_line" : [ "/opt/google/chrome/chrome" ],
+        "destination_port" : 443,
+        "protocol" : "TCP"
+    }
+]
+
+SERVICES_INTERNAL = [
     {
         "source_process_name": "ssh",
         "source_command_line": [ "/usr/bin/ssh", "%DEST_IP%" ],
@@ -104,7 +114,15 @@ def connection_base(source_agent, destination_agent, service):
     payload["protocol"] = service["protocol"]
     payload["sourceString"] = source_agent["ip"]
     payload["source_port"] = random.randint(2000, 60000)
-    payload["destinationString"] = destination_agent["ip"]
+
+    if destination_agent is not None:
+        payload["destinationString"] = destination_agent["ip"]
+    else:
+        bits = random.getrandbits(32)
+        address = IPv4Address(bits)
+        addressString = str(address)
+        payload["destinationString"] = addressString
+
     payload["destination_port"] = service["destination_port"]
 
     return payload
@@ -137,8 +155,23 @@ def post_close(payload, headers):
     return payload
 
 
+def make_external_connection(source_agent, service, ticker, duration, headers):
+    end_point = ticker * 1000 + duration
 
-def make_connection(source_agent, destination_agent, service, ticker, duration, headers):
+    timestamp_start = datetime.now()
+    timestamp_end = timestamp_start + timedelta(seconds=duration)
+    base = connection_base(source_agent, None, service)
+
+    post_open(True, copy.deepcopy(base), timestamp_start.isoformat(), service, headers)
+    source_payload_close = copy.deepcopy(base)
+    source_payload_close["timestamp"] = timestamp_end.isoformat() + "+00:00"
+
+    if end_point not in CONNECTIONS:
+        CONNECTIONS[end_point] = []
+
+    CONNECTIONS[end_point].append({ "source" : source_payload_close, "destination" : None})
+
+def make_internal_connection(source_agent, destination_agent, service, ticker, duration, headers):
     end_point = ticker * 1000 + duration
 
     timestamp_start = datetime.now()
@@ -168,9 +201,13 @@ def process_connections(ticker, headers):
     for end_point in CONNECTIONS:
         if end_point < current:
             for connection in CONNECTIONS[end_point]:
-                print "Closing connection between " + str(connection["source"]["agent"]) + " -> " + str(connection["destination"]["agent"])
+                if connection["destination"] is not None:
+                    print "Closing  internal connection between " + str(connection["source"]["agent"]) + " -> " + str(connection["destination"]["agent"])
+                    post_close(connection["destination"], headers)
+                else:
+                    print "Closing external connection " + str(connection["source"]["agent"])
+
                 post_close(connection["source"], headers)
-                post_close(connection["destination"], headers)
 
             dead_markers.append(end_point)
 
@@ -192,11 +229,18 @@ ticker = 0
 while True:
     ticker += 1
     sample = random.sample(range(0, len(agents)), 2)
-    process_sample = random.sample(range(0, len(SERVICES)), 1)
 
     source_agent = agents[sample[0]]
     destination_agent = agents[sample[1]]
-    print "Creating connection between "  + str(source_agent["uuid"]) + " -> " + str(destination_agent["uuid"])
-    make_connection(source_agent, destination_agent, SERVICES[process_sample[0]], ticker, random.randint(0, 10800), HEADERS)
+
+    if ticker % 3 == 0:
+        print "Creating external connection from " + str(source_agent["uuid"])
+        process_sample = random.sample(range(0, len(SERVICES_EXTERNAL)), 1)
+        make_external_connection(source_agent, SERVICES_EXTERNAL[process_sample[0]], ticker, random.randint(0, 10800), HEADERS)
+    else:
+        print "Creating internal connection between "  + str(source_agent["uuid"]) + " -> " + str(destination_agent["uuid"])
+        process_sample = random.sample(range(0, len(SERVICES_INTERNAL)), 1)
+        make_internal_connection(source_agent, destination_agent, SERVICES_INTERNAL[process_sample[0]], ticker, random.randint(0, 10800), HEADERS)
+
     process_connections(ticker, HEADERS)
     time.sleep(1)

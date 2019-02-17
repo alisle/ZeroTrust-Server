@@ -17,7 +17,21 @@ export class ConnectionlinksComponent implements OnInit, AfterViewInit {
   constructor(private service: ConnectionlinkService, public dialog: MatDialog) { }
 
   dataSource = new PageableDataSource<ConnectionLink>(this.service);
-  displayedColumns = [ 'alive', 'timestamp', 'sourceAgentName', 'sourceProcessName', 'destinationAgentName', 'destinationProcessName'];
+  displayedColumns = [
+    'alive',
+    'duration',
+    'timestamp',
+    'ended',
+    'sourceAgentName',
+    'sourceString',
+    'sourcePort',
+    'sourceProcessName',
+    'destinationAgentName',
+    'destinationString',
+    'destinationPort',
+    'destinationProcessName'
+  ];
+
   selectedRow : ConnectionLink = null;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;

@@ -74,6 +74,13 @@ public class ConnectionLinkServiceImplTest {
         Assert.assertEquals(sourceAgent.getId(), link.getSourceAgent().getId());
 
         Assert.assertNull(link.getDestinationConnection());
+
+        Assert.assertEquals("192.168.0.200", link.getDestinationString());
+        Assert.assertEquals(sourceConnectionDTO.getDestinationPort(), link.getDestinationPort());
+
+        Assert.assertEquals("192.168.0.1", link.getSourceString());
+        Assert.assertEquals(sourceConnectionDTO.getSourcePort(), link.getSourcePort());
+
         Assert.assertEquals(sourceConnectionDTO.getId(), link.getSourceConnection().getId());
 
         Assert.assertEquals(sourceConnectionDTO.getTimestamp(), link.getTimestamp());
@@ -108,6 +115,14 @@ public class ConnectionLinkServiceImplTest {
 
         Assert.assertNull(link.getSourceConnection());
         Assert.assertEquals(connectionNewDTO.getId(), link.getDestinationConnection().getId());
+
+
+        Assert.assertEquals(address.getAddressString(), link.getDestinationString());
+        Assert.assertEquals(connectionNewDTO.getDestinationPort(), link.getDestinationPort());
+
+        Assert.assertEquals("192.168.0.200", link.getSourceString());
+        Assert.assertEquals(connectionNewDTO.getSourcePort(), link.getSourcePort());
+
 
         Assert.assertEquals(connectionNewDTO.getTimestamp(), link.getTimestamp());
         Assert.assertTrue(link.isAlive());

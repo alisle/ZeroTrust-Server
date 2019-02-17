@@ -5,12 +5,25 @@ import {Connection} from "./Connection";
 export interface ConnectionLink {
   uuid: string;
   timestamp: Date;
+  ended: Date;
+  duration: number;
+
   connectionHash: number;
   alive: boolean;
+
   sourceAgent: Agent;
-  destinationAgent: Agent;
+  sourceAgentName: string;
   sourceConnection: Connection;
-  destinationConnection: Connection;
+  sourceAddress: number;
+  sourceString: string;
+  sourcePort: number;
   sourceProcessName: string;
+
+  destinationAgent: Agent;
+  destinationAgentName: string;
+  destinationConnection: Connection;
+  destinationAddress: number;
+  destinationString: string;
+  destinationPort: number;
   destinationProcessName: string;
 }

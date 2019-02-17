@@ -16,26 +16,62 @@
                   <mat-icon *ngIf="!link.alive" class="icon">close</mat-icon>
                 </mat-cell>
               </ng-container>
-              <ng-container matColumnDef="timestamp">
-                <mat-header-cell *matHeaderCellDef mat-sort-header>Timestamp</mat-header-cell>
-                <mat-cell *matCellDef="let link">{{link.timestamp | amTimeAgo }}</mat-cell>
+
+              <ng-container matColumnDef="duration">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Duration</mat-header-cell>
+                <mat-cell *matCellDef="let link">{{link.duration| amDuration:'seconds'}}</mat-cell>
               </ng-container>
+
+              <ng-container matColumnDef="timestamp">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Started</mat-header-cell>
+                <mat-cell *matCellDef="let link">{{link.timestamp| amTimeAgo}}</mat-cell>
+              </ng-container>
+
+              <ng-container matColumnDef="ended">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Ended</mat-header-cell>
+                <mat-cell *matCellDef="let link">{{link.ended | amTimeAgo }}</mat-cell>
+              </ng-container>
+
               <ng-container matColumnDef="sourceAgentName">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Source Agent</mat-header-cell>
-                <mat-cell *matCellDef="let link">{{link.sourceAgent.name}}</mat-cell>
+                <mat-cell *matCellDef="let link">{{link.sourceAgentName}}</mat-cell>
               </ng-container>
+
+              <ng-container matColumnDef="sourceString">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Source IP</mat-header-cell>
+                <mat-cell *matCellDef="let link">{{link.sourceString}}</mat-cell>
+              </ng-container>
+
+              <ng-container matColumnDef="sourcePort">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Source Port</mat-header-cell>
+                <mat-cell *matCellDef="let link">{{link.sourcePort}}</mat-cell>
+              </ng-container>
+
               <ng-container matColumnDef="sourceProcessName">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Source Process Name</mat-header-cell>
                 <mat-cell *matCellDef="let link">{{link.sourceProcessName}}</mat-cell>
               </ng-container>
+
               <ng-container matColumnDef="destinationAgentName">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Destination Agent</mat-header-cell>
-                <mat-cell *matCellDef="let link">{{link.destinationAgent.name}}</mat-cell>
+                <mat-cell *matCellDef="let link">{{link.destinationAgentName}}</mat-cell>
               </ng-container>
+
+              <ng-container matColumnDef="destinationString">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Destination IP</mat-header-cell>
+                <mat-cell *matCellDef="let link">{{link.destinationString}}</mat-cell>
+              </ng-container>
+
+              <ng-container matColumnDef="destinationPort">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Destination Port</mat-header-cell>
+                <mat-cell *matCellDef="let link">{{link.destinationPort}}</mat-cell>
+              </ng-container>
+
               <ng-container matColumnDef="destinationProcessName">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Destination Process Name</mat-header-cell>
                 <mat-cell *matCellDef="let link">{{link.destinationProcessName}}</mat-cell>
               </ng-container>
+
               <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
               <mat-row
                 (click)="selectRow(row)"

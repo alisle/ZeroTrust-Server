@@ -97,12 +97,30 @@ public class ConnectionLinkServiceImpl implements ConnectionLinkService  {
             link.setSourceConnection(con);
             link.setSourceAgent(con.getAgent());
             link.setSourceProcessName(con.getProcessName());
+            link.setSourceAddress(con.getSource());
+            link.setSourceString(con.getSourceString());
+            link.setSourcePort(con.getSourcePort());
+
+            if(link.getDestinationConnection() == null) {
+                link.setDestinationAddress(con.getDestination());
+                link.setDestinationString(con.getDestinationString());
+                link.setDestinationPort(con.getDestinationPort());
+            }
         });
 
         destination.ifPresent(con -> {
             link.setDestinationConnection(con);
             link.setDestinationAgent(con.getAgent());
             link.setDestinationProcessName(con.getProcessName());
+            link.setDestinationAddress(con.getDestination());
+            link.setDestinationString(con.getDestinationString());
+            link.setDestinationPort(con.getDestinationPort());
+
+            if(link.getSourceConnection() == null) {
+                link.setSourceAddress(con.getSource());
+                link.setSourceString(con.getSourceString());
+                link.setSourcePort(con.getSourcePort());
+            }
         });
 
 
