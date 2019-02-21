@@ -38,6 +38,12 @@ public interface ConnectionLinkRepository extends JpaRepository<ConnectionLink, 
     @RestResource(exported = true, path="source-destination-agent-id", rel = "findBySourceAndDestinationAgentID")
     Page<ConnectionLink> findAllBySourceAgentIdAndDestinationAgentId(Pageable pageable, @Param("source_agent_id") UUID source, @Param("destination_agent_id") UUID destiantion);
 
+    @RestResource(exported = true, path="source-agent-id-destination-ip", rel = "findBySourceAgentIDAndDestinationIP")
+    Page<ConnectionLink> findAllBySourceAgentIdAndDestinationString(Pageable pageable, @Param("source_agent_id") UUID source, @Param("destination_ip_string") String address);
+
+    @RestResource(exported = true, path="source-ip-destination-agent-id", rel= "findBySourceIPAndDestinationAgentID")
+    Page<ConnectionLink> findAllBySourceStringAndDestinationAgentId(Pageable pageable, @Param("source_ip_address") String address, @Param("destination_agent_id") UUID destination);
+
     @RestResource(exported = true, path="count-source-destination-agent-id", rel = "countBySourceAndDestinationAgentID")
     long countBySourceAgentIdAndDestinationAgentId(@Param("source_agent_id") UUID source, @Param("destination_agent_id") UUID destination);
 

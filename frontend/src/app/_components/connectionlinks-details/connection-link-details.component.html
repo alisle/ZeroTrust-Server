@@ -5,12 +5,18 @@
 </ng-template>
 
 <ng-template #loadingCount>
-  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  <mat-progress-bar mode="indeterminate" style="max-width: 70%"></mat-progress-bar>
+</ng-template>
+
+<ng-template #unknown>
+  <div fxLayoutAlign="center center" class="header">
+    Fear me, for I am the unknown.
+  </div>
 </ng-template>
 
 <mat-card *ngIf="!(linkLoad.loading$ | async) else loading" class="overview">
   <mat-card-header>
-    <mat-card-title><mat-icon class="icon">fingerprint</mat-icon> Connection Link: {{ getSourceHeader(connectionLink)}}<mat-icon class="icon">arrow_right_alt</mat-icon>{{getDestinationHeader(link)}}</mat-card-title>
+    <mat-card-title><mat-icon class="icon">fingerprint</mat-icon> Connection Link: {{ getSourceHeader(connectionLink)}}<mat-icon class="icon">arrow_right_alt</mat-icon>{{getDestinationHeader(connectionLink)}}</mat-card-title>
     <mat-card-subtitle>Occurred: {{connectionLink.sourceConnection.start | amTimeAgo}}, Still Alive: <span *ngIf="connectionLink.alive">Yes</span><span *ngIf="!connectionLink.alive">No, Duration: {{connectionLink.sourceConnection.duration | amDuration : 'ms' }}</span> </mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
@@ -27,46 +33,50 @@
       <div fxFlex>
         <div fxLayout="row">
           <div fxFlex class="source-details-panel">
-            <div fxLayout="column">
-              <div fxFlex="100" class="header">Source Process</div>
-              <div fxLayout="row">
-                <div fxFlex="25" class="right-value">Process</div>
-                <div fxFlex="75" >{{connectionLink.sourceConnection.processName}}</div>
-              </div>
-              <div fxLayout="row">
-                <div fxFlex="25" class="right-value">Command Line</div>
-                <div fxFlex="75">{{connectionLink.sourceConnection.commandLine}}</div>
-              </div>
-              <div fxLayout="row">
-                <div fxFlex="25" class="right-value">PID</div>
-                <div fxFlex="75">{{connectionLink.sourceConnection.pid}}</div>
-              </div>
-              <div fxLayout="row">
-                <div fxFlex="25" class="right-value">INode</div>
-                <div fxFlex="75">{{connectionLink.sourceConnection.inode}}</div>
+              <div fxLayout="column">
+                <div fxFlex="100" class="header">Source Process</div>
+                <div *ngIf="connectionLink.sourceConnection != null else unknown">
+                  <div fxLayout="row">
+                    <div fxFlex="25" class="right-value">Process</div>
+                    <div fxFlex="75" >{{connectionLink.sourceConnection.processName}}</div>
+                  </div>
+                  <div fxLayout="row">
+                    <div fxFlex="25" class="right-value">Command Line</div>
+                    <div fxFlex="75">{{connectionLink.sourceConnection.commandLine}}</div>
+                  </div>
+                  <div fxLayout="row">
+                    <div fxFlex="25" class="right-value">PID</div>
+                    <div fxFlex="75">{{connectionLink.sourceConnection.pid}}</div>
+                  </div>
+                  <div fxLayout="row">
+                    <div fxFlex="25" class="right-value">INode</div>
+                    <div fxFlex="75">{{connectionLink.sourceConnection.inode}}</div>
+                  </div>
               </div>
             </div>
           </div>
           <div fxFlex class="destination-details-panel">
             <div fxLayout="column">
               <div fxFlex="100" class="header">Destination Process</div>
-              <div fxLayout="row">
-                <div fxFlex="25" class="right-value">Process</div>
-                <div fxFlex="75" >{{connectionLink.destinationConnection.processName}}</div>
+              <div *ngIf="connectionLink.destinationConnection != null else unknown">
+                  <div fxLayout="row">
+                    <div fxFlex="25" class="right-value">Process</div>
+                    <div fxFlex="75" >{{connectionLink.destinationConnection.processName}}</div>
+                  </div>
+                  <div fxLayout="row">
+                    <div fxFlex="25" class="right-value">Command Line</div>
+                    <div fxFlex="75">{{connectionLink.destinationConnection.commandLine}}</div>
+                  </div>
+                  <div fxLayout="row">
+                    <div fxFlex="25" class="right-value">PID</div>
+                    <div fxFlex="75">{{connectionLink.destinationConnection.pid}}</div>
+                  </div>
+                  <div fxLayout="row">
+                    <div fxFlex="25" class="right-value">INode</div>
+                    <div fxFlex="75">{{connectionLink.destinationConnection.inode}}</div>
+                  </div>
+                </div>
               </div>
-              <div fxLayout="row">
-                <div fxFlex="25" class="right-value">Command Line</div>
-                <div fxFlex="75">{{connectionLink.destinationConnection.commandLine}}</div>
-              </div>
-              <div fxLayout="row">
-                <div fxFlex="25" class="right-value">PID</div>
-                <div fxFlex="75">{{connectionLink.destinationConnection.pid}}</div>
-              </div>
-              <div fxLayout="row">
-                <div fxFlex="25" class="right-value">INode</div>
-                <div fxFlex="75">{{connectionLink.destinationConnection.inode}}</div>
-              </div>
-            </div>
           </div>
         </div>
       </div>
@@ -78,26 +88,30 @@
           <div fxFlex class="source-details-panel">
             <div fxLayout="column">
               <div fxFlex="100" class="header">Source Username</div>
-              <div fxLayout="row">
-                <div fxFlex="25" class="right-value">Username</div>
-                <div fxFlex="75" >{{connectionLink.sourceConnection.username}}</div>
-              </div>
-              <div fxLayout="row">
-                <div fxFlex="25" class="right-value">User ID</div>
-                <div fxFlex="75">{{connectionLink.sourceConnection.userID}}</div>
+              <div *ngIf="connectionLink.sourceConnection!= null else unknown">
+                <div fxLayout="row">
+                  <div fxFlex="25" class="right-value">Username</div>
+                  <div fxFlex="75" >{{connectionLink.sourceConnection.username}}</div>
+                </div>
+                <div fxLayout="row">
+                  <div fxFlex="25" class="right-value">User ID</div>
+                  <div fxFlex="75">{{connectionLink.sourceConnection.userID}}</div>
+                </div>
               </div>
             </div>
           </div>
           <div fxFlex class="destination-details-panel">
             <div fxLayout="column">
               <div fxFlex="100" class="header">Destination Username</div>
-              <div fxLayout="row">
-                <div fxFlex="25" class="right-value">Username</div>
-                <div fxFlex="75" >{{connectionLink.destinationConnection.username}}</div>
-              </div>
-              <div fxLayout="row">
-                <div fxFlex="25" class="right-value">User ID</div>
-                <div fxFlex="75">{{connectionLink.destinationConnection.userID}}</div>
+              <div *ngIf="connectionLink.destinationConnection!= null else unknown">
+                <div fxLayout="row">
+                  <div fxFlex="25" class="right-value">Username</div>
+                  <div fxFlex="75" >{{connectionLink.destinationConnection.username}}</div>
+                </div>
+                <div fxLayout="row">
+                  <div fxFlex="25" class="right-value">User ID</div>
+                  <div fxFlex="75">{{connectionLink.destinationConnection.userID}}</div>
+                </div>
               </div>
             </div>
           </div>
@@ -111,42 +125,46 @@
           <div fxFlex class="source-details-panel">
             <div fxLayout="column">
               <div fxFlex="100" class="header">Source Agent</div>
-              <div fxLayout="row">
-                <div fxFlex="25" class="right-value">Name</div>
-                <div fxFlex="75" >{{connectionLink.sourceAgent.name}}</div>
-              </div>
-              <div fxLayout="row">
-                <div fxFlex="25" class="right-value">Last Seen</div>
-                <div fxFlex="75">{{connectionLink.sourceAgent.lastSeen | amTimeAgo | titlecase }}</div>
-              </div>
-              <div fxLayout="row">
-                <div fxFlex="25" class="right-value">Addresses</div>
-                <div fxFlex="75"><div *ngFor="let address of connectionLink.sourceAgent.addresses">{{address.addressString}}</div></div>
-              </div>
-              <div fxLayout="row">
-                <div fxFlex="25" class="right-value">Total Connections</div>
-                <div fxFlex="75">{{connectionLink.sourceAgent.connectionCount}}</div>
+              <div *ngIf="connectionLink.sourceAgent!= null else unknown">
+                <div fxLayout="row">
+                  <div fxFlex="25" class="right-value">Name</div>
+                  <div fxFlex="75" >{{connectionLink.sourceAgent.name}}</div>
+                </div>
+                <div fxLayout="row">
+                  <div fxFlex="25" class="right-value">Last Seen</div>
+                  <div fxFlex="75">{{connectionLink.sourceAgent.lastSeen | amTimeAgo | titlecase }}</div>
+                </div>
+                <div fxLayout="row">
+                  <div fxFlex="25" class="right-value">Addresses</div>
+                  <div fxFlex="75"><div *ngFor="let address of connectionLink.sourceAgent.addresses">{{address.addressString}}</div></div>
+                </div>
+                <div fxLayout="row">
+                  <div fxFlex="25" class="right-value">Total Connections</div>
+                  <div fxFlex="75">{{connectionLink.sourceAgent.connectionCount}}</div>
+                </div>
               </div>
             </div>
           </div>
           <div fxFlex class="destination-details-panel">
             <div fxLayout="column">
               <div fxFlex="100" class="header">Destination Agent</div>
-              <div fxLayout="row">
-                <div fxFlex="25" class="right-value">Name</div>
-                <div fxFlex="75" >{{connectionLink.destinationAgent.name}}</div>
-              </div>
-              <div fxLayout="row">
-                <div fxFlex="25" class="right-value">Last Seen</div>
-                <div fxFlex="75">{{connectionLink.destinationAgent.lastSeen | amTimeAgo | titlecase }}</div>
-              </div>
-              <div fxLayout="row">
-                <div fxFlex="25" class="right-value">Addresses</div>
-                <div fxFlex="75"><div *ngFor="let address of connectionLink.destinationAgent.addresses">{{address.addressString}}</div></div>
-              </div>
-              <div fxLayout="row">
-                <div fxFlex="25" class="right-value">Total Connections</div>
-                <div fxFlex="75">{{connectionLink.destinationAgent.connectionCount}}</div>
+              <div *ngIf="connectionLink.destinationAgent != null else unknown">
+                <div fxLayout="row">
+                  <div fxFlex="25" class="right-value">Name</div>
+                  <div fxFlex="75" >{{connectionLink.destinationAgent.name}}</div>
+                </div>
+                <div fxLayout="row">
+                  <div fxFlex="25" class="right-value">Last Seen</div>
+                  <div fxFlex="75">{{connectionLink.destinationAgent.lastSeen | amTimeAgo | titlecase }}</div>
+                </div>
+                <div fxLayout="row">
+                  <div fxFlex="25" class="right-value">Addresses</div>
+                  <div fxFlex="75"><div *ngFor="let address of connectionLink.destinationAgent.addresses">{{address.addressString}}</div></div>
+                </div>
+                <div fxLayout="row">
+                  <div fxFlex="25" class="right-value">Total Connections</div>
+                  <div fxFlex="75">{{connectionLink.destinationAgent.connectionCount}}</div>
+                </div>
               </div>
             </div>
           </div>

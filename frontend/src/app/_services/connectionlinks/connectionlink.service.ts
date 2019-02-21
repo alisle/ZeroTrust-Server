@@ -12,7 +12,38 @@ export class ConnectionlinkService extends PageableService<ConnectionLink> {
     super("connection_links", "/connection_links", http);
   }
 
-  connectionsBetween(sourceAgent: string, destinationAgent: string) : Observable<Page<ConnectionLink>> {
+  connectionsBetweenSourceAgentandIP(sourceAgent: string, destinationAddress: string) : Observable<Page<ConnectionLink>> {
+    console.log(`requesting connections between ${sourceAgent} and ${destinationAddress}`);
+
+    let params = new HttpParams()
+      .append("size", "" + 1000)
+      .append("page", "" + 0)
+      .append("sort", `timestamp,ASC`)
+      .append("source_agent_id", sourceAgent)
+      .append("destination_ip_address", destinationAddress);
+
+    let url = `${this.base_url}${this.URL}/search/source-agent-id-destination-ip`;
+
+    return this._page(0, params, url);
+  }
+
+
+  connectionsBetweenIPandDestinationAgent(sourceAddress: string, destinationAgent: string) : Observable<Page<ConnectionLink>> {
+    console.log(`requesting connections between ${sourceAddress} and ${destinationAgent}`);
+
+    let params = new HttpParams()
+      .append("size", "" + 1000)
+      .append("page", "" + 0)
+      .append("sort", `timestamp,ASC`)
+      .append("source_ip_address", sourceAddress)
+      .append("destination_agent_id", destinationAgent);
+
+    let url = `${this.base_url}${this.URL}/search/source-agent-id-destination-ip`;
+
+    return this._page(0, params, url);
+  }
+
+  connectionsBetweenAgents(sourceAgent: string, destinationAgent: string) : Observable<Page<ConnectionLink>> {
     console.log(`requesting connections between ${sourceAgent} and ${destinationAgent}`);
 
     let params = new HttpParams()
@@ -26,7 +57,8 @@ export class ConnectionlinkService extends PageableService<ConnectionLink> {
 
     return this._page(0, params, url);
   }
-  countConnectionsBetween(sourceAgent: string, destinationAgent: string) : Observable<number> {
+
+  countConnectionsBetweenAgents(sourceAgent: string, destinationAgent: string) : Observable<number> {
     console.log(`requesting number of connections between ${sourceAgent} and ${destinationAgent}`);
 
     let params = new HttpParams()

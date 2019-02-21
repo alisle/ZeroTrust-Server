@@ -34,9 +34,8 @@ export class FlowGraphService {
     this.updateMetaData();
 
     this.line = d3.line()
-      .x((d) => { return d.x; })
-      .y( (d) => { return d.y; })
-      .curve(d3.curveBasis);
+      .x((d: [number, number]) => { return d[0]; })
+      .y((d: [number, number]) => { return d[1]; })
   }
 
   private createLabel(name: string) : object {
@@ -110,8 +109,18 @@ export class FlowGraphService {
     this.graph.edges().forEach((e) => {
       let edge = this.graph.edge(e);
       this.log.debug("drawing edge", edge);
+
+      // Because of some fuckery between d3 / dagre being JS and converting to TS we need to change this mapping
+      // otherwise the compiler which bitch.
+
+      let points : [number, number][] = [
+        [ edge.points[0].x, edge.points[0].y ],
+        [ edge.points[1].x, edge.points[1].y ],
+        [ edge.points[2].x, edge.points[2].y ],
+        ];
+
       svg.append("path")
-        .attr("d", this.line(edge.points))
+        .attr("d", this.line(points))
         .attr("stroke", "blue")
         .attr("stroke-width", 1.5)
         .attr("fill", "none");

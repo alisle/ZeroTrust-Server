@@ -40,14 +40,28 @@ export class ConnectionLinkDetailsComponent implements OnInit, AfterViewInit {
     });
 
     this.linkLoad.value$.subscribe((link : ConnectionLink) => {
-      if( link != null) {
-        this.connectionCountLoad.bind(this.service.countConnectionsBetween(link.sourceAgent.uuid, link.destinationAgent.uuid));
+      if( link.sourceAgent != null && link.destinationAgent != null) {
+        this.connectionCountLoad.bind(this.service.countConnectionsBetweenAgents(link.sourceAgent.uuid, link.destinationAgent.uuid));
+      } else if( link.sourceAgent != null && link.destinationAgent == null) {
+        // Do stuff.
+      } else if( link.sourceAgent == null && link.destinationAgent != null) {
+        // Do other stuff.
+      } else {
+        this.connectionCountLoad.succeed(0);
       }
     });
 
     this.linkLoad.value$.subscribe((link : ConnectionLink) => {
       if(link != null) {
-        this.graphLoad.bind(this.service.connectionsBetween(link.sourceAgent.uuid, link.destinationAgent.uuid))
+        if(link.sourceAgent != null && link.destinationAgent != null) {
+          this.graphLoad.bind(this.service.connectionsBetweenAgents(link.sourceAgent.uuid, link.destinationAgent.uuid))
+        } else if( link.sourceAgent != null  && link.destinationAgent == null) {
+          this.graphLoad.bind(this.service.connectionsBetweenSourceAgentandIP(link.sourceAgent.uuid, link.destinationString))
+        } else if( link.sourceAgent == null && link.destinationAgent != null) {
+          this.graphLoad.bind(this.service.connectionsBetweenIPandDestinationAgent(link.sourceString, link.destinationAgent.uuid))
+        } else {
+          this.graphLoad.succeed(null);
+        }
       }
     });
 
@@ -65,7 +79,6 @@ export class ConnectionLinkDetailsComponent implements OnInit, AfterViewInit {
   }
 
   public getSourceHeader(link : ConnectionLink) : string {
-    this.log.debug("generating source header");
     let name = this.getSourceCanonical(link);
     let process = this.getSourceProcess(link);
 
@@ -73,7 +86,6 @@ export class ConnectionLinkDetailsComponent implements OnInit, AfterViewInit {
   }
 
   public getDestinationHeader(link: ConnectionLink) : string {
-    this.log.debug("generating destination header");
     let name = this.getDestinationCanonical(link);
     let process = this.getDestinationProcess(link);
 

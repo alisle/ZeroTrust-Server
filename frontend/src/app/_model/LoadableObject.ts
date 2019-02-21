@@ -37,4 +37,11 @@ export class LoadableObject<T> {
     });
 
   }
+
+  public succeed(value : T) : void {
+    this.loadingSubject.next(true);
+    this.valueSubject.next(value);
+    this.loadingSubject.next(false);
+  }
+
 }
