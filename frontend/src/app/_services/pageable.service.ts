@@ -5,7 +5,7 @@ import {Page} from "../_model/page/page";
 import {LogWriter} from "../log-writer";
 
 export abstract class PageableService<T> {
-  protected log : LogWriter = new LogWriter("pageable.service");
+  private _log : LogWriter = new LogWriter("pageable.service");
   protected base_url: string = "http://localhost:8080";
   public pageSize: number = 20;
   public sortDirection: string = 'ASC';
@@ -40,7 +40,7 @@ export abstract class PageableService<T> {
         params: params
       })
       .pipe(map((res: any) => {
-        this.log.debug(`received page object:`, res);
+        this._log.debug(`received page object:`, res);
         let page = this.objToPage(res);
         return page;
       }));
@@ -62,9 +62,9 @@ export abstract class PageableService<T> {
   }
 
   private objToPage(obj: any): Page<T> {
-    this.log.debug(`converting object to page, ${this.key}`);
+    this._log.debug(`converting object to page, ${this.key}`);
     let page : Page<T> = new Page<T>(this.key, obj);
-    this.log.debug(`converted page:`, page);
+    this._log.debug(`converted page:`, page);
     return new Page<T>(this.key, obj);
   }
 

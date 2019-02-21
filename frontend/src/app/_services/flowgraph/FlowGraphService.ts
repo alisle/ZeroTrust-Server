@@ -36,6 +36,7 @@ export class FlowGraphService {
     this.line = d3.line()
       .x((d: [number, number]) => { return d[0]; })
       .y((d: [number, number]) => { return d[1]; })
+      .curve(d3.curveBasis);
   }
 
   private createLabel(name: string) : object {
