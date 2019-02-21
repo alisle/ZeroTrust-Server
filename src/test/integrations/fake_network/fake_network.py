@@ -7,7 +7,7 @@ import requests
 import time
 import uuid
 import copy
-import pprint
+
 
 
 SERVER = "http://localhost:8080"
@@ -45,7 +45,7 @@ SERVICES_INTERNAL = [
     }
 ]
 
-CONNECTIONS = {}
+CONNECTIONS = []
 
 
 print "Welcome to the Fake Network!"
@@ -142,12 +142,14 @@ def post_open(is_source, payload, timestamp, service, headers):
     payload["program_details"] = create_program_source(is_source, service, payload["sourceString"], payload["destinationString"])
 
     response = requests.post(SERVER + "/connections/open", json=payload, headers=headers)
+
     if response.status_code != 200:
         print "Unable to post connection", response.status_code
 
     return payload
 
 def post_close(payload, headers):
+    payload["timestamp"] = payload["timestamp"].isoformat()  + "+00:00"
     response = requests.post(SERVER + "/connections/close", json=payload, headers=headers)
     if response.status_code != 200:
         print "Unable to post connection", response.status_code
@@ -155,64 +157,49 @@ def post_close(payload, headers):
     return payload
 
 
-def make_external_connection(source_agent, service, ticker, duration, headers):
-    end_point = ticker * 1000 + duration
-
-    timestamp_start = datetime.now()
+def make_external_connection(source_agent, service, duration, headers):
+    timestamp_start = datetime.utcnow()
     timestamp_end = timestamp_start + timedelta(seconds=duration)
     base = connection_base(source_agent, None, service)
 
     post_open(True, copy.deepcopy(base), timestamp_start.isoformat(), service, headers)
     source_payload_close = copy.deepcopy(base)
-    source_payload_close["timestamp"] = timestamp_end.isoformat() + "+00:00"
+    source_payload_close["timestamp"] = timestamp_end
 
-    if end_point not in CONNECTIONS:
-        CONNECTIONS[end_point] = []
-
-    CONNECTIONS[end_point].append({ "source" : source_payload_close, "destination" : None})
+    CONNECTIONS.append({ "source" : source_payload_close, "destination" : None, "dead" : False})
 
 def make_internal_connection(source_agent, destination_agent, service, ticker, duration, headers):
-    end_point = ticker * 1000 + duration
-
-    timestamp_start = datetime.now()
+    timestamp_start = datetime.utcnow()
     timestamp_end = timestamp_start + timedelta(seconds=duration)
     base = connection_base(source_agent, destination_agent, service)
 
-
     post_open(True, copy.deepcopy(base), timestamp_start.isoformat(), service, headers)
     source_payload_close = copy.deepcopy(base)
-    source_payload_close["timestamp"] = timestamp_end.isoformat() + "+00:00"
+    source_payload_close["timestamp"] = timestamp_end
 
     base["agent"] = str(destination_agent["uuid"])
     base["uuid"] = str(uuid.uuid4())
 
     post_open(False, copy.deepcopy(base), timestamp_start.isoformat(), service, headers)
     destination_payload_close = copy.deepcopy(base)
-    destination_payload_close["timestamp"] = timestamp_end.isoformat() + "+00:00"
+    destination_payload_close["timestamp"] = timestamp_end
 
-    if end_point not in CONNECTIONS:
-        CONNECTIONS[end_point] = []
+    CONNECTIONS.append({ "source": source_payload_close, "destination":destination_payload_close, "dead" : False})
 
-    CONNECTIONS[end_point].append({ "source": source_payload_close, "destination":destination_payload_close})
+def process_connections(connections, headers):
+    current = datetime.utcnow()
+    for index, connection in enumerate(connections):
+        if connection["source"]["timestamp"] < current:
+            if connection["destination"] is not None:
+                print "Closing  internal connection between " + str(connection["source"]["agent"]) + " -> " + str(connection["destination"]["agent"])
+                post_close(connection["destination"], headers)
+            else:
+                print "Closing external connection " + str(connection["source"]["agent"])
 
-def process_connections(ticker, headers):
-    current = ticker * 1000
-    dead_markers = []
-    for end_point in CONNECTIONS:
-        if end_point < current:
-            for connection in CONNECTIONS[end_point]:
-                if connection["destination"] is not None:
-                    print "Closing  internal connection between " + str(connection["source"]["agent"]) + " -> " + str(connection["destination"]["agent"])
-                    post_close(connection["destination"], headers)
-                else:
-                    print "Closing external connection " + str(connection["source"]["agent"])
+            post_close(connection["source"], headers)
+            connection["dead"] = True
 
-                post_close(connection["source"], headers)
-
-            dead_markers.append(end_point)
-
-    for marker in dead_markers:
-        del CONNECTIONS[marker]
+    return [ x for x in CONNECTIONS if x["dead"] is False ]
 
 print "Loading Machine Names"
 names = create_machine_names()
@@ -236,11 +223,11 @@ while True:
     if ticker % 3 == 0:
         print "Creating external connection from " + str(source_agent["uuid"])
         process_sample = random.sample(range(0, len(SERVICES_EXTERNAL)), 1)
-        make_external_connection(source_agent, SERVICES_EXTERNAL[process_sample[0]], ticker, random.randint(0, 10800), HEADERS)
+        make_external_connection(source_agent, SERVICES_EXTERNAL[process_sample[0]], random.randint(0, 100), HEADERS) #10800), HEADERS)
     else:
         print "Creating internal connection between "  + str(source_agent["uuid"]) + " -> " + str(destination_agent["uuid"])
         process_sample = random.sample(range(0, len(SERVICES_INTERNAL)), 1)
-        make_internal_connection(source_agent, destination_agent, SERVICES_INTERNAL[process_sample[0]], ticker, random.randint(0, 10800), HEADERS)
+        make_internal_connection(source_agent, destination_agent, SERVICES_INTERNAL[process_sample[0]], ticker, random.randint(0, 100), HEADERS) #10800), HEADERS)
 
-    process_connections(ticker, HEADERS)
+    CONNECTIONS = process_connections(CONNECTIONS, HEADERS)
     time.sleep(1)

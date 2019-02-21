@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import {
   MatButtonModule, MatCardModule, MatDialogModule,
   MatIconModule,
-  MatListModule, MatPaginatorModule,
+  MatListModule, MatPaginatorModule, MatProgressBarModule, MatProgressSpinnerModule,
   MatSidenavModule, MatSortModule,
   MatTableModule, MatTabsModule,
   MatToolbarModule
@@ -23,6 +23,8 @@ import {
     MatSortModule,
     MatTabsModule,
     MatDialogModule,
+    MatProgressSpinnerModule,
+    MatProgressBarModule,
   ],
   exports: [
     MatSidenavModule,
@@ -36,6 +38,8 @@ import {
     MatSortModule,
     MatTabsModule,
     MatDialogModule,
+    MatProgressSpinnerModule,
+    MatProgressBarModule,
   ]
 })
 export class MaterialModule { }

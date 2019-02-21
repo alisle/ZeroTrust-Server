@@ -4,6 +4,7 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.notrust.server.events.NewCloseConnection;
 import com.notrust.server.events.NewOpenConnection;
+import com.notrust.server.exception.ConnectionLinkNotFoundException;
 import com.notrust.server.model.Connection;
 import com.notrust.server.model.ConnectionLink;
 import com.notrust.server.model.IPAddress;
@@ -53,7 +54,7 @@ public class ConnectionLinkServiceImpl implements ConnectionLinkService  {
         }
 
         log.debug("unable to find link in cache, looking in the DB");
-        List<ConnectionLink> potentials = repository.findAllByConnectionHashAndSourceConnectionIsNullOrDestinationConnectionIsNull(connection.getConnectionHash());
+        List<ConnectionLink> potentials = repository.findAllByOneSidedConnectionHash(connection.getConnectionHash());
         Optional<ConnectionLink> best = Optional.empty();
         Instant bestTime = Instant.MIN;
         for (ConnectionLink link : potentials) {
@@ -123,7 +124,6 @@ public class ConnectionLinkServiceImpl implements ConnectionLinkService  {
             }
         });
 
-
         return link;
     }
 
@@ -159,6 +159,9 @@ public class ConnectionLinkServiceImpl implements ConnectionLinkService  {
                     Optional<ConnectionLink> link = createLink(connection);
                     link.ifPresent(connectionLink -> {
                         connectionLink = repository.save(connectionLink);
+                        if(log.isDebugEnabled()) {
+                            log.debug("created new link: " + connectionLink.getId() + " with connection: " + connection.getId());
+                        }
                         if(useCache) {
                             linkCache.put(connection.getConnectionHash(), connectionLink);
                         }
@@ -191,6 +194,11 @@ public class ConnectionLinkServiceImpl implements ConnectionLinkService  {
     @Override
     public List<ConnectionLink> findAll() {
         return repository.findAll();
+    }
+
+    @Override
+    public Optional<ConnectionLink> get(UUID id) {
+        return repository.findById(id);
     }
 
     @EventListener

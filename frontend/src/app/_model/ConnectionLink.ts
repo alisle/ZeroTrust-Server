@@ -1,8 +1,10 @@
 
 import {Agent} from "./Agent";
 import {Connection} from "./Connection";
+import {LogWriter} from "../log-writer";
 
 export interface ConnectionLink {
+
   uuid: string;
   timestamp: Date;
   ended: Date;

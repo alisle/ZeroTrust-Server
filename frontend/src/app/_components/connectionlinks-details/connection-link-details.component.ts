@@ -64,7 +64,72 @@ export class ConnectionLinkDetailsComponent implements OnInit, AfterViewInit {
 
   }
 
-  load
+  public getSourceHeader(link : ConnectionLink) : string {
+    this.log.debug("generating source header");
+    let name = this.getSourceCanonical(link);
+    let process = this.getSourceProcess(link);
+
+    return name + ":" + process;
+  }
+
+  public getDestinationHeader(link: ConnectionLink) : string {
+    this.log.debug("generating destination header");
+    let name = this.getDestinationCanonical(link);
+    let process = this.getDestinationProcess(link);
+
+    return name + ":" + process;
+  }
+
+
+  public getSourceProcess(link : ConnectionLink) : string {
+    if(link.sourceProcessName != null) {
+      return link.sourceProcessName;
+    }
+
+    if(link.sourcePort != null) {
+      return link.sourcePort + "";
+    }
+
+    return "unknown";
+  }
+
+  public getSourceCanonical(link : ConnectionLink) : string {
+    if(link.sourceAgentName != null) {
+      return link.sourceAgentName;
+    }
+
+    if(link.sourceString != null) {
+      return link.sourceString;
+    }
+
+    return "unknown";
+  }
+
+  public getDestinationProcess(link : ConnectionLink) : string {
+    if(link.destinationProcessName != null) {
+      return link.destinationProcessName;
+    }
+
+    if(link.destinationPort != null) {
+      return link.destinationPort + "";
+    }
+
+    return "unknown";
+  }
+
+
+  public getDestinationCanonical(link: ConnectionLink) : string {
+    if(link.destinationAgentName != null) {
+      return link.destinationAgentName;
+    }
+
+    if(link.destinationString != null) {
+      return link.destinationString;
+    }
+
+    return "unknown";
+  }
+
 
   ngAfterViewInit(): void {
     this.diagramElementContainer.changes.subscribe((components: QueryList<ElementRef>) => {

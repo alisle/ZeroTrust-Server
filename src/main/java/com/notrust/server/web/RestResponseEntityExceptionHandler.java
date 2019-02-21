@@ -1,10 +1,8 @@
 package com.notrust.server.web;
 
 
-import com.notrust.server.exception.AgentNotFoundException;
-import com.notrust.server.exception.InsertFailedException;
-import com.notrust.server.exception.InvalidIPAddress;
-import com.notrust.server.exception.NoConnectionFoundException;
+import com.notrust.server.exception.*;
+import com.notrust.server.model.ConnectionLink;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -31,5 +29,10 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     @ExceptionHandler(value = {InvalidIPAddress.class})
     protected ResponseEntity<Object> handleInvalidIPAddressException(InvalidIPAddress exception) {
         return new ResponseEntity<>("Invalid IP Address!", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(value = {ConnectionLinkNotFoundException.class})
+    protected ResponseEntity<Object> handleConnectionLinkNotFoundException(ConnectionLinkNotFoundException exception) {
+        return new ResponseEntity<>("Connection Link not found!", HttpStatus.NOT_FOUND);
     }
 }

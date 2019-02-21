@@ -5,6 +5,7 @@ import com.notrust.server.model.projections.DefaultConnectionLinkProjection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.data.rest.core.annotation.RestResource;
@@ -23,13 +24,15 @@ public interface ConnectionLinkRepository extends JpaRepository<ConnectionLink, 
     ArrayList<ConnectionLink> findAll();
 
     @RestResource(exported = true)
+    @Query("SELECT link from ConnectionLink  link where link.id = ?1")
     Optional<ConnectionLink> findById(UUID id);
 
     @RestResource(exported = true)
     Page<ConnectionLink> findAllByConnectionHash(Pageable pageable, @Param("hash") long ConnectionHash);
 
     @RestResource(exported = false)
-    ArrayList<ConnectionLink> findAllByConnectionHashAndSourceConnectionIsNullOrDestinationConnectionIsNull(long connectionHash);
+    @Query("SELECT link FROM ConnectionLink link WHERE link.connectionHash = ?1 AND (link.sourceConnection IS NULL OR link.destinationConnection IS NULL)")
+    ArrayList<ConnectionLink> findAllByOneSidedConnectionHash(long connectionHash);
 
 
     @RestResource(exported = true, path="source-destination-agent-id", rel = "findBySourceAndDestinationAgentID")

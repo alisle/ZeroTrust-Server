@@ -1,18 +1,16 @@
 <ng-template #loading>
-  <mat-card *ngIf="linkLoad.loading$ | async" class="overview mat-elevation-z8" fxLayout="column" fxLayoutAlign="center center">
-    <div class="lds-dual-ring"></div>
+  <mat-card fxLayout="column" fxLayoutAlign="center center" class="overview" style="min-height: 400px">
+    <mat-progress-spinner color="primary" mode="indeterminate" value=50></mat-progress-spinner>
   </mat-card>
 </ng-template>
 
 <ng-template #loadingCount>
-  <div fxLayout="row" fxFlex="100">Loading Details...</div>
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </ng-template>
-
-
 
 <mat-card *ngIf="!(linkLoad.loading$ | async) else loading" class="overview">
   <mat-card-header>
-    <mat-card-title><mat-icon class="icon">fingerprint</mat-icon> Connection Link: {{connectionLink.sourceAgent.name}}:{{connectionLink.sourceConnection.processName}}<mat-icon class="icon">arrow_right_alt</mat-icon>{{connectionLink.destinationAgent.name}}:{{connectionLink.destinationConnection.processName}}</mat-card-title>
+    <mat-card-title><mat-icon class="icon">fingerprint</mat-icon> Connection Link: {{ getSourceHeader(connectionLink)}}<mat-icon class="icon">arrow_right_alt</mat-icon>{{getDestinationHeader(link)}}</mat-card-title>
     <mat-card-subtitle>Occurred: {{connectionLink.sourceConnection.start | amTimeAgo}}, Still Alive: <span *ngIf="connectionLink.alive">Yes</span><span *ngIf="!connectionLink.alive">No, Duration: {{connectionLink.sourceConnection.duration | amDuration : 'ms' }}</span> </mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>

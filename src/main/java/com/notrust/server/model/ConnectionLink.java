@@ -58,11 +58,11 @@ public class ConnectionLink {
     private Agent destinationAgent;
 
     @OneToOne
-    @JoinColumn(name="source_connection_id", nullable = false)
+    @JoinColumn(name="source_connection_id", nullable = true)
     private Connection sourceConnection;
 
     @OneToOne
-    @JoinColumn(name="destination_connection_id", nullable = false)
+    @JoinColumn(name="destination_connection_id", nullable = true)
     private Connection destinationConnection;
 
 

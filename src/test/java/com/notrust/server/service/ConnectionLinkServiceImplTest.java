@@ -86,6 +86,9 @@ public class ConnectionLinkServiceImplTest {
         Assert.assertEquals(sourceConnectionDTO.getTimestamp(), link.getTimestamp());
         Assert.assertTrue(link.isAlive());
 
+
+        linkService.get(link.getId()).orElseThrow(() -> new RuntimeException("Oh Dear"));
+
         connectionLinkRepository.deleteAll();
         connectionRepository.deleteAll();
 
@@ -126,6 +129,8 @@ public class ConnectionLinkServiceImplTest {
 
         Assert.assertEquals(connectionNewDTO.getTimestamp(), link.getTimestamp());
         Assert.assertTrue(link.isAlive());
+
+        linkService.get(link.getId()).orElseThrow(() -> new RuntimeException("Oh Dear"));
 
         connectionLinkRepository.deleteAll();
         connectionRepository.deleteAll();
@@ -170,6 +175,9 @@ public class ConnectionLinkServiceImplTest {
         Assert.assertEquals(0L, linkService.findAll().get(0).getConnectionHash());
         Assert.assertFalse(linkService.findAll().get(0).isAlive());
 
+        linkService.get(linkService.findAll().get(0).getId()).orElseThrow(() -> new RuntimeException("Oh Dear"));
+
+
         connectionLinkRepository.deleteAll();
         connectionRepository.deleteAll();
 
@@ -213,6 +221,9 @@ public class ConnectionLinkServiceImplTest {
         Assert.assertEquals(1, linkService.findAll().size());
         Assert.assertEquals(0L, linkService.findAll().get(0).getConnectionHash());
         Assert.assertFalse(linkService.findAll().get(0).isAlive());
+
+        linkService.get(linkService.findAll().get(0).getId()).orElseThrow(() -> new RuntimeException("Oh Dear"));
+
         connectionLinkRepository.deleteAll();
         connectionRepository.deleteAll();
 
@@ -288,6 +299,9 @@ public class ConnectionLinkServiceImplTest {
 
         Assert.assertEquals(sourceConnectionDTO.getTimestamp(), linkService.findAll().get(0).getTimestamp());
         Assert.assertTrue(linkService.findAll().get(0).isAlive());
+
+        linkService.get(linkService.findAll().get(0).getId()).orElseThrow(() -> new RuntimeException("Oh Dear"));
+
         connectionLinkRepository.deleteAll();
         connectionRepository.deleteAll();
 
@@ -331,6 +345,8 @@ public class ConnectionLinkServiceImplTest {
 
         Assert.assertEquals(sourceConnectionDTO.getTimestamp(), linkService.findAll().get(0).getTimestamp());
         Assert.assertTrue(linkService.findAll().get(0).isAlive());
+
+        linkService.get(linkService.findAll().get(0).getId()).orElseThrow(() -> new RuntimeException("Oh Dear"));
 
         connectionLinkRepository.deleteAll();
         connectionRepository.deleteAll();

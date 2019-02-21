@@ -5,7 +5,7 @@ import {DashboardComponent} from "./_components/dashboard/dashboard.component";
 import {AgentsComponent} from "./_components/agents/agents.component";
 import {AgentDetailsComponent} from "./_components/agent-details/agent-details.component";
 import {ConnectionsComponent} from "./_components/connections/connections.component";
-import {ConnectionlinksComponent} from "./_components/connectionlinks/connectionlinks.component";
+import {ConnectionLinksComponent} from "./_components/connection-links/connection-links.component";
 import {ConnectionLinkDetailsComponent} from "./_components/connectionlinks-details/connection-link-details.component";
 
 const routes: Routes = [
@@ -14,7 +14,7 @@ const routes: Routes = [
   { path: 'agents', component: AgentsComponent },
   { path: 'agents/:id', component: AgentDetailsComponent },
   { path: 'connections', component: ConnectionsComponent },
-  { path: 'connection_links', component: ConnectionlinksComponent },
+  { path: 'connection_links', component: ConnectionLinksComponent },
   { path: 'connection_links/:id', component: ConnectionLinkDetailsComponent },
 ];
 

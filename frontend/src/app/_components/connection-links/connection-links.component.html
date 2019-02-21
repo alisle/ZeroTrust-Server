@@ -19,7 +19,10 @@
 
               <ng-container matColumnDef="duration">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Duration</mat-header-cell>
-                <mat-cell *matCellDef="let link">{{link.duration| amDuration:'seconds'}}</mat-cell>
+                <mat-cell *matCellDef="let link">
+                  <div *ngIf="!link.alive">{{link.duration | amDuration:'seconds' }}</div>
+                  <div *ngIf="link.alive">ongoing</div>
+                </mat-cell>
               </ng-container>
 
               <ng-container matColumnDef="timestamp">
@@ -29,12 +32,18 @@
 
               <ng-container matColumnDef="ended">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Ended</mat-header-cell>
-                <mat-cell *matCellDef="let link">{{link.ended | amTimeAgo }}</mat-cell>
+                <mat-cell *matCellDef="let link">
+                  <div *ngIf="link.ended != null">{{link.ended | amTimeAgo }}</div>
+                  <div *ngIf="link.ended == null">ongoing</div>
+                </mat-cell>
               </ng-container>
 
               <ng-container matColumnDef="sourceAgentName">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Source Agent</mat-header-cell>
-                <mat-cell *matCellDef="let link">{{link.sourceAgentName}}</mat-cell>
+                <mat-cell *matCellDef="let link">
+                  <div *ngIf="link.sourceAgentName != null">{{link.sourceAgentName}}</div>
+                  <div *ngIf="link.sourceAgentName == null">Unknown</div>
+                </mat-cell>
               </ng-container>
 
               <ng-container matColumnDef="sourceString">
@@ -49,12 +58,18 @@
 
               <ng-container matColumnDef="sourceProcessName">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Source Process Name</mat-header-cell>
-                <mat-cell *matCellDef="let link">{{link.sourceProcessName}}</mat-cell>
+                <mat-cell *matCellDef="let link">
+                  <div *ngIf="link.sourceProcessName != null">{{link.sourceProcessName}}</div>
+                  <div *ngIf="link.sourceProcessName == null">Unknown</div>
+                </mat-cell>
               </ng-container>
 
               <ng-container matColumnDef="destinationAgentName">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Destination Agent</mat-header-cell>
-                <mat-cell *matCellDef="let link">{{link.destinationAgentName}}</mat-cell>
+                <mat-cell *matCellDef="let link">
+                  <div *ngIf="link.destinationAgentName != null">{{link.destinationAgentName}}</div>
+                  <div *ngIf="link.destinationAgentName == null">Unknown</div>
+                </mat-cell>
               </ng-container>
 
               <ng-container matColumnDef="destinationString">
@@ -69,7 +84,10 @@
 
               <ng-container matColumnDef="destinationProcessName">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Destination Process Name</mat-header-cell>
-                <mat-cell *matCellDef="let link">{{link.destinationProcessName}}</mat-cell>
+                <mat-cell *matCellDef="let link">
+                  <div *ngIf="link.destinationProcessName != null">{{link.destinationProcessName}}</div>
+                  <div *ngIf="link.destinationProcessName == null">Unknown</div>
+                </mat-cell>
               </ng-container>
 
               <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>

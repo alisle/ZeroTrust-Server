@@ -17,9 +17,9 @@ import { ConnectionsComponent } from './_components/connections/connections.comp
 import {ConnectionsService} from "./_services/connections/connections.service";
 import {ConnectionlinkService} from "./_services/connectionlinks/connectionlink.service";
 import {
-  ConnectionlinksComponent,
+  ConnectionLinksComponent,
   ConnectionLinksDetailsDialog
-} from './_components/connectionlinks/connectionlinks.component';
+} from './_components/connection-links/connection-links.component';
 import { ConnectionLinkDetailsComponent } from './_components/connectionlinks-details/connection-link-details.component';
 import {FlowGraphService} from "./_services/flowgraph/FlowGraphService";
 
@@ -31,7 +31,7 @@ import {FlowGraphService} from "./_services/flowgraph/FlowGraphService";
     AgentsComponent,
     AgentDetailsComponent,
     ConnectionsComponent,
-    ConnectionlinksComponent,
+    ConnectionLinksComponent,
     ConnectionLinkDetailsComponent,
     ConnectionLinksDetailsDialog
   ],

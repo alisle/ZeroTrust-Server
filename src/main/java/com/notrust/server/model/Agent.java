@@ -41,7 +41,7 @@ public class Agent {
     private Instant lastSeen;
 
     @ToString.Exclude
-    @OneToMany(mappedBy = "agent")
+    @OneToMany(mappedBy = "agent", fetch = FetchType.LAZY)
     private Set<Connection> connections;
 
     @ToString.Exclude

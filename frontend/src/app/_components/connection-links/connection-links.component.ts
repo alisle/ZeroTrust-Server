@@ -9,10 +9,10 @@ import {tap} from "rxjs/operators";
 
 @Component({
   selector: 'app-connectionlinks',
-  templateUrl: './connectionlinks.component.html',
-  styleUrls: ['./connectionlinks.component.css']
+  templateUrl: './connection-links.component.html',
+  styleUrls: ['./connection-links.component.css']
 })
-export class ConnectionlinksComponent implements OnInit, AfterViewInit {
+export class ConnectionLinksComponent implements OnInit, AfterViewInit {
   private log : LogWriter = new LogWriter("connectlinks.component");
   constructor(private service: ConnectionlinkService, public dialog: MatDialog) { }
 
