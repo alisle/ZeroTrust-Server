@@ -45,13 +45,30 @@ public class Agent {
     private Set<Connection> connections;
 
     @ToString.Exclude
-    @Formula("select count(*) from connection where connection.agent_id = id")
+    @Formula("SELECT COUNT(*) FROM connection WHERE connection.agent_id = id")
     private long connectionCount;
 
     @ToString.Exclude
-    @Formula("select count(*) from connection where connection.agent_id = id and connection.connection_ended IS NULL")
+    @Formula("SELECT COUNT(*) FROM connection WHERE connection.agent_id = id AND connection.connection_ended IS NULL")
     private long aliveConnectionCount;
 
+    @ToString.Exclude
+    @Formula("SELECT COUNT(*) FROM connection_link WHERE connection_link.source_agent_id = id")
+    private long sourceConnectionCount;
+
+    @ToString.Exclude
+    @Formula("SELECT COUNT(*) FROM connection_link WHERE connection_link.source_agent_id = id AND connection_link.alive = true")
+    private long aliveSourceConnectionCount;
+
+
+    @ToString.Exclude
+    @Formula("SELECT COUNT(*) FROM connection_link WHERE connection_link.destination_agent_id = id")
+    private long destinationConnectionCount;
+
+
+    @ToString.Exclude
+    @Formula("SELECT COUNT(*) FROM connection_link WHERE connection_link.destination_agent_id = id AND connection_link.alive = true")
+    private long aliveDestinationConnectionCount;
 
     @ToString.Exclude
     @Formula("id")

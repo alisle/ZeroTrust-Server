@@ -8,7 +8,9 @@ import com.notrust.server.model.IPAddress;
 import com.notrust.server.model.dto.AgentOnlineDTO;
 import com.notrust.server.model.dto.UpdateInterfacesDTO;
 import com.notrust.server.service.AgentService;
+import com.notrust.server.service.ConnectionLinkService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.repository.query.Param;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.HashSet;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -53,4 +56,26 @@ public class AgentController {
         agentService.updateIPs(id, ipMapper.convertStrings(dto.getInterfaces()));
         return new ResponseEntity(HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/search/users-source", method = RequestMethod.GET, produces = MediaTypes.HAL_JSON_VALUE)
+    public ResponseEntity<List<String>> getSourceUsers(@RequestParam("agent-id") UUID id)  throws AgentNotFoundException {
+        log.debug("REST Request for source users:" + id);
+        return new ResponseEntity<>(this.agentService.getSourceUsers(id), null, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/search/users-destination", method = RequestMethod.GET, produces = MediaTypes.HAL_JSON_VALUE)
+    public ResponseEntity<List<String>> getDestinationUsers(@RequestParam("agent-id") UUID id) throws AgentNotFoundException {
+        log.debug("REST Request for source users:" + id);
+        return new ResponseEntity<>(this.agentService.getDestinationUsers(id), null, HttpStatus.OK);
+    }
+
+
+
+    @RequestMapping(value = "/search/users", method = RequestMethod.GET, produces = MediaTypes.HAL_JSON_VALUE)
+    public ResponseEntity<List<String>> getUsers(@RequestParam("agent-id") UUID id) throws AgentNotFoundException {
+        log.debug("REST Request for source users:" + id);
+        List<String> users = this.agentService.getAllUsers(id);
+        return new ResponseEntity<>(users, null, HttpStatus.OK);
+    }
+
 }

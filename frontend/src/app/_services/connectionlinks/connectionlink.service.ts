@@ -75,7 +75,6 @@ export class ConnectionlinkService extends PageableService<ConnectionLink> {
     return observable
       .pipe(
         map((res: Page<ConnectionLink>) => {
-          this.log.error("got page to get count", res);
           return res.page.totalElements;
         }
       ));

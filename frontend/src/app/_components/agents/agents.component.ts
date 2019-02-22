@@ -17,7 +17,21 @@ export class AgentsComponent implements OnInit, AfterViewInit {
 
   constructor(private service: AgentsService) { }
   dataSource = new PageableDataSource<Agent>(this.service);
-  displayedColumns = ['name', 'alive', 'lastSeen', 'firstSeen', 'known', 'aliveConnectionCount', 'connectionCount' ];
+
+  displayedColumns = [
+    'name',
+    'alive',
+    'lastSeen',
+    'firstSeen',
+    'known',
+    'aliveConnectionCount',
+    'connectionCount',
+    'aliveSourceConnectionCount',
+    'sourceConnectionCount',
+    'aliveDestinationConnectionCount',
+    'destinationConnectionCount'
+  ];
+
   selectedRow : Agent = null;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;

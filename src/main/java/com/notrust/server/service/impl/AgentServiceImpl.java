@@ -4,12 +4,14 @@ import com.notrust.server.exception.AgentNotFoundException;
 import com.notrust.server.model.Agent;
 import com.notrust.server.model.IPAddress;
 import com.notrust.server.repository.AgentRepository;
+import com.notrust.server.repository.ConnectionLinkRepository;
 import com.notrust.server.service.AgentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -21,7 +23,6 @@ public class AgentServiceImpl implements AgentService {
     public AgentServiceImpl(AgentRepository agentRepository) {
         this.agentRepository = agentRepository;
     }
-
 
     @Override
     public Optional<Agent> get(UUID uuid) {
@@ -94,4 +95,34 @@ public class AgentServiceImpl implements AgentService {
         agent.getAddresses().addAll(Arrays.asList(ips));
         seen(agent);
     }
+
+    @Override
+    public List<String> getSourceUsers(UUID uuid) throws AgentNotFoundException{
+        try {
+            return agentRepository.findDistinctSourceUsername(uuid);
+        } catch (Exception ex) {
+            throw new AgentNotFoundException();
+        }
+    }
+
+    @Override
+    public List<String> getDestinationUsers(UUID uuid) throws AgentNotFoundException {
+        try {
+            return agentRepository.findDistinctDestinationUsername(uuid);
+        } catch (Exception ex) {
+            throw new AgentNotFoundException();
+        }
+    }
+
+    @Override
+    public List<String> getAllUsers(UUID uuid) throws AgentNotFoundException {
+        try {
+            return agentRepository.findDistinctUsername(uuid);
+        } catch (Exception ex) {
+            throw new AgentNotFoundException();
+        }
+
+    }
 }
+
+

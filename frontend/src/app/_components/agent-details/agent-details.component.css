@@ -1,0 +1,23 @@
+overview {
+  overflow: auto;
+  box-shadow: none;
+}
+
+
+.source-details-panel {
+  margin-right: 5px;
+  border-right: solid 1px #dfdfdf;
+  margin-bottom: 15px;
+}
+
+.destination-details-panel {
+  margin-left: 5px;
+}
+
+.sub-title {
+  border-bottom: 2px solid #dfdfdf;
+  margin-bottom: 5px;
+  margin-top: 10px;
+  padding: 5px;
+  font-weight: bolder;
+}

@@ -84,4 +84,10 @@ public class ConnectionLink {
 
     @Column(name = "destination_process_name")
     private String destinationProcessName;
+
+    @Column(name = "source_username")
+    private String sourceUserName;
+
+    @Column(name = "destination_username")
+    private String destinationUserName;
 }

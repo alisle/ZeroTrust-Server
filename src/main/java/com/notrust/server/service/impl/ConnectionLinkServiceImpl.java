@@ -101,6 +101,7 @@ public class ConnectionLinkServiceImpl implements ConnectionLinkService  {
             link.setSourceAddress(con.getSource());
             link.setSourceString(con.getSourceString());
             link.setSourcePort(con.getSourcePort());
+            link.setSourceUserName(con.getUsername());
 
             if(link.getDestinationConnection() == null) {
                 link.setDestinationAddress(con.getDestination());
@@ -116,6 +117,7 @@ public class ConnectionLinkServiceImpl implements ConnectionLinkService  {
             link.setDestinationAddress(con.getDestination());
             link.setDestinationString(con.getDestinationString());
             link.setDestinationPort(con.getDestinationPort());
+            link.setDestinationUserName(con.getUsername());
 
             if(link.getSourceConnection() == null) {
                 link.setSourceAddress(con.getSource());

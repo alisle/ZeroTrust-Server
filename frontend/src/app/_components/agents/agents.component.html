@@ -43,6 +43,26 @@
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Total Connections</mat-header-cell>
                 <mat-cell *matCellDef="let agent">{{agent.connectionCount}}</mat-cell>
               </ng-container>
+
+              <ng-container matColumnDef="aliveSourceConnectionCount">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Alive Source</mat-header-cell>
+                <mat-cell *matCellDef="let agent">{{agent.aliveSourceConnectionCount}}</mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="sourceConnectionCount">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Source Total</mat-header-cell>
+                <mat-cell *matCellDef="let agent">{{agent.sourceConnectionCount}}</mat-cell>
+              </ng-container>
+
+              <ng-container matColumnDef="aliveDestinationConnectionCount">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Alive Destination</mat-header-cell>
+                <mat-cell *matCellDef="let agent">{{agent.aliveDestinationConnectionCount}}</mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="destinationConnectionCount">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Destination Total</mat-header-cell>
+                <mat-cell *matCellDef="let agent">{{agent.destinationConnectionCount}}</mat-cell>
+              </ng-container>
+
+
               <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
               <mat-row
                 (click)="selectRow(row)"

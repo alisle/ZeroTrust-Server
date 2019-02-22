@@ -133,6 +133,17 @@ databaseChangeLog:
                   constraints:
                      nullable: true
 
+              - column:
+                  name: source_username
+                  type: varchar(255)
+                  constraints:
+                    nullable: true
+
+              - column:
+                  name: destination_username
+                  type: varchar(255)
+                  constraints:
+                    nullable: true
 
   - addForeignKeyConstraint:
       baseColumnNames: source_agent_id

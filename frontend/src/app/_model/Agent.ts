@@ -7,8 +7,16 @@ export interface Agent {
   alive: boolean;
   known: boolean;
   lastSeen: Date;
+
   connectionCount: number;
   aliveConnectionCount: number;
+
+  sourceConnectionCount: number;
+  aliveSourceConnectionCount : number;
+
+  destinationConnectionCount: number;
+  aliveDestinationConnectionCount: number;
+
   addresses: IPAddress[];
 }
 

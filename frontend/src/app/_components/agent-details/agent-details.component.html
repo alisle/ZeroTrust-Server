@@ -1,18 +1,64 @@
-<mat-card>
-  <div *ngIf="loading"> I am loading </div>
-  <div *ngIf="!loading">
-    <mat-card-title>{{agent.name | titlecase }}</mat-card-title>
-    <mat-card-subtitle>Last seen: {{agent.lastSeen | amTimeAgo | titlecase }}</mat-card-subtitle>
-    <mat-card-content>
-      I am content
+<ng-template #loading>
+  <mat-card fxLayout="column" fxLayoutAlign="center center" style="min-height: 400px">
+    <mat-progress-spinner color="primary" mode="indeterminate" value="50"></mat-progress-spinner>
+  </mat-card>
+</ng-template>
 
-      <span class="h2">Connections:</span>
-      <mat-tab-group>
-        <mat-tab label="Alive">I am alive connections</mat-tab>
-        <mat-tab label="Ingress">I am ingress connections</mat-tab>
-        <mat-tab label="Egress">I am egress connections</mat-tab>
-        <mat-tab label="All">I am source connections</mat-tab>
-      </mat-tab-group>
-    </mat-card-content>
+<ng-template #loadingGraph>
+  <div fxFlex="50" fxLayoutAlign="center center">
+    <mat-progress-spinner color="primary" mode="indeterminate" value="50"></mat-progress-spinner>
   </div>
+</ng-template>
+
+<mat-card *ngIf="!(agentLoad.loading$ | async) else loading" class="overview">
+  <mat-card-header>
+    <mat-card-title>{{agent.name | titlecase }}</mat-card-title>
+    <mat-card-subtitle>Alive: {{ agent.alive }}, Last seen: {{agent.lastSeen | amTimeAgo | titlecase }}, First seen: {{ agent.firstSeen | amTimeAgo | titlecase }}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <div fxFlex fxLayout="column">
+      <!-- Diagrams -->
+      <div fxLayout="row" fxFlex="100" >
+        <div fxFlex="50" *ngIf="!(sourceGraphLoad.loading$ | async) else loadingGraph" fxLayoutAlign="center center">
+          <svg #sourceDiagram></svg>
+        </div>
+        <div fxFlex="50" *ngIf="!(destinationGraphLoad.loading$ | async) else loadingGraph" fxLayoutAlign="center center">
+          <svg #sdestinationDiagram></svg>
+        </div>
+      </div>
+
+      <!-- User Details -->
+      <div fxFlex class="mat-title sub-title">Users Making Connections</div>
+      <div fxFlex fxLayout="row">
+        <div fxFlex fxLayout="column" class="source-details-panel">
+          I am the source of users
+        </div>
+        <div fxFlex fxLayout="column" class="destination-details-panel">
+          I am the destination of users
+        </div>
+      </div>
+
+      <div fxFlex class="mat-title sub-title">Processes Making Connections</div>
+      <div fxFlex>
+        <div fxFlex class="source-details-panel">
+          I am the source of processes
+        </div>
+        <div fxFlex class="destination-details-panel">
+          I am the destination of processes
+        </div>
+      </div>
+
+      <!-- Connection Link Tabs -->
+      <div fxFlex class="mat-title sub-title">Connection Links</div>
+      <div fxLayout="column" fxFlex="100">
+        <mat-tab-group>
+          <mat-tab label="Active Source Connections">I am alive connections</mat-tab>
+          <mat-tab label="Active Destination Connections">I am ingress connections</mat-tab>
+          <mat-tab label="All Connections">I am egress connections</mat-tab>
+          </mat-tab-group>
+      </div>
+    </div>
+
+  </mat-card-content>
+
 </mat-card>
