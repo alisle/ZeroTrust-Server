@@ -1,0 +1,17 @@
+<div fxFlex>
+  <mat-table fxFlex #table [dataSource]="count" matSort>
+    <ng-container matColumnDef="user">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>User</mat-header-cell>
+      <mat-cell *matCellDef="let user">
+        <div *ngIf="user.user != null">{{user.user}}</div>
+        <div *ngIf="user.user == null">Unknown</div>
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="count">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Count</mat-header-cell>
+      <mat-cell *matCellDef="let user"> {{ user.count }}</mat-cell>
+    </ng-container>
+    <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+</div>

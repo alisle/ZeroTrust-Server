@@ -51,10 +51,4 @@ public interface ConnectionLinkRepository extends JpaRepository<ConnectionLink, 
     @RestResource(exported = true)
     ConnectionLink findByDestinationConnectionId(@Param("destination_connection_id") UUID connection);
 
-
-    @RestResource(exported = true, path="source-agent-users", rel = "findUsersMakingConnectionsFromAgent")
-    @Query(value = "SELECT DISTINCT link.source_username FROM connection_link link WHERE link.source_agent_id = ?1", nativeQuery = true)
-    List<String> findAllUsersForSourceAgent(@Param("source-agent-id") UUID agent);
-
-
 }

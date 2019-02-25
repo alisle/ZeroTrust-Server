@@ -3,6 +3,7 @@ package com.notrust.server.service.impl;
 import com.notrust.server.exception.AgentNotFoundException;
 import com.notrust.server.model.Agent;
 import com.notrust.server.model.IPAddress;
+import com.notrust.server.model.UserCount;
 import com.notrust.server.repository.AgentRepository;
 import com.notrust.server.repository.ConnectionLinkRepository;
 import com.notrust.server.service.AgentService;
@@ -97,27 +98,27 @@ public class AgentServiceImpl implements AgentService {
     }
 
     @Override
-    public List<String> getSourceUsers(UUID uuid) throws AgentNotFoundException{
+    public List<UserCount> sourceUsersCount(UUID uuid) throws AgentNotFoundException{
         try {
-            return agentRepository.findDistinctSourceUsername(uuid);
+            return agentRepository.countSourceUsername(uuid);
         } catch (Exception ex) {
             throw new AgentNotFoundException();
         }
     }
 
     @Override
-    public List<String> getDestinationUsers(UUID uuid) throws AgentNotFoundException {
+    public List<UserCount> destinationUsersCount(UUID uuid) throws AgentNotFoundException {
         try {
-            return agentRepository.findDistinctDestinationUsername(uuid);
+            return agentRepository.countDestinationUsername(uuid);
         } catch (Exception ex) {
             throw new AgentNotFoundException();
         }
     }
 
     @Override
-    public List<String> getAllUsers(UUID uuid) throws AgentNotFoundException {
+    public List<UserCount> allUsersCount(UUID uuid) throws AgentNotFoundException {
         try {
-            return agentRepository.findDistinctUsername(uuid);
+            return agentRepository.countUsername(uuid);
         } catch (Exception ex) {
             throw new AgentNotFoundException();
         }

@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, Inject, OnInit, ViewChild} from '@angular/core';
 import {LogWriter} from "../../log-writer";
-import {ConnectionlinkService} from "../../_services/connectionlinks/connectionlink.service";
+import {ConnectionLinkService} from "../../_services/connection-links/connection-link.service";
 import {PageableDataSource} from "../../_services/pageable-data-source";
 import {ConnectionLink} from "../../_model/ConnectionLink";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef, MatPaginator, MatSort} from "@angular/material";
@@ -14,7 +14,7 @@ import {tap} from "rxjs/operators";
 })
 export class ConnectionLinksComponent implements OnInit, AfterViewInit {
   private log : LogWriter = new LogWriter("connectlinks.component");
-  constructor(private service: ConnectionlinkService, public dialog: MatDialog) { }
+  constructor(private service: ConnectionLinkService, public dialog: MatDialog) { }
 
   dataSource = new PageableDataSource<ConnectionLink>(this.service);
   displayedColumns = [

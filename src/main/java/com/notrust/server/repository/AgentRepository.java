@@ -1,6 +1,7 @@
 package com.notrust.server.repository;
 
 import com.notrust.server.model.Agent;
+import com.notrust.server.model.UserCount;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -40,17 +41,16 @@ public interface AgentRepository extends JpaRepository<Agent, UUID> {
     ArrayList<Agent> findAllByAlive(boolean agent);
 
     @RestResource(exported = false)
-    @Query("SELECT DISTINCT sourceUserName FROM ConnectionLink WHERE sourceAgent.id = ?1")
-    List<String> findDistinctSourceUsername(UUID id);
+    @Query("SELECT new com.notrust.server.model.UserCount(sourceUserName, COUNT(*)) FROM ConnectionLink WHERE sourceAgent.id = ?1 GROUP BY sourceUserName")
+    List<UserCount> countSourceUsername(@Param("source-agent-id") UUID id);
 
 
     @RestResource(exported = false)
-    @Query("SELECT DISTINCT destinationUserName FROM ConnectionLink WHERE destinationAgent.id = ?1")
-    List<String> findDistinctDestinationUsername(UUID id);
+    @Query("SELECT new com.notrust.server.model.UserCount(destinationUserName, COUNT(*)) FROM ConnectionLink WHERE sourceAgent.id = ?1 GROUP BY destinationUserName")
+    List<UserCount> countDestinationUsername(@Param("source-agent-id") UUID id);
 
     @RestResource(exported = false)
-    @Query("SELECT DISTINCT username FROM Connection WHERE agent.id = ?1")
-    List<String> findDistinctUsername(UUID id);
-
+    @Query("SELECT new com.notrust.server.model.UserCount(username, COUNT(*)) FROM Connection WHERE agent.id = ?1 GROUP BY username")
+    List<UserCount> countUsername(UUID id);
 
 }

@@ -144,8 +144,5 @@ public class AgentServiceImplTest {
             firstTemplate.remove(address);
         }
 
-
-
-
     }
 }

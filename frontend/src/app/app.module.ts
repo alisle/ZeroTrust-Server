@@ -15,13 +15,14 @@ import {MomentModule} from "ngx-moment";
 import { AgentDetailsComponent } from './_components/agent-details/agent-details.component';
 import { ConnectionsComponent } from './_components/connections/connections.component';
 import {ConnectionsService} from "./_services/connections/connections.service";
-import {ConnectionlinkService} from "./_services/connectionlinks/connectionlink.service";
+import {ConnectionLinkService} from "./_services/connection-links/connection-link.service";
 import {
   ConnectionLinksComponent,
   ConnectionLinksDetailsDialog
 } from './_components/connection-links/connection-links.component';
 import { ConnectionLinkDetailsComponent } from './_components/connectionlinks-details/connection-link-details.component';
 import {FlowGraphService} from "./_services/flowgraph/FlowGraphService";
+import { UserCountTableComponent } from './_components/user-count-table/user-count-table.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import {FlowGraphService} from "./_services/flowgraph/FlowGraphService";
     ConnectionsComponent,
     ConnectionLinksComponent,
     ConnectionLinkDetailsComponent,
-    ConnectionLinksDetailsDialog
+    ConnectionLinksDetailsDialog,
+    UserCountTableComponent
   ],
   imports: [
     BrowserModule,
@@ -47,7 +49,7 @@ import {FlowGraphService} from "./_services/flowgraph/FlowGraphService";
   providers: [
     AgentsService,
     ConnectionsService,
-    ConnectionlinkService,
+    ConnectionLinkService,
     FlowGraphService,
   ],
   entryComponents: [

@@ -5,10 +5,17 @@
 </ng-template>
 
 <ng-template #loadingGraph>
-  <div fxFlex="50" fxLayoutAlign="center center">
+  <div fxFlex="50" fxLayoutAlign="center center" >
     <mat-progress-spinner color="primary" mode="indeterminate" value="50"></mat-progress-spinner>
   </div>
 </ng-template>
+
+<ng-template #loadingCounts>
+  <div fxFlexfxLayoutAlign="center center">
+    <mat-progress-bar color="primary" mode="indeterminate" value="50"></mat-progress-bar>
+  </div>
+</ng-template>
+
 
 <mat-card *ngIf="!(agentLoad.loading$ | async) else loading" class="overview">
   <mat-card-header>
@@ -17,27 +24,43 @@
   </mat-card-header>
   <mat-card-content>
     <div fxFlex fxLayout="column">
+
       <!-- Diagrams -->
-      <div fxLayout="row" fxFlex="100" >
-        <div fxFlex="50" *ngIf="!(sourceGraphLoad.loading$ | async) else loadingGraph" fxLayoutAlign="center center">
-          <svg #sourceDiagram></svg>
-        </div>
-        <div fxFlex="50" *ngIf="!(destinationGraphLoad.loading$ | async) else loadingGraph" fxLayoutAlign="center center">
-          <svg #sdestinationDiagram></svg>
+      <div fxFlex>
+        <div fxLayout="row">
+          <div fxFlex="50" *ngIf="!(sourceGraphLoad.loading$ | async) else loadingGraph" fxLayoutAlign="center center">
+            <svg #sourceDiagram></svg>
+          </div>
+          <div fxFlex="50" *ngIf="!(destinationGraphLoad.loading$ | async) else loadingGraph" fxLayoutAlign="center center">
+            <svg #sdestinationDiagram></svg>
+          </div>
         </div>
       </div>
 
       <!-- User Details -->
       <div fxFlex class="mat-title sub-title">Users Making Connections</div>
-      <div fxFlex fxLayout="row">
-        <div fxFlex fxLayout="column" class="source-details-panel">
-          I am the source of users
-        </div>
-        <div fxFlex fxLayout="column" class="destination-details-panel">
-          I am the destination of users
+      <div fxFlex>
+        <div fxLayout="row">
+          <div fxFlex class="source-details-panel">
+            <div fxLayout="column">
+              <div fxFlex="100" class="header">Connections from Agent</div>
+              <div fxFlex="100" *ngIf="!(sourceUserLoad.loading$ | async) else loadingCounts">
+                <app-user-count-table [counts]="sourceUserLoad.value$"  style="min-height: 200px; max-height: 200px; overflow: auto;"></app-user-count-table>
+              </div>
+            </div>
+          </div>
+
+          <div fxFlex class="destination-details-panel">
+            <div fxLayout="column">
+              <div fxFlex="100" class="header">Connections to Agent</div>
+              <div fxFlex="100" *ngIf="!(destinationUserLoad.loading$ | async) else loadingCounts">
+                <app-user-count-table [counts]="destinationUserLoad.value$" style="min-height: 200px; max-height: 200px; overflow: auto;"></app-user-count-table>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
-
       <div fxFlex class="mat-title sub-title">Processes Making Connections</div>
       <div fxFlex>
         <div fxFlex class="source-details-panel">
@@ -47,7 +70,6 @@
           I am the destination of processes
         </div>
       </div>
-
       <!-- Connection Link Tabs -->
       <div fxFlex class="mat-title sub-title">Connection Links</div>
       <div fxLayout="column" fxFlex="100">
@@ -58,7 +80,6 @@
           </mat-tab-group>
       </div>
     </div>
-
   </mat-card-content>
 
 </mat-card>

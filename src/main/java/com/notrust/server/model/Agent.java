@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.hibernate.annotations.Formula;
+import org.springframework.data.jpa.repository.Query;
 
 import javax.persistence.*;
 import java.time.Instant;

@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, ElementRef, Input, OnInit, QueryList, ViewChild, ViewChildren} from '@angular/core';
 import {LogWriter} from "../../log-writer";
 import {ActivatedRoute} from "@angular/router";
-import {ConnectionlinkService} from "../../_services/connectionlinks/connectionlink.service";
+import {ConnectionLinkService} from "../../_services/connection-links/connection-link.service";
 import {ConnectionLink} from "../../_model/ConnectionLink";
 import {FlowGraphService} from "../../_services/flowgraph/FlowGraphService";
 import {LoadableObject} from "../../_model/LoadableObject";
@@ -24,7 +24,7 @@ export class ConnectionLinkDetailsComponent implements OnInit, AfterViewInit {
   private flowGraph : FlowGraphService = new FlowGraphService();
   private log: LogWriter = new LogWriter("connectionlinks-details-component");
 
-  constructor(private route: ActivatedRoute, private service: ConnectionlinkService) { }
+  constructor(private route: ActivatedRoute, private service: ConnectionLinkService) { }
 
   linkLoad : LoadableObject<ConnectionLink> = new LoadableObject();
   connectionCountLoad : LoadableObject<number> = new LoadableObject(true);

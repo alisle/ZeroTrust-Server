@@ -11,7 +11,7 @@ import {LogWriter} from "../../log-writer";
 import {Log} from "@angular/core/testing/src/logger";
 
 @Injectable()
-export class ConnectionlinkService extends PageableService<ConnectionLink> {
+export class ConnectionLinkService extends PageableService<ConnectionLink> {
   private log : LogWriter = new LogWriter("connection-link.service");
   constructor(http: HttpClient) {
     super("connection_links", "/connection_links", http);

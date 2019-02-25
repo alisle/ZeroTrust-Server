@@ -3,6 +3,7 @@ package com.notrust.server.service;
 import com.notrust.server.exception.AgentNotFoundException;
 import com.notrust.server.model.Agent;
 import com.notrust.server.model.IPAddress;
+import com.notrust.server.model.UserCount;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,9 +24,9 @@ public interface AgentService {
     void updateIPs(UUID uuid, IPAddress[] ips) throws AgentNotFoundException;
     void updateIPs(Agent agent, IPAddress[] ips);
 
-    List<String> getSourceUsers(UUID uuid) throws AgentNotFoundException;
-    List<String> getDestinationUsers(UUID uuid) throws AgentNotFoundException;
-    List<String> getAllUsers(UUID uuid) throws AgentNotFoundException;
+    List<UserCount> sourceUsersCount(UUID uuid) throws AgentNotFoundException;
+    List<UserCount> destinationUsersCount(UUID uuid) throws AgentNotFoundException;
+    List<UserCount> allUsersCount(UUID uuid) throws AgentNotFoundException;
 
 
 }
