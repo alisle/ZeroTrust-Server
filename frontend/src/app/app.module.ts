@@ -23,6 +23,7 @@ import {
 import { ConnectionLinkDetailsComponent } from './_components/connectionlinks-details/connection-link-details.component';
 import {FlowGraphService} from "./_services/flowgraph/FlowGraphService";
 import { UserCountTableComponent } from './_components/user-count-table/user-count-table.component';
+import { ProcessCountTableComponent } from './_components/process-count-table/process-count-table.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { UserCountTableComponent } from './_components/user-count-table/user-cou
     ConnectionLinksComponent,
     ConnectionLinkDetailsComponent,
     ConnectionLinksDetailsDialog,
-    UserCountTableComponent
+    UserCountTableComponent,
+    ProcessCountTableComponent
   ],
   imports: [
     BrowserModule,

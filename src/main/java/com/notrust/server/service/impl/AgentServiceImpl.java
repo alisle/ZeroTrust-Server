@@ -3,6 +3,7 @@ package com.notrust.server.service.impl;
 import com.notrust.server.exception.AgentNotFoundException;
 import com.notrust.server.model.Agent;
 import com.notrust.server.model.IPAddress;
+import com.notrust.server.model.ProcessCount;
 import com.notrust.server.model.UserCount;
 import com.notrust.server.repository.AgentRepository;
 import com.notrust.server.repository.ConnectionLinkRepository;
@@ -123,6 +124,24 @@ public class AgentServiceImpl implements AgentService {
             throw new AgentNotFoundException();
         }
 
+    }
+
+    @Override
+    public List<ProcessCount> sourceProcessCount(UUID uuid) throws AgentNotFoundException {
+        try {
+            return agentRepository.countSourceProcess(uuid);
+        } catch (Exception ex) {
+            throw new AgentNotFoundException();
+        }
+    }
+
+    @Override
+    public List<ProcessCount> destinationProcessCount(UUID uuid) throws AgentNotFoundException {
+        try {
+            return agentRepository.countDestinationProcess(uuid);
+        } catch (Exception ex) {
+            throw new AgentNotFoundException();
+        }
     }
 }
 

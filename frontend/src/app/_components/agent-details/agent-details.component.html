@@ -63,13 +63,26 @@
       </div>
       <div fxFlex class="mat-title sub-title">Processes Making Connections</div>
       <div fxFlex>
-        <div fxFlex class="source-details-panel">
-          I am the source of processes
-        </div>
-        <div fxFlex class="destination-details-panel">
-          I am the destination of processes
+        <div fxLayout="row">
+          <div fxFlex class="source-details-panel">
+            <div fxLayout="column">
+              <div fxFlex="100" class="header">Creating Connections</div>
+              <div fxFlex="100" *ngIf="!(sourceProcessLoad.loading$ | async) else loadingCounts">
+                <app-process-count-table [counts]="sourceProcessLoad.value$" style="min-height: 200px; max-height: 200px; overflow: auto;" ></app-process-count-table>
+              </div>
+            </div>
+          </div>
+          <div fxFlex class="destination-details-panel">
+            <div fxLayout="column">
+              <div fxFlex="100" class="header">Answering Connections</div>
+              <div fxFlex="100" *ngIf="!(destinationProcessLoad.loading$ | async) else loadingCounts">
+                <app-process-count-table [counts]="destinationProcessLoad.value$" style="min-height: 200px; max-height: 200px; overflow: auto;" ></app-process-count-table>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
+
       <!-- Connection Link Tabs -->
       <div fxFlex class="mat-title sub-title">Connection Links</div>
       <div fxLayout="column" fxFlex="100">

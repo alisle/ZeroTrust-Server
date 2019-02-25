@@ -5,6 +5,7 @@ import com.notrust.server.exception.InvalidIPAddress;
 import com.notrust.server.mapper.IPMapper;
 import com.notrust.server.model.Agent;
 import com.notrust.server.model.IPAddress;
+import com.notrust.server.model.ProcessCount;
 import com.notrust.server.model.UserCount;
 import com.notrust.server.model.dto.AgentOnlineDTO;
 import com.notrust.server.model.dto.UpdateInterfacesDTO;
@@ -68,12 +69,23 @@ public class AgentController {
     }
 
 
-
     @RequestMapping(value = "/search/users", method = RequestMethod.GET, produces = MediaTypes.HAL_JSON_VALUE)
     public ResponseEntity<List<UserCount>> getUsers(@RequestParam("agent-id") UUID id) throws AgentNotFoundException {
         log.debug("REST Request for source users:" + id);
         List<UserCount> users = this.agentService.allUsersCount(id);
         return new ResponseEntity<>(users, null, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/search/processes-source", method = RequestMethod.GET, produces = MediaTypes.HAL_JSON_VALUE)
+    public ResponseEntity<List<ProcessCount>> getSourceProcesses(@RequestParam("agent-id") UUID id)  throws AgentNotFoundException {
+        log.debug("REST Request for source users:" + id);
+        return new ResponseEntity<>(this.agentService.sourceProcessCount(id), null, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/search/processes-destination", method = RequestMethod.GET, produces = MediaTypes.HAL_JSON_VALUE)
+    public ResponseEntity<List<ProcessCount>> getDestinationProcesses(@RequestParam("agent-id") UUID id) throws AgentNotFoundException {
+        log.debug("REST Request for source users:" + id);
+        return new ResponseEntity<>(this.agentService.destinationProcessCount(id), null, HttpStatus.OK);
     }
 
 }

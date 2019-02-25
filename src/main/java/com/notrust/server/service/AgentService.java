@@ -3,6 +3,7 @@ package com.notrust.server.service;
 import com.notrust.server.exception.AgentNotFoundException;
 import com.notrust.server.model.Agent;
 import com.notrust.server.model.IPAddress;
+import com.notrust.server.model.ProcessCount;
 import com.notrust.server.model.UserCount;
 
 import java.util.List;
@@ -27,6 +28,10 @@ public interface AgentService {
     List<UserCount> sourceUsersCount(UUID uuid) throws AgentNotFoundException;
     List<UserCount> destinationUsersCount(UUID uuid) throws AgentNotFoundException;
     List<UserCount> allUsersCount(UUID uuid) throws AgentNotFoundException;
+
+
+    List<ProcessCount> sourceProcessCount(UUID uuid) throws AgentNotFoundException;
+    List<ProcessCount> destinationProcessCount(UUID uuid) throws AgentNotFoundException;
 
 
 }

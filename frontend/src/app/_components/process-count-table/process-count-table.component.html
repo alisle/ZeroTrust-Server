@@ -1,0 +1,17 @@
+<div fxFlex>
+  <mat-table fxFlex #table [dataSource]="count" matSort>
+    <ng-container matColumnDef="process">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Process</mat-header-cell>
+      <mat-cell *matCellDef="let process">
+        <div *ngIf="process.process != null">{{process.process}}</div>
+        <div *ngIf="process.process == null">Unknown</div>
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="count">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Count</mat-header-cell>
+      <mat-cell *matCellDef="let process"> {{ process.count }}</mat-cell>
+    </ng-container>
+    <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+</div>

@@ -9,6 +9,7 @@ import {LoadableObject} from "../../_model/LoadableObject";
 import {ConnectionLink} from "../../_model/ConnectionLink";
 import {Page} from "../../_model/page/page";
 import {UserCount} from "../../_model/UserCount";
+import {ProcessCount} from "../../_model/ProcessCount";
 
 @Component({
   selector: 'app-agent-details',
@@ -19,10 +20,16 @@ export class AgentDetailsComponent implements OnInit {
   private log : LogWriter = new LogWriter("agent-details-component");
 
   agentLoad : LoadableObject<Agent> = new LoadableObject();
+
   destinationGraphLoad : LoadableObject<Page<ConnectionLink>> = new LoadableObject(true);
   sourceGraphLoad : LoadableObject<Page<ConnectionLink>> = new LoadableObject(true);
+
   destinationUserLoad : LoadableObject<UserCount[]> = new LoadableObject(true);
   sourceUserLoad : LoadableObject<UserCount[]> = new LoadableObject(true);
+
+  destinationProcessLoad : LoadableObject<ProcessCount[]> = new LoadableObject(true);
+  sourceProcessLoad : LoadableObject<ProcessCount[]> = new LoadableObject(true);
+
 
   agent : Agent = null;
 
@@ -34,6 +41,10 @@ export class AgentDetailsComponent implements OnInit {
     // Start hitting the rest api
     this.destinationUserLoad.bind(this.service.countUsersDestination(id));
     this.sourceUserLoad.bind(this.service.countUsersSource(id));
+
+    this.destinationProcessLoad.bind(this.service.countProcessSource(id));
+    this.sourceProcessLoad.bind(this.service.countProcessDestination(id));
+
     this.agentLoad.bind(this.service.get(id));
 
 

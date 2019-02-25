@@ -5,6 +5,7 @@ import {HttpClient, HttpParams} from "@angular/common/http";
 import {Observable, pipe} from "rxjs";
 import {map} from "rxjs/operators";
 import {UserCount} from "../../_model/UserCount";
+import {ProcessCount} from "../../_model/ProcessCount";
 
 @Injectable()
 export class AgentsService  extends PageableService<Agent> {
@@ -13,42 +14,56 @@ export class AgentsService  extends PageableService<Agent> {
   }
 
   countUsersSource(sourceAgent: string) : Observable<UserCount[]> {
-    let params : HttpParams = new HttpParams()
-      .append("agent-id", sourceAgent);
-
-    return this.count("users-source", params);
+    return this.usersCount("users-source", sourceAgent);
   }
 
   countUsersDestination(destinationAgent: string) : Observable<UserCount[]> {
-    let params : HttpParams = new HttpParams()
-      .append("agent-id", destinationAgent);
-
-    return this.count("users-destination", params);
+    return this.usersCount("users-destination", destinationAgent);
   }
 
   countUsersTotal(agent: string) : Observable<UserCount[]> {
-    let params : HttpParams = new HttpParams()
-      .append("agent-id", agent);
-
-    return this.count("users", params);
+    return this.usersCount("users", agent);
   }
 
 
-  private count(endpoint : string, params : HttpParams) : Observable<UserCount[]> {
+  countProcessSource(sourceAgent: string) : Observable<ProcessCount[]> {
+    return this.processCount("processes-source", sourceAgent);
+  }
+
+  countProcessDestination(destinationAgent: string) : Observable<ProcessCount[]> {
+    return this.processCount("processes-destination", destinationAgent);
+  }
+
+
+  private count(endpoint: string, agent: string) : Observable<Object> {
     let url = `${this.base_url}${this.URL}/search/${endpoint}`;
+
+    let params : HttpParams = new HttpParams()
+      .append("agent-id", agent);
 
     return this.http.get(
       url,
       {
         params: params
       }
-    ).pipe(
-      map((res: Object) => {
+    );
+  }
+
+
+  private usersCount(endpoint : string, agent: string) : Observable<UserCount[]> {
+    return this.count(endpoint, agent).pipe(
+      map( (res: Object) : UserCount[]  => {
         return res as UserCount[];
       })
     );
+  }
 
-
+  private processCount(endpoint: string, agent: string) : Observable<ProcessCount[]> {
+    return this.count(endpoint, agent).pipe(
+      map((res: Object) : ProcessCount[] => {
+        return res as ProcessCount[];
+      })
+    )
   }
 
 
