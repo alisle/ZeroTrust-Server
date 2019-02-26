@@ -10,20 +10,21 @@ import { WelcomeComponent } from './_components/welcome/welcome.component';
 import { DashboardComponent } from './_components/dashboard/dashboard.component';
 import { AgentsService} from "./_services/agents/agents.service";
 import { AgentsComponent } from './_components/agents/agents.component';
-import {HttpClient, HttpClientModule} from "@angular/common/http";
+import { HttpClientModule} from "@angular/common/http";
 import {MomentModule} from "ngx-moment";
 import { AgentDetailsComponent } from './_components/agent-details/agent-details.component';
 import { ConnectionsComponent } from './_components/connections/connections.component';
 import {ConnectionsService} from "./_services/connections/connections.service";
 import {ConnectionLinkService} from "./_services/connection-links/connection-link.service";
-import {
-  ConnectionLinksComponent,
-  ConnectionLinksDetailsDialog
-} from './_components/connection-links/connection-links.component';
+import {ConnectionLinksComponent } from './_components/connection-links/connection-links.component';
 import { ConnectionLinkDetailsComponent } from './_components/connectionlinks-details/connection-link-details.component';
 import {FlowGraphService} from "./_services/flowgraph/FlowGraphService";
 import { UserCountTableComponent } from './_components/user-count-table/user-count-table.component';
 import { ProcessCountTableComponent } from './_components/process-count-table/process-count-table.component';
+import {
+  ConnectionLinksDetailsDialog,
+  ConnectionLinksTableComponent
+} from './_components/connection-links-table/connection-links-table.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { ProcessCountTableComponent } from './_components/process-count-table/pr
     ConnectionLinkDetailsComponent,
     ConnectionLinksDetailsDialog,
     UserCountTableComponent,
-    ProcessCountTableComponent
+    ProcessCountTableComponent,
+    ConnectionLinksTableComponent
   ],
   imports: [
     BrowserModule,
@@ -52,7 +54,7 @@ import { ProcessCountTableComponent } from './_components/process-count-table/pr
     AgentsService,
     ConnectionsService,
     ConnectionLinkService,
-    FlowGraphService,
+    FlowGraphService
   ],
   entryComponents: [
     ConnectionLinksDetailsDialog

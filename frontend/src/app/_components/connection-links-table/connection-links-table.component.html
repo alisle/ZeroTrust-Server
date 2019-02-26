@@ -1,0 +1,88 @@
+<mat-table #table [dataSource]="dataSource" matSort>
+  <ng-container matColumnDef="alive">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Alive</mat-header-cell>
+    <mat-cell *matCellDef="let link">
+      <mat-icon *ngIf="link.alive" class="icon">check</mat-icon>
+      <mat-icon *ngIf="!link.alive" class="icon">close</mat-icon>
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="duration">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Duration</mat-header-cell>
+    <mat-cell *matCellDef="let link">
+      <div *ngIf="!link.alive">{{link.duration | amDuration:'seconds' }}</div>
+      <div *ngIf="link.alive">ongoing</div>
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="timestamp">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Started</mat-header-cell>
+    <mat-cell *matCellDef="let link">{{link.timestamp| amTimeAgo}}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="ended">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Ended</mat-header-cell>
+    <mat-cell *matCellDef="let link">
+      <div *ngIf="link.ended != null">{{link.ended | amTimeAgo }}</div>
+      <div *ngIf="link.ended == null">ongoing</div>
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="sourceAgentName">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Source Agent</mat-header-cell>
+    <mat-cell *matCellDef="let link">
+      <div *ngIf="link.sourceAgentName != null">{{link.sourceAgentName}}</div>
+      <div *ngIf="link.sourceAgentName == null">Unknown</div>
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="sourceString">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Source IP</mat-header-cell>
+    <mat-cell *matCellDef="let link">{{link.sourceString}}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="sourcePort">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Source Port</mat-header-cell>
+    <mat-cell *matCellDef="let link">{{link.sourcePort}}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="sourceProcessName">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Source Process Name</mat-header-cell>
+    <mat-cell *matCellDef="let link">
+      <div *ngIf="link.sourceProcessName != null">{{link.sourceProcessName}}</div>
+      <div *ngIf="link.sourceProcessName == null">Unknown</div>
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="destinationAgentName">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Destination Agent</mat-header-cell>
+    <mat-cell *matCellDef="let link">
+      <div *ngIf="link.destinationAgentName != null">{{link.destinationAgentName}}</div>
+      <div *ngIf="link.destinationAgentName == null">Unknown</div>
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="destinationString">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Destination IP</mat-header-cell>
+    <mat-cell *matCellDef="let link">{{link.destinationString}}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="destinationPort">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Destination Port</mat-header-cell>
+    <mat-cell *matCellDef="let link">{{link.destinationPort}}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="destinationProcessName">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Destination Process Name</mat-header-cell>
+    <mat-cell *matCellDef="let link">
+      <div *ngIf="link.destinationProcessName != null">{{link.destinationProcessName}}</div>
+      <div *ngIf="link.destinationProcessName == null">Unknown</div>
+    </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+  <mat-row
+    (click)="selectRow(row)"
+    *matRowDef="let row; columns: displayedColumns;"></mat-row>
+</mat-table>
+<mat-paginator [pageSizeOptions]="[10, 20, 50, 100]" showFirstLastButtons></mat-paginator>

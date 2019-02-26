@@ -1,84 +1,78 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpParams} from "@angular/common/http";
-import {PageableService} from "../pageable.service";
+import {HttpClient} from "@angular/common/http";
+import {PageableClient} from "../pageable-client";
 import {ConnectionLink} from "../../_model/ConnectionLink";
-import {Observable} from "rxjs";
-import {map} from "rxjs/operators";
-import {Page} from "../../_model/page/page";
-import {__param} from "tslib";
-import {Connection} from "../../_model/Connection";
 import {LogWriter} from "../../log-writer";
-import {Log} from "@angular/core/testing/src/logger";
+import {DefaultService} from "../default.service";
 
 @Injectable()
-export class ConnectionLinkService extends PageableService<ConnectionLink> {
+export class ConnectionLinkService extends DefaultService<ConnectionLink>  {
   private log : LogWriter = new LogWriter("connection-link.service");
+
   constructor(http: HttpClient) {
     super("connection_links", "/connection_links", http);
   }
 
-  connectionsBetweenSourceAgentandIP(sourceAgent: string, destinationAddress: string) : Observable<Page<ConnectionLink>> {
+  allConnectionLinks() : PageableClient<ConnectionLink> {
+    this.log.debug("creating new pageable client for all connection links");
+    return this.default();
+  }
+
+  activeSourceConnections(sourceAgent: string) : PageableClient<ConnectionLink> {
+    this.log.debug(`requesting active connections with source ${sourceAgent}`);
+    let client = this.search("active-source-agent-id");
+    client.addParam("source_agent_id", sourceAgent);
+
+    return client;
+  }
+
+  activeDestinationConnections(destinationAgent: string) : PageableClient<ConnectionLink> {
+    this.log.debug(`requesting active connections with destination ${destinationAgent}`);
+    let client = this.search("active-destination-agent-id");
+    client.addParam("destination_agent_id", destinationAgent);
+    return client;
+  }
+
+  connectionsBetweenSourceAgentandIP(sourceAgent: string, destinationAddress : string) : PageableClient<ConnectionLink> {
     this.log.debug(`requesting connections between ${sourceAgent} and ${destinationAddress}`);
+    let client = this.search("source-agent-id-destination-ip");
+    client.addParam("source_agent_id", sourceAgent);
+    client.addParam("destination_address", destinationAddress);
 
-    let params = new HttpParams()
-      .append("source_agent_id", sourceAgent)
-      .append("destination_address", destinationAddress);
+    client.pageSize = 1000;
+    client.sortOn =  "timestamp";
+    client.sortDirection = "ASC";
 
-    return this.connections("source-agent-id-destination-ip", params);
+    return client;
   }
 
-  countConnectionsBetweenSourceAgentandIP(sourceAgent: string, destinationAddress: string) : Observable<number> {
-    return this.counts(this.connectionsBetweenSourceAgentandIP(sourceAgent, destinationAddress));
-  }
-
-  connectionsBetweenIPandDestinationAgent(sourceAddress: string, destinationAgent: string) : Observable<Page<ConnectionLink>> {
+  connectionsBetweenIPandDestinationAgent(sourceAddress: string, destinationAgent: string) : PageableClient<ConnectionLink> {
     this.log.debug(`requesting connections between ${sourceAddress} and ${destinationAgent}`);
+    let client = this.search("source-ip-destination-agent-id");
+    client.addParam("source_address", sourceAddress);
+    client.addParam("destination_agent_id", destinationAgent);
 
-    let params = new HttpParams()
-      .append("source_address", sourceAddress)
-      .append("destination_agent_id", destinationAgent);
+    client.pageSize = 1000;
+    client.sortOn =  "timestamp";
+    client.sortDirection = "ASC";
 
-    return this.connections("source-agent-id-destination-ip", params);
+    return client;
   }
 
-  countConnectionsBetweenIPandDestinationAgent(sourceAddress: string, destinationAgent: string) : Observable<number> {
-    return this.counts(this.connectionsBetweenIPandDestinationAgent(sourceAddress, destinationAgent));
-  }
-
-  connectionsBetweenAgents(sourceAgent: string, destinationAgent: string) : Observable<Page<ConnectionLink>> {
+  connectionsBetweenAgents(sourceAgent: string, destinationAgent: string) : PageableClient<ConnectionLink> {
     this.log.debug(`requesting connections between ${sourceAgent} and ${destinationAgent}`);
+    let client = this.search("source-destination-agent-id");
+    client.addParam("source_agent_id", sourceAgent);
+    client.addParam("destination_agent_id", destinationAgent);
 
-    let params = new HttpParams()
-      .append("source_agent_id", sourceAgent)
-      .append("destination_agent_id", destinationAgent);
+    client.pageSize = 1000;
+    client.sortOn =  "timestamp";
+    client.sortDirection = "ASC";
 
-    return this.connections("source-destination-agent-id", params);
-  }
-
-  countConnectionsBetweenAgents(sourceAgent: string, destinationAgent: string) : Observable<number> {
-    return this.counts(this.connectionsBetweenAgents(sourceAgent, destinationAgent));
-  }
-
-
-  private connections(endpoint : string, params : HttpParams) : Observable<Page<ConnectionLink>> {
-    params = params
-      .append("size", "" + 1000)
-      .append("page", "" + 0)
-      .append("sort", `timestamp,ASC`);
-
-    let url = `${this.base_url}${this.URL}/search/${endpoint}`;
-    return this._page(0, params, url);
+    return client;
 
   }
 
-  private counts(observable: Observable<Page<ConnectionLink>>) : Observable<number> {
-    return observable
-      .pipe(
-        map((res: Page<ConnectionLink>) => {
-          return res.page.totalElements;
-        }
-      ));
-  }
 
 
 }

@@ -57,33 +57,33 @@ public class AgentController {
     }
 
     @RequestMapping(value = "/search/users-source", method = RequestMethod.GET, produces = MediaTypes.HAL_JSON_VALUE)
-    public ResponseEntity<List<UserCount>> getSourceUsers(@RequestParam("agent-id") UUID id)  throws AgentNotFoundException {
+    public ResponseEntity<List<UserCount>> getSourceUsers(@RequestParam("agent_id") UUID id)  throws AgentNotFoundException {
         log.debug("REST Request for source users:" + id);
         return new ResponseEntity<>(this.agentService.sourceUsersCount(id), null, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/search/users-destination", method = RequestMethod.GET, produces = MediaTypes.HAL_JSON_VALUE)
-    public ResponseEntity<List<UserCount>> getDestinationUsers(@RequestParam("agent-id") UUID id) throws AgentNotFoundException {
+    public ResponseEntity<List<UserCount>> getDestinationUsers(@RequestParam("agent_id") UUID id) throws AgentNotFoundException {
         log.debug("REST Request for source users:" + id);
         return new ResponseEntity<>(this.agentService.destinationUsersCount(id), null, HttpStatus.OK);
     }
 
 
     @RequestMapping(value = "/search/users", method = RequestMethod.GET, produces = MediaTypes.HAL_JSON_VALUE)
-    public ResponseEntity<List<UserCount>> getUsers(@RequestParam("agent-id") UUID id) throws AgentNotFoundException {
+    public ResponseEntity<List<UserCount>> getUsers(@RequestParam("agent_id") UUID id) throws AgentNotFoundException {
         log.debug("REST Request for source users:" + id);
         List<UserCount> users = this.agentService.allUsersCount(id);
         return new ResponseEntity<>(users, null, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/search/processes-source", method = RequestMethod.GET, produces = MediaTypes.HAL_JSON_VALUE)
-    public ResponseEntity<List<ProcessCount>> getSourceProcesses(@RequestParam("agent-id") UUID id)  throws AgentNotFoundException {
+    public ResponseEntity<List<ProcessCount>> getSourceProcesses(@RequestParam("agent_id") UUID id)  throws AgentNotFoundException {
         log.debug("REST Request for source users:" + id);
         return new ResponseEntity<>(this.agentService.sourceProcessCount(id), null, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/search/processes-destination", method = RequestMethod.GET, produces = MediaTypes.HAL_JSON_VALUE)
-    public ResponseEntity<List<ProcessCount>> getDestinationProcesses(@RequestParam("agent-id") UUID id) throws AgentNotFoundException {
+    public ResponseEntity<List<ProcessCount>> getDestinationProcesses(@RequestParam("agent_id") UUID id) throws AgentNotFoundException {
         log.debug("REST Request for source users:" + id);
         return new ResponseEntity<>(this.agentService.destinationProcessCount(id), null, HttpStatus.OK);
     }

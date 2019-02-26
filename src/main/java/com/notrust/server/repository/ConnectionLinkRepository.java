@@ -36,8 +36,8 @@ public interface ConnectionLinkRepository extends JpaRepository<ConnectionLink, 
     ArrayList<ConnectionLink> findAllByOneSidedConnectionHash(long connectionHash);
 
 
-    @RestResource(exported = true, path="source-destination-agent-id", rel = "findBySourceAndDestinationAgentID")
-    Page<ConnectionLink> findAllBySourceAgentIdAndDestinationAgentId(Pageable pageable, @Param("source_agent_id") UUID source, @Param("destination_agent_id") UUID destiantion);
+        @RestResource(exported = true, path="source-destination-agent-id", rel = "findBySourceAndDestinationAgentID")
+    Page<ConnectionLink> findAllBySourceAgentIdAndDestinationAgentId(Pageable pageable, @Param("source_agent_id") UUID source, @Param("destination_agent_id") UUID destination);
 
     @RestResource(exported = true, path="source-agent-id-destination-ip", rel = "findBySourceAgentIDAndDestinationIP")
     Page<ConnectionLink> findAllBySourceAgentIdAndDestinationString(Pageable pageable, @Param("source_agent_id") UUID source, @Param("destination_address") String address);
@@ -50,5 +50,11 @@ public interface ConnectionLinkRepository extends JpaRepository<ConnectionLink, 
 
     @RestResource(exported = true)
     ConnectionLink findByDestinationConnectionId(@Param("destination_connection_id") UUID connection);
+
+    @RestResource(exported = true, path="active-source-agent-id", rel = "findActiveBySourceAgentID")
+    Page<ConnectionLink> findAllBySourceAgentIdAndAliveTrue(Pageable pageable, @Param("source_agent_id") UUID source);
+
+    @RestResource(exported = true, path="active-destination-agent-id", rel="findActiveByDestinationAgentID")
+    Page<ConnectionLink> findAllByDestinationAgentIdAndAliveTrue(Pageable pageable, @Param("destination_agent_id") UUID destination);
 
 }

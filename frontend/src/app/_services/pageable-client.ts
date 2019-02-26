@@ -4,36 +4,22 @@ import {map} from "rxjs/operators";
 import {Page} from "../_model/page/page";
 import {LogWriter} from "../log-writer";
 
-export abstract class PageableService<T> {
-  private _log : LogWriter = new LogWriter("pageable.service");
-  protected base_url: string = "http://localhost:8080";
+export class PageableClient<T> {
+  private _log : LogWriter = new LogWriter("pageable.client");
   public pageSize: number = 20;
   public sortDirection: string = 'ASC';
   public sortOn: string = 'id';
+  private optionalParams : HttpParams = new HttpParams();
 
-  protected constructor(protected key: string, protected URL: string, protected http: HttpClient) {}
+  constructor(protected key: string, protected URL: string, protected http: HttpClient) {}
 
-  get(id: string, projection: string = null): Observable<T> {
-    let params = new HttpParams();
-
-    if (projection != null) {
-      params = params.append("projection", projection);
-    }
-
-    return this.http.get(
-      `${this.base_url}${this.URL}/${id}`,
-      {
-        params: params
-      }
-    ).pipe(
-      map((res: any) => {
-        let object = res as T;
-        return object;
-      })
-    );
+  addParam(key: string, value: string) {
+    this.optionalParams = this.optionalParams
+      .append(key, value);
   }
 
   protected _page(page: number, params: HttpParams, url : string) : Observable<Page<T>> {
+    this._log.debug(`actually making call to ${page} -:- ${url}`, params);
     return this.http.get(
       `${url}`,
       {
@@ -45,10 +31,9 @@ export abstract class PageableService<T> {
         return page;
       }));
   }
-  page(page: number, projection: string = null): Observable<Page<T>> {
-    console.log(`page ${page}:${this.pageSize} has been requested for URL:${this.URL}`);
 
-    let params = new HttpParams()
+  protected _create_params(page: number, projection: string) : HttpParams {
+    let params = this.optionalParams
       .append("size", "" + this.pageSize)
       .append("page", "" + page)
       .append("sort", `${this.sortOn},${this.sortDirection}`);
@@ -57,8 +42,25 @@ export abstract class PageableService<T> {
       params = params.append("projection", projection);
     }
 
-    let url = `${this.base_url}${this.URL}`;
+    return params;
+  }
+
+
+  page(page: number, projection: string = null): Observable<Page<T>> {
+    this._log.debug(`page ${page}:${this.pageSize} has been requested for URL:${this.URL}`);
+    let params = this._create_params(page, projection);
+
+    let url = `${this.URL}`;
     return this._page(page, params, url);
+  }
+
+  totalElements() : Observable<number> {
+    return this.page(0)
+      .pipe(
+        map((res: Page<T>) => {
+          return res.page.totalElements;
+        })
+      );
   }
 
   private objToPage(obj: any): Page<T> {

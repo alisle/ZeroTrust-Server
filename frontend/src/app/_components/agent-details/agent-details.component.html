@@ -87,8 +87,12 @@
       <div fxFlex class="mat-title sub-title">Connection Links</div>
       <div fxLayout="column" fxFlex="100">
         <mat-tab-group>
-          <mat-tab label="Active Source Connections">I am alive connections</mat-tab>
-          <mat-tab label="Active Destination Connections">I am ingress connections</mat-tab>
+          <mat-tab label="Active Source Connections">
+            <app-connection-links-table [dataSource]="activeSourceDataSource"></app-connection-links-table>
+          </mat-tab>
+          <mat-tab label="Active Destination Connections">
+            <app-connection-links-table [dataSource]="activeDestinationDataSource"></app-connection-links-table>
+          </mat-tab>
           <mat-tab label="All Connections">I am egress connections</mat-tab>
           </mat-tab-group>
       </div>

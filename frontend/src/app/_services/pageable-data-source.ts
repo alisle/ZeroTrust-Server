@@ -1,7 +1,7 @@
 import {DataSource} from "@angular/cdk/table";
 import {BehaviorSubject, Observable} from "rxjs";
 import {CollectionViewer} from "@angular/cdk/collections";
-import {PageableService} from "./pageable.service";
+import {PageableClient} from "./pageable-client";
 import {catchError, finalize} from "rxjs/operators";
 import {Page} from "../_model/page/page";
 
@@ -15,7 +15,8 @@ export class PageableDataSource<T> extends DataSource<T> {
   public length$ = this.sizeSubject.asObservable();
   public pageSize$ = this.pageSizeSubject.asObservable();
 
-  constructor(private service : PageableService<T>) {
+
+  constructor(private service : PageableClient<T>, public search_url : string = null) {
     super();
   }
 
@@ -37,7 +38,7 @@ export class PageableDataSource<T> extends DataSource<T> {
 
   get(page: number) {
     this.loadingSubject.next(true);
-    this.service.page(page)
+    this.service.page(page, null)
       .pipe(
         catchError(() => []),
         finalize(() => this.loadingSubject.next(false))

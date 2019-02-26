@@ -43,25 +43,25 @@ public interface AgentRepository extends JpaRepository<Agent, UUID> {
 
     @RestResource(exported = false)
     @Query("SELECT new com.notrust.server.model.UserCount(sourceUserName, COUNT(*)) FROM ConnectionLink WHERE sourceAgent.id = ?1 GROUP BY sourceUserName")
-    List<UserCount> countSourceUsername(@Param("source-agent-id") UUID id);
+    List<UserCount> countSourceUsername(@Param("source_agent_id") UUID id);
 
 
     @RestResource(exported = false)
     @Query("SELECT new com.notrust.server.model.UserCount(destinationUserName, COUNT(*)) FROM ConnectionLink WHERE destinationAgent.id = ?1 GROUP BY destinationUserName")
-    List<UserCount> countDestinationUsername(@Param("destination-agent-id") UUID id);
+    List<UserCount> countDestinationUsername(@Param("destination_agent_id") UUID id);
 
     @RestResource(exported = false)
     @Query("SELECT new com.notrust.server.model.UserCount(username, COUNT(*)) FROM Connection WHERE agent.id = ?1 GROUP BY username")
-    List<UserCount> countUsername(@Param("agent-id") UUID id);
+    List<UserCount> countUsername(@Param("agent_id") UUID id);
 
 
     @RestResource(exported = false)
     @Query("SELECT new com.notrust.server.model.ProcessCount(sourceProcessName, COUNT(*)) FROM ConnectionLink WHERE sourceAgent.id = ?1 GROUP BY sourceProcessName")
-    List<ProcessCount> countSourceProcess(@Param("source-agent-id") UUID id);
+    List<ProcessCount> countSourceProcess(@Param("source_agent_id") UUID id);
 
     @RestResource(exported = false)
     @Query("SELECT new com.notrust.server.model.ProcessCount(destinationProcessName, COUNT(*)) FROM ConnectionLink WHERE destinationAgent.id = ?1 GROUP BY destinationProcessName")
-    List<ProcessCount> countDestinationProcess(@Param("destination-agent-id") UUID id);
+    List<ProcessCount> countDestinationProcess(@Param("destination_agent_id") UUID id);
 
 
 }

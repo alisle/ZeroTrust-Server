@@ -1,16 +1,21 @@
 import { Injectable } from '@angular/core';
 import { Agent } from "../../_model/Agent";
-import {PageableService} from "../pageable.service";
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {Observable, pipe} from "rxjs";
 import {map} from "rxjs/operators";
 import {UserCount} from "../../_model/UserCount";
 import {ProcessCount} from "../../_model/ProcessCount";
+import {DefaultService} from "../default.service";
+import {PageableClient} from "../pageable-client";
 
 @Injectable()
-export class AgentsService  extends PageableService<Agent> {
+export class AgentsService  extends DefaultService<Agent> {
   constructor(http: HttpClient) {
     super("agents", "/agents", http);
+  }
+
+  allAgents() : PageableClient<Agent> {
+    return this.default();
   }
 
   countUsersSource(sourceAgent: string) : Observable<UserCount[]> {
@@ -39,7 +44,7 @@ export class AgentsService  extends PageableService<Agent> {
     let url = `${this.base_url}${this.URL}/search/${endpoint}`;
 
     let params : HttpParams = new HttpParams()
-      .append("agent-id", agent);
+      .append("agent_id", agent);
 
     return this.http.get(
       url,

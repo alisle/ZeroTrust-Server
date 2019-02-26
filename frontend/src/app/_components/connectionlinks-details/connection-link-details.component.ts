@@ -8,6 +8,7 @@ import {LoadableObject} from "../../_model/LoadableObject";
 import {Page} from "../../_model/page/page";
 import {Agent} from "../../_model/Agent";
 import {Connection} from "../../_model/Connection";
+import {PageableClient} from "../../_services/pageable-client";
 
 
 enum Type {
@@ -39,6 +40,19 @@ export class ConnectionLinkDetailsComponent implements OnInit, AfterViewInit {
 
   @ViewChildren('diagram', { read: ElementRef })  diagramElementContainer: QueryList<ElementRef>;
 
+  createClient(link : ConnectionLink) : PageableClient<ConnectionLink> {
+    let client : PageableClient<ConnectionLink> = null;
+    if(link.sourceAgent != null && link.destinationAgent != null) {
+      client = this.service.connectionsBetweenAgents(link.sourceAgent.uuid, link.destinationAgent.uuid);
+    } else if( link.sourceAgent != null  && link.destinationAgent == null) {
+      client = this.service.connectionsBetweenSourceAgentandIP(link.sourceAgent.uuid, link.destinationString);
+    } else if( link.sourceAgent == null && link.destinationAgent != null) {
+      client = this.service.connectionsBetweenIPandDestinationAgent(link.sourceString, link.destinationAgent.uuid);
+    }
+
+    return client;
+  }
+
   ngOnInit() {
     const id = (this.connectionID == null) ? this.route.snapshot.paramMap.get('id') : this.connectionID;
 
@@ -48,33 +62,18 @@ export class ConnectionLinkDetailsComponent implements OnInit, AfterViewInit {
     });
 
     this.linkLoad.value$.subscribe((link : ConnectionLink) => {
-      if(link == null) {
-        return;
-      }
-
-      if( link.sourceAgent != null && link.destinationAgent != null) {
-        this.connectionCountLoad.bind(this.service.countConnectionsBetweenAgents(link.sourceAgent.uuid, link.destinationAgent.uuid));
-      } else if( link.sourceAgent != null && link.destinationAgent == null) {
-        this.connectionCountLoad.bind(this.service.countConnectionsBetweenSourceAgentandIP(link.sourceAgent.uuid, link.destinationString));
-      } else if( link.sourceAgent == null && link.destinationAgent != null) {
-        this.connectionCountLoad.bind(this.service.countConnectionsBetweenIPandDestinationAgent(link.sourceString, link.destinationAgent.uuid))
-      } else {
-        this.connectionCountLoad.succeed(0);
-      }
-    });
-
-    this.linkLoad.value$.subscribe((link : ConnectionLink) => {
       if(link != null) {
-        if(link.sourceAgent != null && link.destinationAgent != null) {
-          this.graphLoad.bind(this.service.connectionsBetweenAgents(link.sourceAgent.uuid, link.destinationAgent.uuid))
-        } else if( link.sourceAgent != null  && link.destinationAgent == null) {
-          this.graphLoad.bind(this.service.connectionsBetweenSourceAgentandIP(link.sourceAgent.uuid, link.destinationString))
-        } else if( link.sourceAgent == null && link.destinationAgent != null) {
-          this.graphLoad.bind(this.service.connectionsBetweenIPandDestinationAgent(link.sourceString, link.destinationAgent.uuid))
-        } else {
+        let client : PageableClient<ConnectionLink> = this.createClient(link);
+        if(client == null) {
           this.graphLoad.succeed(null);
+          this.connectionCountLoad.succeed(0);
+        } else {
+          this.graphLoad.bind(client.page(0));
+          this.connectionCountLoad.bind(client.totalElements());
         }
       }
+
+
     });
 
     this.connectionCountLoad.value$.subscribe((value : number) => {

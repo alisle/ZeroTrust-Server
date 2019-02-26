@@ -6,6 +6,7 @@ import {tap} from "rxjs/operators";
 import {MatPaginator, MatSort} from "@angular/material";
 import {LogWriter} from "../../log-writer";
 import {PageableDataSource} from "../../_services/pageable-data-source";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-agents',
@@ -15,8 +16,8 @@ import {PageableDataSource} from "../../_services/pageable-data-source";
 export class AgentsComponent implements OnInit, AfterViewInit {
   private log : LogWriter = new LogWriter("agents.component");
 
-  constructor(private service: AgentsService) { }
-  dataSource = new PageableDataSource<Agent>(this.service);
+  constructor(private service: AgentsService, private router: Router) { }
+  dataSource = new PageableDataSource<Agent>(this.service.allAgents());
 
   displayedColumns = [
     'name',
@@ -64,8 +65,8 @@ export class AgentsComponent implements OnInit, AfterViewInit {
   }
 
   selectRow(row) : void {
-    this.log.debug("selected agent:", row);
     this.selectedRow = row;
+    this.router.navigate(['agents', this.selectedRow.uuid ]);
 
   }
 

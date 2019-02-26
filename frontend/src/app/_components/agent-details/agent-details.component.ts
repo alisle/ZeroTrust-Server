@@ -2,14 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {LogWriter} from "../../log-writer";
 import {AgentsService} from "../../_services/agents/agents.service";
-import {catchError, finalize} from "rxjs/operators";
-import {of} from "rxjs";
 import {Agent} from "../../_model/Agent";
 import {LoadableObject} from "../../_model/LoadableObject";
 import {ConnectionLink} from "../../_model/ConnectionLink";
 import {Page} from "../../_model/page/page";
 import {UserCount} from "../../_model/UserCount";
 import {ProcessCount} from "../../_model/ProcessCount";
+import {PageableDataSource} from "../../_services/pageable-data-source";
+import {ConnectionLinkService} from "../../_services/connection-links/connection-link.service";
 
 @Component({
   selector: 'app-agent-details',
@@ -31,12 +31,20 @@ export class AgentDetailsComponent implements OnInit {
   sourceProcessLoad : LoadableObject<ProcessCount[]> = new LoadableObject(true);
 
 
+  activeSourceDataSource : PageableDataSource<ConnectionLink> = null;
+  activeDestinationDataSource : PageableDataSource<ConnectionLink> = null;
+
+
   agent : Agent = null;
 
-  constructor(private route: ActivatedRoute, private service: AgentsService) { }
+  constructor(private route: ActivatedRoute, private service: AgentsService, private connectionLinkService: ConnectionLinkService) {
+  }
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
+
+    this.activeSourceDataSource = new PageableDataSource<ConnectionLink>(this.connectionLinkService.activeSourceConnections(id));
+    this.activeDestinationDataSource = new PageableDataSource<ConnectionLink>(this.connectionLinkService.activeDestinationConnections(id));
 
     // Start hitting the rest api
     this.destinationUserLoad.bind(this.service.countUsersDestination(id));
