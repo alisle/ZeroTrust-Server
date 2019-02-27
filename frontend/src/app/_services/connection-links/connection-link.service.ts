@@ -18,6 +18,14 @@ export class ConnectionLinkService extends DefaultService<ConnectionLink>  {
     return this.default();
   }
 
+  agentConnections(agent: string): PageableClient<ConnectionLink> {
+    this.log.debug(`requesting all connections for ${agent}`);
+    let client = this.search("agent-connections");
+    client.addParam("agent-id", agent);
+
+    return client;
+  }
+
   activeSourceConnections(sourceAgent: string) : PageableClient<ConnectionLink> {
     this.log.debug(`requesting active connections with source ${sourceAgent}`);
     let client = this.search("active-source-agent-id");

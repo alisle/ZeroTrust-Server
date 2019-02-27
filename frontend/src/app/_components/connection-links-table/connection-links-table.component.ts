@@ -19,6 +19,7 @@ export class ConnectionLinksTableComponent implements OnInit, AfterViewInit {
   @Input()
   dataSource: PageableDataSource<ConnectionLink>;
 
+  @Input()
   displayedColumns = [
     'alive',
     'duration',

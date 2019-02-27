@@ -33,7 +33,7 @@ export class AgentDetailsComponent implements OnInit {
 
   activeSourceDataSource : PageableDataSource<ConnectionLink> = null;
   activeDestinationDataSource : PageableDataSource<ConnectionLink> = null;
-
+  connectionsDataSource : PageableDataSource<ConnectionLink> = null;
 
   agent : Agent = null;
 
@@ -45,13 +45,14 @@ export class AgentDetailsComponent implements OnInit {
 
     this.activeSourceDataSource = new PageableDataSource<ConnectionLink>(this.connectionLinkService.activeSourceConnections(id));
     this.activeDestinationDataSource = new PageableDataSource<ConnectionLink>(this.connectionLinkService.activeDestinationConnections(id));
+    this.connectionsDataSource = new PageableDataSource<ConnectionLink>(this.connectionLinkService.agentConnections(id));
 
     // Start hitting the rest api
     this.destinationUserLoad.bind(this.service.countUsersDestination(id));
     this.sourceUserLoad.bind(this.service.countUsersSource(id));
 
-    this.destinationProcessLoad.bind(this.service.countProcessSource(id));
-    this.sourceProcessLoad.bind(this.service.countProcessDestination(id));
+    this.sourceProcessLoad.bind(this.service.countProcessSource(id));
+    this.destinationProcessLoad.bind(this.service.countProcessDestination(id));
 
     this.agentLoad.bind(this.service.get(id));
 
