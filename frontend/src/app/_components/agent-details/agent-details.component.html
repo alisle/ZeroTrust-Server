@@ -27,12 +27,14 @@
 
       <!-- Diagrams -->
       <div fxFlex>
-        <div fxLayout="row">
-          <div fxFlex="50" *ngIf="!(sourceGraphLoad.loading$ | async) else loadingGraph" fxLayoutAlign="center center">
+        <div fxLayout="column">
+          <div fxFlex="100" class="header">Active Outgoing Connections</div>
+          <div fxFlex="100" *ngIf="!(sourceGraphLoad.loading$ | async) else loadingGraph" fxLayoutAlign="center center">
             <svg #sourceDiagram></svg>
           </div>
-          <div fxFlex="50" *ngIf="!(destinationGraphLoad.loading$ | async) else loadingGraph" fxLayoutAlign="center center">
-            <svg #sdestinationDiagram></svg>
+          <div fxFlex="100" class="header">Active Outgoing Connections</div>
+          <div fxFlex="100" *ngIf="!(destinationGraphLoad.loading$ | async) else loadingGraph" fxLayoutAlign="center center">
+            <svg #destinationDiagram></svg>
           </div>
         </div>
       </div>
@@ -43,7 +45,7 @@
         <div fxLayout="row">
           <div fxFlex class="source-details-panel">
             <div fxLayout="column">
-              <div fxFlex="100" class="header">Connections from Agent</div>
+              <div fxFlex="100" class="header">Outgoing Connections</div>
               <div fxFlex="100" *ngIf="!(sourceUserLoad.loading$ | async) else loadingCounts">
                 <app-user-count-table [counts]="sourceUserLoad.value$"  style="min-height: 200px; max-height: 200px; overflow: auto;"></app-user-count-table>
               </div>
@@ -52,7 +54,7 @@
 
           <div fxFlex class="destination-details-panel">
             <div fxLayout="column">
-              <div fxFlex="100" class="header">Connections to Agent</div>
+              <div fxFlex="100" class="header">Incoming Connections</div>
               <div fxFlex="100" *ngIf="!(destinationUserLoad.loading$ | async) else loadingCounts">
                 <app-user-count-table [counts]="destinationUserLoad.value$" style="min-height: 200px; max-height: 200px; overflow: auto;"></app-user-count-table>
               </div>
@@ -66,7 +68,7 @@
         <div fxLayout="row">
           <div fxFlex class="source-details-panel">
             <div fxLayout="column">
-              <div fxFlex="100" class="header">Creating Connections</div>
+              <div fxFlex="100" class="header">Outgoing Connections</div>
               <div fxFlex="100" *ngIf="!(sourceProcessLoad.loading$ | async) else loadingCounts">
                 <app-process-count-table [counts]="sourceProcessLoad.value$" style="min-height: 200px; max-height: 200px; overflow: auto;" ></app-process-count-table>
               </div>
@@ -74,7 +76,7 @@
           </div>
           <div fxFlex class="destination-details-panel">
             <div fxLayout="column">
-              <div fxFlex="100" class="header">Answering Connections</div>
+              <div fxFlex="100" class="header">Incoming Connections</div>
               <div fxFlex="100" *ngIf="!(destinationProcessLoad.loading$ | async) else loadingCounts">
                 <app-process-count-table [counts]="destinationProcessLoad.value$" style="min-height: 200px; max-height: 200px; overflow: auto;" ></app-process-count-table>
               </div>
@@ -87,10 +89,10 @@
       <div fxFlex class="mat-title sub-title">Connection Links</div>
       <div fxLayout="column" fxFlex="100">
         <mat-tab-group>
-          <mat-tab label="Active Source Connections">
+          <mat-tab label="Active Outgoing Connections">
             <app-connection-links-table [dataSource]="activeSourceDataSource" [displayedColumns]="['timestamp', 'sourcePort', 'sourceProcessName', 'destinationAgentName', 'destinationString', 'destinationPort', 'destinationProcessName']"></app-connection-links-table>
           </mat-tab>
-          <mat-tab label="Active Destination Connections">
+          <mat-tab label="Active Incoming Connections">
             <app-connection-links-table [dataSource]="activeDestinationDataSource" [displayedColumns]="['timestamp', 'sourceAgentName', 'sourceString', 'sourcePort', 'sourceProcessName', 'destinationPort', 'destinationProcessName']" ></app-connection-links-table>
           </mat-tab>
           <mat-tab label="All Connections">

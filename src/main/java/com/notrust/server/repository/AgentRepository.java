@@ -1,6 +1,7 @@
 package com.notrust.server.repository;
 
 import com.notrust.server.model.Agent;
+import com.notrust.server.model.IPAddress;
 import com.notrust.server.model.ProcessCount;
 import com.notrust.server.model.UserCount;
 import org.springframework.data.domain.Page;
@@ -62,6 +63,7 @@ public interface AgentRepository extends JpaRepository<Agent, UUID> {
     @RestResource(exported = false)
     @Query("SELECT new com.notrust.server.model.ProcessCount(destinationProcessName, COUNT(*)) FROM ConnectionLink WHERE destinationAgent.id = ?1 GROUP BY destinationProcessName")
     List<ProcessCount> countDestinationProcess(@Param("destination_agent_id") UUID id);
+
 
 
 }
