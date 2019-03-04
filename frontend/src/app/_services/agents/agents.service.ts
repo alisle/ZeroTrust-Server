@@ -7,6 +7,7 @@ import {UserCount} from "../../_model/UserCount";
 import {ProcessCount} from "../../_model/ProcessCount";
 import {DefaultService} from "../default.service";
 import {PageableClient} from "../pageable-client";
+import {AgentCount} from "../../_model/AgentCount";
 
 @Injectable()
 export class AgentsService  extends DefaultService<Agent> {
@@ -39,12 +40,46 @@ export class AgentsService  extends DefaultService<Agent> {
     return this.processCount("processes-destination", destinationAgent);
   }
 
+  countConnectionsBySource() : Observable<AgentCount[]> {
+    return this.count("count-by-source-agent").pipe(
+      map( (res: Object) : AgentCount[] => {
+        return res as AgentCount[];
+      })
+    );
+  }
 
-  private count(endpoint: string, agent: string) : Observable<Object> {
+  countConnectionsByDestination() : Observable<AgentCount[]> {
+    return this.count("count-by-destination-agent").pipe(
+      map( (res: Object) : AgentCount[] => {
+        return res as AgentCount[];
+      })
+    );
+  }
+
+
+  totalAgents() : Observable<number> {
+    return this.count("total-agents").pipe(
+      map((res: Object) : number => {
+        return res as number;
+      })
+    );
+  }
+
+  totalAlive() : Observable<number> {
+    return this.count("total-alive-agents").pipe(
+      map((res: Object) : number => {
+        return res as number;
+      })
+    );
+  }
+
+  private count(endpoint: string, agent: string = null) : Observable<Object> {
     let url = `${this.base_url}${this.URL}/search/${endpoint}`;
 
-    let params : HttpParams = new HttpParams()
-      .append("agent_id", agent);
+    let params : HttpParams = new HttpParams();
+    if(agent != null) {
+      params = params.append("agent_id", agent);
+    }
 
     return this.http.get(
       url,

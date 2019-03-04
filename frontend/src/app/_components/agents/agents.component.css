@@ -10,3 +10,18 @@
 .mat-row:hover {
   background-color: lightgrey;
 }
+
+.header {
+  margin: 1px 2px 2px 1px;
+  padding: 5px;
+  font-weight: bolder;;
+}
+
+.sub-title {
+  border-bottom: 2px solid #dfdfdf;
+  margin-bottom: 5px;
+  margin-top: 10px;
+  padding: 5px;
+  font-weight: bolder;
+}
+

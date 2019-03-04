@@ -1,10 +1,7 @@
 package com.notrust.server.service.impl;
 
 import com.notrust.server.exception.AgentNotFoundException;
-import com.notrust.server.model.Agent;
-import com.notrust.server.model.IPAddress;
-import com.notrust.server.model.ProcessCount;
-import com.notrust.server.model.UserCount;
+import com.notrust.server.model.*;
 import com.notrust.server.repository.AgentRepository;
 import com.notrust.server.repository.ConnectionLinkRepository;
 import com.notrust.server.service.AgentService;
@@ -142,6 +139,16 @@ public class AgentServiceImpl implements AgentService {
         } catch (Exception ex) {
             throw new AgentNotFoundException();
         }
+    }
+
+    @Override
+    public List<AgentCount> sourceAgentCount() {
+        return agentRepository.countGroupBySourceAgentId();
+    }
+
+    @Override
+    public List<AgentCount> destinationAgentCount() {
+        return agentRepository.countGroupByDestinationAgentId();
     }
 }
 

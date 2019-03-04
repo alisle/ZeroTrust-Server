@@ -43,43 +43,50 @@
       <div fxFlex class="mat-title sub-title">Users Making Connections</div>
       <div fxFlex>
         <div fxLayout="row">
-          <div fxFlex class="source-details-panel">
-            <div fxLayout="column">
-              <div fxFlex="100" class="header">Outgoing Connections</div>
-              <div fxFlex="100" *ngIf="!(sourceUserLoad.loading$ | async) else loadingCounts">
-                <app-user-count-table [counts]="sourceUserLoad.value$"  style="min-height: 200px; max-height: 200px; overflow: auto;"></app-user-count-table>
-              </div>
+          <div fxFlex="50" fxLayout="column">
+            <div fxFlex="100" class="header">Outgoing Connections</div>
+            <div fxFlex="100" *ngIf="!(sourceUserLoad.loading$ | async) else loadingCounts">
+              <ngx-charts-advanced-pie-chart
+                [scheme]="userOutgoingConnectionsScheme"
+                [results]="userOutgoingConnections"
+                [gradient]="false">
+              </ngx-charts-advanced-pie-chart>
             </div>
           </div>
-
-          <div fxFlex class="destination-details-panel">
-            <div fxLayout="column">
-              <div fxFlex="100" class="header">Incoming Connections</div>
-              <div fxFlex="100" *ngIf="!(destinationUserLoad.loading$ | async) else loadingCounts">
-                <app-user-count-table [counts]="destinationUserLoad.value$" style="min-height: 200px; max-height: 200px; overflow: auto;"></app-user-count-table>
-              </div>
+          <div fxFlex="50" fxLayout="column">
+            <div fxFlex="100" class="header">Incoming Connections</div>
+            <div fxFlex="100" *ngIf="!(destinationUserLoad.loading$ | async) else loadingCounts">
+              <ngx-charts-advanced-pie-chart
+                [scheme]="userIncomingConnectionsScheme"
+                [results]="userIncomingConnections"
+                [gradient]="false">
+              </ngx-charts-advanced-pie-chart>
             </div>
           </div>
-
         </div>
       </div>
+
       <div fxFlex class="mat-title sub-title">Processes Making Connections</div>
       <div fxFlex>
         <div fxLayout="row">
-          <div fxFlex class="source-details-panel">
-            <div fxLayout="column">
-              <div fxFlex="100" class="header">Outgoing Connections</div>
-              <div fxFlex="100" *ngIf="!(sourceProcessLoad.loading$ | async) else loadingCounts">
-                <app-process-count-table [counts]="sourceProcessLoad.value$" style="min-height: 200px; max-height: 200px; overflow: auto;" ></app-process-count-table>
-              </div>
+          <div fxFlex="50" fxLayout="column">
+            <div fxFlex="100" class="header">Outgoing Connections</div>
+            <div fxFlex="100" *ngIf="!(sourceProcessLoad.loading$ | async) else loadingCounts">
+              <ngx-charts-advanced-pie-chart
+                [scheme]="processOutgoingConnectionsScheme"
+                [results]="processOutgoingConnections"
+                [gradient]="false">
+              </ngx-charts-advanced-pie-chart>
             </div>
           </div>
-          <div fxFlex class="destination-details-panel">
-            <div fxLayout="column">
-              <div fxFlex="100" class="header">Incoming Connections</div>
-              <div fxFlex="100" *ngIf="!(destinationProcessLoad.loading$ | async) else loadingCounts">
-                <app-process-count-table [counts]="destinationProcessLoad.value$" style="min-height: 200px; max-height: 200px; overflow: auto;" ></app-process-count-table>
-              </div>
+          <div fxFlex="50" fxLayout="column">
+            <div fxFlex="100" class="header">Incoming Connections</div>
+            <div fxFlex="100" *ngIf="!(destinationProcessLoad.loading$ | async) else loadingCounts">
+              <ngx-charts-advanced-pie-chart
+                [scheme]="processIncomingConnectionsScheme"
+                [results]="processIncomingConnections"
+                [gradient]="false">
+              </ngx-charts-advanced-pie-chart>
             </div>
           </div>
         </div>

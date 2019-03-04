@@ -12,6 +12,9 @@ import {PageableDataSource} from "../../_services/pageable-data-source";
 import {ConnectionLinkService} from "../../_services/connection-links/connection-link.service";
 import {FlowGraphService} from "../../_services/flowgraph/FlowGraphService";
 import {IPAddress} from "../../_model/IPAddress";
+import {GraphScheme} from "../../_model/graphs/GraphScheme";
+import {ChartNode} from "../../_model/graphs/ChartNode";
+import {map} from "rxjs/operators";
 
 @Component({
   selector: 'app-agent-details',
@@ -40,6 +43,19 @@ export class AgentDetailsComponent implements OnInit, AfterViewInit {
   connectionsDataSource : PageableDataSource<ConnectionLink> = null;
 
   agent : Agent = null;
+
+  userOutgoingConnectionsScheme : GraphScheme = new GraphScheme();
+  userOutgoingConnections : ChartNode[] = [];
+
+  userIncomingConnectionsScheme : GraphScheme = new GraphScheme();
+  userIncomingConnections : ChartNode[] = [];
+
+
+  processOutgoingConnectionsScheme : GraphScheme = new GraphScheme();
+  processOutgoingConnections : ChartNode[] = [];
+
+  processIncomingConnectionsScheme : GraphScheme = new GraphScheme();
+  processIncomingConnections : ChartNode[] = [];
 
   @ViewChildren('sourceDiagram', { read: ElementRef }) sourceDiagramElementContainer : QueryList<ElementRef>;
   @ViewChildren('destinationDiagram', { read: ElementRef }) destinationDiagramElementContainer: QueryList<ElementRef>;
@@ -74,12 +90,42 @@ export class AgentDetailsComponent implements OnInit, AfterViewInit {
     });
 
 
-    this.sourceUserLoad.value$.subscribe(( count: UserCount[] ) => {
-      this.log.debug("loaded source user count:", count);
+    this.sourceUserLoad.value$.pipe(
+      map((count : UserCount[]) : ChartNode[] => {
+        return ChartNode.convertUserCount(count);
+      })
+    ).subscribe((nodes : ChartNode[]) => {
+      this.userOutgoingConnections = nodes;
+      this.userOutgoingConnectionsScheme.rainbow(nodes);
     });
 
-    this.destinationUserLoad.value$.subscribe((count: UserCount[] ) => {
-      this.log.debug("loading destination user count:", count);
+
+    this.destinationUserLoad.value$.pipe(
+      map((count : UserCount[]) : ChartNode[] => {
+        return ChartNode.convertUserCount(count);
+      })
+    ).subscribe((nodes : ChartNode[]) => {
+      this.userIncomingConnections = nodes;
+      this.userIncomingConnectionsScheme.rainbow(nodes);
+    });
+
+    this.sourceProcessLoad.value$.pipe(
+      map((count : ProcessCount[]) : ChartNode[] => {
+        return ChartNode.convertProcessCount(count);
+      })
+    ).subscribe((nodes : ChartNode[]) => {
+      this.processOutgoingConnections = nodes;
+      this.processOutgoingConnectionsScheme.rainbow(nodes);
+    });
+
+
+    this.destinationProcessLoad.value$.pipe(
+      map((count : ProcessCount[]) : ChartNode[] => {
+        return ChartNode.convertProcessCount(count);
+      })
+    ).subscribe((nodes : ChartNode[]) => {
+      this.processIncomingConnections = nodes;
+      this.processIncomingConnectionsScheme.rainbow(nodes);
     });
 
     let source = this.connectionLinkService.activeSourceConnections(id);
@@ -88,7 +134,7 @@ export class AgentDetailsComponent implements OnInit, AfterViewInit {
 
     let destination = this.connectionLinkService.activeDestinationConnections(id);
     destination.pageSize = 100;
-    this.destinationGraphLoad.bind(destination.page(0));
+    this.destinationGraphLoad.bind(destination.page(0))
   }
 
   ngAfterViewInit(): void {

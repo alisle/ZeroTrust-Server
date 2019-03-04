@@ -17,7 +17,7 @@ export class LoadableObject<T> {
     this.loadingSubject.next(loading);
   }
 
-  public bind(promise : Observable<T>) : void {
+  public bind(promise : Observable<T>) : LoadableObject<T> {
     this.loadingSubject.next(true);
     promise.pipe(
       catchError(() => {
@@ -36,12 +36,16 @@ export class LoadableObject<T> {
       }
     });
 
+    return this;
   }
 
-  public succeed(value : T) : void {
+  public succeed(value : T) : LoadableObject<T> {
     this.loadingSubject.next(true);
-    this.valueSubject.next(value);
+    if(value != null) {
+      this.valueSubject.next(value);
+    }
     this.loadingSubject.next(false);
+    return this;
   }
 
 }

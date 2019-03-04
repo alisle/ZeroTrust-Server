@@ -1,12 +1,18 @@
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren} from '@angular/core';
 import {Agent} from "../../_model/Agent";
 import {merge } from "rxjs";
 import {AgentsService} from "../../_services/agents/agents.service";
-import {tap} from "rxjs/operators";
+import {map, tap} from "rxjs/operators";
 import {MatPaginator, MatSort} from "@angular/material";
 import {LogWriter} from "../../log-writer";
 import {PageableDataSource} from "../../_services/pageable-data-source";
 import {Router} from "@angular/router";
+import {LoadableObject} from "../../_model/LoadableObject";
+import {AgentCount} from "../../_model/AgentCount";
+import {ChartNode} from "../../_model/graphs/ChartNode";
+
+import * as d3 from 'd3';
+import {GraphScheme} from "../../_model/graphs/GraphScheme";
 
 @Component({
   selector: 'app-agents',
@@ -33,10 +39,26 @@ export class AgentsComponent implements OnInit, AfterViewInit {
     'destinationConnectionCount'
   ];
 
+
   selectedRow : Agent = null;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort : MatSort;
+
+  totalAgents : LoadableObject<number> = new LoadableObject(true);
+  totalAlive : LoadableObject<number> = new LoadableObject(true);
+  sourceMap : LoadableObject<AgentCount[]> = new LoadableObject(true);
+  destinationMap : LoadableObject<AgentCount[]> = new LoadableObject(true);
+
+  private sourceMapData : AgentCount[];
+  private destinationMapData : AgentCount[];
+
+  activeOutgoingScheme : GraphScheme =  new GraphScheme();
+  activeIncomingScheme : GraphScheme = new GraphScheme();
+
+  activeIncoming : ChartNode[] = [];
+  activeOutgoing : ChartNode[] = [];
+
 
   ngOnInit() {
     this.dataSource.length$.subscribe(size => {
@@ -50,6 +72,11 @@ export class AgentsComponent implements OnInit, AfterViewInit {
 
     this.log.debug(`requesting first page of agents`);
     this.dataSource.get(0);
+
+    this.totalAlive.bind(this.service.totalAlive());
+    this.totalAgents.bind(this.service.totalAgents());
+    this.sourceMap.bind(this.service.countConnectionsBySource()).value$.subscribe((value : AgentCount[]) => { this.sourceMapData = value; });
+    this.destinationMap.bind(this.service.countConnectionsByDestination()).value$.subscribe((value : AgentCount[]) => { this.destinationMapData = value; });
   }
 
   ngAfterViewInit(): void {
@@ -62,12 +89,42 @@ export class AgentsComponent implements OnInit, AfterViewInit {
           this.dataSource.get(this.paginator.pageIndex);
         })
       ).subscribe();
+
+
+    this.sourceMap.value$.pipe(
+      map((count: AgentCount[]) : ChartNode[] => { return ChartNode.convertAgentCount(count); })
+    ).subscribe((nodes : ChartNode[])  => {
+      this.activeOutgoingScheme.rainbow(nodes);
+      this.activeOutgoing = nodes;
+    });
+
+    this.destinationMap.value$.pipe(
+      map((count: AgentCount[]) : ChartNode[] => { return ChartNode.convertAgentCount(count); })
+    ).subscribe((nodes: ChartNode[]) => {
+      this.activeIncomingScheme.rainbow(nodes);
+      this.activeIncoming = nodes;
+    });
+  }
+
+  selectedGraph(agent) : void {
+    this.log.debug("I got the agent", agent);
+    this.activeIncoming.forEach((node : ChartNode) => {
+      if(node.name == agent.name) {
+        this.router.navigate(['agents', node.uuid ]);
+      }
+    });
+
+    this.activeOutgoing.forEach((node : ChartNode) => {
+      if(node.name == agent.name) {
+        this.router.navigate(['agents', node.uuid ]);
+      }
+    })
   }
 
   selectRow(row) : void {
+    this.log.debug("I got row", row);
     this.selectedRow = row;
     this.router.navigate(['agents', this.selectedRow.uuid ]);
-
   }
 
 }

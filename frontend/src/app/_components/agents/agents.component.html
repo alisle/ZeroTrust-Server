@@ -1,13 +1,71 @@
+<ng-template #loading>
+  <mat-card fxLayout="column" fxLayoutAlign="center center" class="overview" style="min-height: 400px">
+    <mat-progress-spinner color="primary" mode="indeterminate" value=50></mat-progress-spinner>
+  </mat-card>
+</ng-template>
+
 <div>
   <br>
   <div class="container">
     <div fxLayout="row" fxLayoutAlign="center center" class="content">
       <mat-card class="card main-container">
-        <mat-card-title fxLayout.gt-xs="row" fxLayout.xs="column">
-          <h3>Agents</h3>
-        </mat-card-title>
+        <mat-card-header>
+          <mat-card-title fxLayout.gt-xs="row" fxLayout.xs="column"> Agents </mat-card-title>
+          <mat-card-subtitle>
+            Total Agents: <span *ngIf="(totalAgents.loading$ | async)">Loading..</span><span *ngIf="!(totalAgents.loading$ | async)">{{ totalAgents.value$ | async }}</span>, Currently Alive: <span *ngIf="(totalAlive.loading$ | async)">Loading..</span><span *ngIf="!(totalAgents.loading$ | async)">{{totalAlive.value$ | async}}</span>
+          </mat-card-subtitle>
+        </mat-card-header>
         <mat-card-content>
-          <div class="mat-elevation-z8">
+          <div fxFlexAlign="center center" fxLayout="column" fxFlex>
+            <!-- Diagrams -->
+            <div fxFlex>
+              <div fxLayout="row">
+
+                <div fxFlex="50">
+                  <div fxLayout="column" style="min-height: 400px">
+                    <div fxFlex class="header">Active Incoming Connections</div>
+                    <div fxFlex>
+                      <div *ngIf="!(sourceMap.loading$ | async) else loading">
+                        <ngx-charts-bar-vertical
+                          [scheme]="activeIncomingScheme"
+                          [results]="activeIncoming"
+                          [gradient]="false"
+                          [xAxis]="true"
+                          [yAxis]="true"
+                          [legend]="false"
+                          [showXAxisLabel]="false"
+                          [showYAxisLabel]="false"
+                          (select)="selectedGraph($event)">
+                        </ngx-charts-bar-vertical>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div fxFlex="50">
+                  <div fxFlex fxLayout="column">
+                    <div fxFlex class="header">Active Outgoing Connections</div>
+                    <div fxFlex>
+                      <div *ngIf="!(destinationMap.loading$ | async) else loading">
+                        <ngx-charts-bar-vertical
+                          [scheme]="activeOutgoingScheme"
+                          [results]="activeOutgoing"
+                          [gradient]="false"
+                          [xAxis]="true"
+                          [yAxis]="true"
+                          [legend]="false"
+                          [showXAxisLabel]="false"
+                          [showYAxisLabel]="false"
+                          (select)="selectedGraph($event)">
+                        </ngx-charts-bar-vertical>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Table -->
+            <div fxFlex class="mat-title sub-title">All Agents</div>
             <mat-table #table [dataSource]="dataSource" matSort>
               <ng-container matColumnDef="name">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>

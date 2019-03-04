@@ -1,9 +1,6 @@
 package com.notrust.server.repository;
 
-import com.notrust.server.model.Agent;
-import com.notrust.server.model.IPAddress;
-import com.notrust.server.model.ProcessCount;
-import com.notrust.server.model.UserCount;
+import com.notrust.server.model.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -64,6 +61,18 @@ public interface AgentRepository extends JpaRepository<Agent, UUID> {
     @Query("SELECT new com.notrust.server.model.ProcessCount(destinationProcessName, COUNT(*)) FROM ConnectionLink WHERE destinationAgent.id = ?1 GROUP BY destinationProcessName")
     List<ProcessCount> countDestinationProcess(@Param("destination_agent_id") UUID id);
 
+    @RestResource(exported = false)
+    @Query("SELECT new com.notrust.server.model.AgentCount(sourceAgent.name, sourceAgent.id, COUNT(*)) FROM ConnectionLink GROUP BY sourceAgent.id")
+    List<AgentCount> countGroupBySourceAgentId();
+
+    @RestResource(exported = false)
+    @Query("SELECT new com.notrust.server.model.AgentCount(destinationAgent.name, destinationAgent.id, COUNT(*)) FROM ConnectionLink GROUP BY destinationAgent.id")
+    List<AgentCount> countGroupByDestinationAgentId();
 
 
+    @RestResource(exported = true, path = "total-agents", rel = "totalAgents")
+    long countByAliveIsTrueOrAliveIsFalse();
+
+    @RestResource(exported = true, path = "total-alive-agents", rel = "totalAliveAgents")
+    long countByAliveIsTrue();
 }

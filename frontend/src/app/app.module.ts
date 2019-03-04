@@ -25,6 +25,7 @@ import {
   ConnectionLinksDetailsDialog,
   ConnectionLinksTableComponent
 } from './_components/connection-links-table/connection-links-table.component';
+import {NgxChartsModule} from "@swimlane/ngx-charts";
 
 @NgModule({
   declarations: [
@@ -49,6 +50,7 @@ import {
     FlexLayoutModule,
     HttpClientModule,
     MomentModule,
+    NgxChartsModule,
   ],
   providers: [
     AgentsService,
