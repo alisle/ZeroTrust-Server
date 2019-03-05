@@ -4,6 +4,8 @@ import {PageableClient} from "../pageable-client";
 import {ConnectionLink} from "../../_model/ConnectionLink";
 import {LogWriter} from "../../log-writer";
 import {DefaultService} from "../default.service";
+import {Observable} from "rxjs";
+import {map} from "rxjs/operators";
 
 @Injectable()
 export class ConnectionLinkService extends DefaultService<ConnectionLink>  {
@@ -82,5 +84,26 @@ export class ConnectionLinkService extends DefaultService<ConnectionLink>  {
   }
 
 
+  private count(endpoint: string) : Observable<Object> {
+    let url = `${this.base_url}${this.URL}/search/${endpoint}`;
+
+    return this.http.get(url);
+  }
+
+  totalAlive() : Observable<number> {
+    return this.count("total-alive-connection-links").pipe(
+      map((res: Object) : number => {
+        return res as number;
+      })
+    );
+  }
+
+  totalConnectionLinks() : Observable<number> {
+    return this.count("total-connection-links").pipe(
+      map((res: Object) : number => {
+        return res as number;
+      })
+    )
+  }
 
 }

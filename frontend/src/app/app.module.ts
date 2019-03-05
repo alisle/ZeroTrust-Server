@@ -13,7 +13,6 @@ import { AgentsComponent } from './_components/agents/agents.component';
 import { HttpClientModule} from "@angular/common/http";
 import {MomentModule} from "ngx-moment";
 import { AgentDetailsComponent } from './_components/agent-details/agent-details.component';
-import { ConnectionsComponent } from './_components/connections/connections.component';
 import {ConnectionsService} from "./_services/connections/connections.service";
 import {ConnectionLinkService} from "./_services/connection-links/connection-link.service";
 import {ConnectionLinksComponent } from './_components/connection-links/connection-links.component';
@@ -34,7 +33,6 @@ import {NgxChartsModule} from "@swimlane/ngx-charts";
     DashboardComponent,
     AgentsComponent,
     AgentDetailsComponent,
-    ConnectionsComponent,
     ConnectionLinksComponent,
     ConnectionLinkDetailsComponent,
     ConnectionLinksDetailsDialog,

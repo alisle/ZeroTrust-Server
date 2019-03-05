@@ -44,7 +44,7 @@
       <div fxFlex>
         <div fxLayout="row">
           <div fxFlex="50" fxLayout="column">
-            <div fxFlex="100" class="header">Outgoing Connections</div>
+            <div fxFlex="100" class="header">Outgoing User Connections</div>
             <div fxFlex="100" *ngIf="!(sourceUserLoad.loading$ | async) else loadingCounts">
               <ngx-charts-advanced-pie-chart
                 [scheme]="userOutgoingConnectionsScheme"
@@ -54,7 +54,7 @@
             </div>
           </div>
           <div fxFlex="50" fxLayout="column">
-            <div fxFlex="100" class="header">Incoming Connections</div>
+            <div fxFlex="100" class="header">Incoming User Connections</div>
             <div fxFlex="100" *ngIf="!(destinationUserLoad.loading$ | async) else loadingCounts">
               <ngx-charts-advanced-pie-chart
                 [scheme]="userIncomingConnectionsScheme"
@@ -70,7 +70,7 @@
       <div fxFlex>
         <div fxLayout="row">
           <div fxFlex="50" fxLayout="column">
-            <div fxFlex="100" class="header">Outgoing Connections</div>
+            <div fxFlex="100" class="header">Outgoing Processes Connections</div>
             <div fxFlex="100" *ngIf="!(sourceProcessLoad.loading$ | async) else loadingCounts">
               <ngx-charts-advanced-pie-chart
                 [scheme]="processOutgoingConnectionsScheme"
@@ -80,7 +80,7 @@
             </div>
           </div>
           <div fxFlex="50" fxLayout="column">
-            <div fxFlex="100" class="header">Incoming Connections</div>
+            <div fxFlex="100" class="header">Incoming Processes Connections</div>
             <div fxFlex="100" *ngIf="!(destinationProcessLoad.loading$ | async) else loadingCounts">
               <ngx-charts-advanced-pie-chart
                 [scheme]="processIncomingConnectionsScheme"

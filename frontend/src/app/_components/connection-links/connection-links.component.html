@@ -3,13 +3,19 @@
   <div class="container">
     <div fxLayout="row" fxLayoutAlign="center center" class="content">
       <mat-card class="card main-container">
-        <mat-card-title fxLayout.gt-xs="row" fxLayout.xs="column">
-          <h3>Links</h3>
-        </mat-card-title>
+        <mat-card-header>
+          <mat-card-title fxLayout.gt-xs="row" fxLayout.xs="column">Connection Links</mat-card-title>
+          <mat-card-subtitle>
+            Total Connections:
+            <span *ngIf="(totalConnections.loading$ | async)">Loading</span>
+            <span *ngIf="!(totalConnections.loading$ | async)">{{ totalConnections.value$ | async}}</span>,
+            Alive Connections:
+            <span *ngIf="(totalAliveConnections.loading$ | async)">Loading</span>
+            <span *ngIf="!(totalAliveConnections.loading$ | async)">{{ totalAliveConnections.value$ | async}}</span>
+          </mat-card-subtitle>
+        </mat-card-header>
         <mat-card-content>
-          <div class="mat-elevation-z8">
-            <app-connection-links-table [dataSource]="dataSource"></app-connection-links-table>
-          </div>
+          <app-connection-links-table [dataSource]="dataSource"></app-connection-links-table>
         </mat-card-content>
       </mat-card>
     </div>

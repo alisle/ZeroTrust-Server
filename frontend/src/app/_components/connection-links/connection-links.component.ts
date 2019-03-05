@@ -7,6 +7,7 @@ import {MAT_DIALOG_DATA, MatDialog, MatDialogRef, MatPaginator, MatSort} from "@
 import {merge} from "rxjs";
 import {tap} from "rxjs/operators";
 import {PageableClient} from "../../_services/pageable-client";
+import {LoadableObject} from "../../_model/LoadableObject";
 
 @Component({
   selector: 'app-connectionlinks',
@@ -17,9 +18,17 @@ import {PageableClient} from "../../_services/pageable-client";
 export class ConnectionLinksComponent implements OnInit{
   private pageableClient : PageableClient<ConnectionLink>  = this.service.allConnectionLinks();
 
+  totalConnections : LoadableObject<number> = new LoadableObject(true);
+  totalAliveConnections : LoadableObject<number> = new LoadableObject(true);
+
+
   constructor(private service: ConnectionLinkService, public dialog: MatDialog) {}
   dataSource = new PageableDataSource<ConnectionLink>(this.pageableClient);
-  ngOnInit() {}
+
+  ngOnInit() {
+    this.totalConnections.bind(this.service.totalConnectionLinks());
+    this.totalAliveConnections.bind(this.service.totalAlive());
+  }
 }
 
 
