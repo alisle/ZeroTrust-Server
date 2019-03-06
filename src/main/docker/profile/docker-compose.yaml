@@ -19,10 +19,4 @@ services:
         - SPRING_PROFILES_ACTIVE=prod
       depends_on:
         - truststore-postgresql
-      networks:
-        - notrust-network
-
-
-networks:
-  notrust-network:
-    driver: bridge
+      
