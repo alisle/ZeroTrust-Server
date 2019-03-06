@@ -32,7 +32,7 @@
           <div fxFlex="100" *ngIf="!(sourceGraphLoad.loading$ | async) else loadingGraph" fxLayoutAlign="center center">
             <svg #sourceDiagram></svg>
           </div>
-          <div fxFlex="100" class="header">Active Outgoing Connections</div>
+          <div fxFlex="100" class="header">Active Incoming Connections</div>
           <div fxFlex="100" *ngIf="!(destinationGraphLoad.loading$ | async) else loadingGraph" fxLayoutAlign="center center">
             <svg #destinationDiagram></svg>
           </div>
