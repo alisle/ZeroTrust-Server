@@ -6,8 +6,8 @@ services:
       - POSTGRES_DB=notrust
       - POSTGRES_PASSWORD=notrust_password
     restart: always
-    ports:
-      - 5432:5432
+    #ports:
+    #  - 5432:5432
   truststore-app:
       image: truststore:latest
       ports:
