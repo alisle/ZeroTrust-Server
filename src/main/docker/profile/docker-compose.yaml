@@ -26,4 +26,3 @@ services:
 networks:
   notrust-network:
     driver: bridge
-    name:  notrust-network

@@ -1,4 +1,4 @@
-FROM frolvlad/alpine-oraclejdk8:slim
+FROM adoptopenjdk/openjdk11
 MAINTAINER Alex Lisle <alex.lisle@gmail.com>
 
 ARG JAR_FILE
