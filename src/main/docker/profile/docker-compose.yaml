@@ -1,4 +1,4 @@
-version: '3.5'
+version: '3.2'
 services:
   truststore-postgresql:
     image: postgres:9.6.5
