@@ -5,6 +5,7 @@ import com.notrust.server.ServerApplication;
 import com.notrust.server.model.Connection;
 import com.notrust.server.model.dto.ConnectionCloseDTO;
 import com.notrust.server.model.dto.ConnectionOpenDTO;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,6 +17,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Optional;
 
+@Slf4j
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ServerApplication.class)
 public class ConnectionServiceImplTest {
@@ -62,7 +64,8 @@ public class ConnectionServiceImplTest {
         Assert.assertEquals(open.getId(), closeConnection.getId());
         Assert.assertEquals(open.getTimestamp(), openConnection.getStart());
         Assert.assertEquals(close.getTimestamp(), closeConnection.getEnd());
-        Assert.assertEquals(open.getTimestamp().toEpochMilli() - close.getTimestamp().toEpochMilli(), closeConnection.getDuration());
+        
+        Assert.assertEquals(close.getTimestamp().toEpochMilli() - open.getTimestamp().toEpochMilli(), closeConnection.getDuration());
     }
 
     @Test
