@@ -74,8 +74,8 @@
               <ng-container matColumnDef="alive">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Alive</mat-header-cell>
                 <mat-cell *matCellDef="let agent">
-                  <mat-icon *ngIf="agent.alive" class="icon">check</mat-icon>
-                  <mat-icon *ngIf="!agent.alive" class="icon">close</mat-icon>
+                  <mat-icon *ngIf="agent.alive">check</mat-icon>
+                  <mat-icon *ngIf="!agent.alive">close</mat-icon>
                 </mat-cell>
               </ng-container>
               <ng-container matColumnDef="lastSeen">
@@ -123,8 +123,10 @@
 
               <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
               <mat-row
+                style= "margin-bottom: 3px"
                 (click)="selectRow(row)"
-                [ngClass]="{ 'highlight' : (selectedRow != null) && (row == selectedRow ) }"
+                [ngClass]="{ 'highlight' : (selectedRow != null) && (row == selectedRow )}"
+                [style.border-left]="row.alive == true ? '5px solid #00DD00' : '5px solid #FF0000'"
                 *matRowDef="let row; columns: displayedColumns;"></mat-row>
             </mat-table>
             <mat-paginator [pageSizeOptions]="[10, 20, 50, 100]" showFirstLastButtons></mat-paginator>

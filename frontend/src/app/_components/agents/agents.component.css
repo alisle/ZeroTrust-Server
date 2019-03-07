@@ -25,3 +25,13 @@
   font-weight: bolder;
 }
 
+
+.icon {
+  display: inline-block;
+  height: 30px;
+  margin: 0 auto;
+  text-align: center;
+  vertical-align: middle;
+}
+
+
