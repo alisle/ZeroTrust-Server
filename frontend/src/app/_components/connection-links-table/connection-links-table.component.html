@@ -44,7 +44,7 @@
   <ng-container matColumnDef="sourcePort">
     <mat-header-cell *matHeaderCellDef mat-sort-header>Source Port</mat-header-cell>
     <mat-cell *matCellDef="let link">{{link.sourcePort}}</mat-cell>
-  </ng-container>
+  </ng-container>A
 
   <ng-container matColumnDef="sourceProcessName">
     <mat-header-cell *matHeaderCellDef mat-sort-header>Source Process Name</mat-header-cell>
@@ -83,6 +83,9 @@
   <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
   <mat-row
     (click)="selectRow(row)"
-    *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    *matRowDef="let row; columns: displayedColumns;"
+    [style.border-left]="row.alive == true ? '5px solid #00DD00' : '5px solid #FF0000'">
+
+  </mat-row>
 </mat-table>
 <mat-paginator [pageSizeOptions]="[10, 20, 50, 100]" showFirstLastButtons></mat-paginator>

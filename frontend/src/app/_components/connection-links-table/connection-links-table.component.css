@@ -1,0 +1,7 @@
+.mat-row:hover {
+  background-color: lightgrey;
+}
+
+.mat-row {
+  margin-bottom: 3px;
+}

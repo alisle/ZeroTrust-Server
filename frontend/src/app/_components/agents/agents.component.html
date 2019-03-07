@@ -123,7 +123,6 @@
 
               <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
               <mat-row
-                style= "margin-bottom: 3px"
                 (click)="selectRow(row)"
                 [ngClass]="{ 'highlight' : (selectedRow != null) && (row == selectedRow )}"
                 [style.border-left]="row.alive == true ? '5px solid #00DD00' : '5px solid #FF0000'"
