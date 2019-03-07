@@ -60,6 +60,9 @@ public interface ConnectionLinkRepository extends JpaRepository<ConnectionLink, 
     @RestResource(exported = true, path="active-destination-agent-id", rel="findActiveByDestinationAgentID")
     Page<ConnectionLink> findAllByDestinationAgentIdAndAliveTrue(Pageable pageable, @Param("destination_agent_id") UUID destination);
 
+    @RestResource(exported = true, path="active", rel = "findActive")
+    Page<ConnectionLink> findAllByAliveIsTrue(Pageable pageable);
+
     @RestResource(exported = true, path = "total-connection-links", rel = "totalConnectionLinks")
     long countByAliveIsTrueOrAliveIsFalse();
 

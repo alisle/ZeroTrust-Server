@@ -12,7 +12,7 @@ export class ConnectionLinkService extends DefaultService<ConnectionLink>  {
   private log : LogWriter = new LogWriter("connection-link.service");
 
   constructor(http: HttpClient) {
-    super("connection_links", "/connection_links", http);
+    super("connection_links", "connection_links", http);
   }
 
   allConnectionLinks() : PageableClient<ConnectionLink> {
@@ -83,6 +83,15 @@ export class ConnectionLinkService extends DefaultService<ConnectionLink>  {
 
   }
 
+  aliveConnections() : PageableClient<ConnectionLink> {
+    this.log.debug(`requesting all live connections`);
+    let client = this.search("active");
+    client.pageSize = 1000;
+    client.sortOn = "timestamp";
+    client.sortDirection = "ASC";
+
+    return client;
+  }
 
   private count(endpoint: string) : Observable<Object> {
     let url = `${this.base_url}${this.URL}/search/${endpoint}`;
