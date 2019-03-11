@@ -29,7 +29,7 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: ip_address
-                  type: varchar(255)
+                  type: bigint
                   constraints:
                     nullable: false
 

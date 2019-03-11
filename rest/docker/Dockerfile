@@ -1,4 +1,4 @@
-FROM adoptopenjdk/openjdk11
+FROM adoptopenjdk/openjdk10
 MAINTAINER Alex Lisle <alex.lisle@gmail.com>
 
 ARG JAR_FILE

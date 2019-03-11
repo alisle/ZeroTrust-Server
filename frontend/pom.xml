@@ -93,7 +93,7 @@
           </dependency>
         </dependencies>
         <configuration>
-          <repository>frontend</repository>
+          <repository>zerotrust-frontend</repository>
           <tag>latest</tag>
           <contextDirectory>${project.build.directory}</contextDirectory>
           <buildArgs>
