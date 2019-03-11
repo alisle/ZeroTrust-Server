@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import * as shape from "d3-shape";
 import {LoadableObject} from "../../_model/LoadableObject";
 import {ConnectionLink} from "../../_model/ConnectionLink";
@@ -14,7 +14,7 @@ import {LogWriter} from "../../log-writer";
   templateUrl: './active-connections-graph.component.html',
   styleUrls: ['./active-connections-graph.component.css']
 })
-export class ActiveConnectionsGraphComponent implements OnInit {
+export class ActiveConnectionsGraphComponent implements OnInit, AfterViewInit {
   private log : LogWriter = new LogWriter("active-connections-graph-component");
   private pageableClient : PageableClient<ConnectionLink> = this.service.aliveConnections();
   curve = shape.curveBundle.beta(1);
@@ -24,6 +24,9 @@ export class ActiveConnectionsGraphComponent implements OnInit {
 
   ngOnInit() {
     this.activeConnections.bind(this.pageableClient.page(0, "DefaultConnectionLinkProjection"));
+  }
+
+  ngAfterViewInit(): void {
     this.activeConnections.value$.pipe(
       map((page : Page<ConnectionLink>) : DAG => {
         let dag = new DAG();
@@ -64,10 +67,11 @@ export class ActiveConnectionsGraphComponent implements OnInit {
           });
         }
 
-       return dag;
+        return dag;
       })).subscribe((dag : DAG) => {
-        this.graph = dag;
-      });
+      this.graph = dag;
+    });
   }
+
 
 }
