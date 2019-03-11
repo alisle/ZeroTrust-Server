@@ -6,7 +6,9 @@
   <artifactId>frontend</artifactId>
   <groupId>com.notrust</groupId>
   <version>0.0.1-SNAPSHOT</version>
-  <packaging>pom</packaging>
+  <packaging>jar</packaging>
+  <name>NoTrust Front End</name>
+  <description>FrontEnd for the NoTrust REST API</description>
 
   <build>
     <plugins>
@@ -50,6 +52,59 @@
               <arguments>run-script build</arguments>
             </configuration>
             <phase>generate-resources</phase>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>3.1.0</version>
+        <executions>
+          <execution>
+            <id>docker-resources</id>
+            <phase>validate</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>target/</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>docker/</directory>
+                  <filtering>false</filtering>
+                  <excludes>
+                    <exclude>**/*.yml</exclude>
+                  </excludes>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>com.spotify</groupId>
+        <artifactId>dockerfile-maven-plugin</artifactId>
+        <version>1.3.4</version>
+        <dependencies>
+          <dependency>
+            <groupId>javax.activation</groupId>
+            <artifactId>activation</artifactId>
+            <version>1.1.1</version>
+          </dependency>
+        </dependencies>
+        <configuration>
+          <repository>frontend</repository>
+          <tag>latest</tag>
+          <contextDirectory>${project.build.directory}</contextDirectory>
+          <buildArgs>
+          </buildArgs>
+        </configuration>
+        <executions>
+          <execution>
+            <id>default</id>
+            <goals>
+              <goal>build</goal>
+            </goals>
           </execution>
         </executions>
       </plugin>

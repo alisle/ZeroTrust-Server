@@ -6,8 +6,6 @@ services:
       - POSTGRES_DB=notrust
       - POSTGRES_PASSWORD=notrust_password
     restart: always
-    #ports:
-    #  - 5432:5432
   truststore-app:
       image: truststore:latest
       ports:
@@ -16,3 +14,9 @@ services:
         - SPRING_PROFILES_ACTIVE=prod
       depends_on:
         - truststore-postgresql
+  truststore-frontend:
+      image: frontend:latest
+      ports:
+        - 4300:80
+      depends_on:
+        - truststore-app
