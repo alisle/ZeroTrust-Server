@@ -6,8 +6,6 @@ services:
       - POSTGRES_DB=zerotrust
       - POSTGRES_PASSWORD=zerotrust_password
     restart: always
-    ports:
-      - 5432:5432
   zerotrust-rest:
       image: zerotrust-rest:latest
       ports:

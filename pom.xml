@@ -7,7 +7,7 @@
     <artifactId>server</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>NoTrust Server</name>
-    <description>Server for NoTrust Track</description>
+    <description>Server for ZeroTrust Track</description>
     <packaging>pom</packaging>
     <modules>
         <module>frontend</module>

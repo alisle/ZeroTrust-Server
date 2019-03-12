@@ -7,8 +7,8 @@
   <groupId>com.notrust</groupId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
-  <name>NoTrust Front End</name>
-  <description>FrontEnd for the NoTrust REST API</description>
+  <name>ZeroTrust Front End</name>
+  <description>FrontEnd for the ZeroTrust REST API</description>
 
   <build>
     <plugins>

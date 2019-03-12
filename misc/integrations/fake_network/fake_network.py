@@ -9,7 +9,7 @@ import uuid
 import copy
 
 
-
+NUM_OF_AGENTS=2
 SERVER = "http://localhost:8080"
 HEADERS = { "Content-Type": "application/json" }
 
@@ -210,7 +210,7 @@ usernames = create_usernames()
 print "Loaded " + str(len(usernames)) + " usernames"
 
 print "Online Agents"
-agents = unleash_agents(10, names, HEADERS)
+agents = unleash_agents(NUM_OF_AGENTS, names, HEADERS)
 
 ticker = 0
 while True:
