@@ -1,11 +1,10 @@
 import {Observable} from "rxjs";
-import {ConnectionLink} from "../_model/ConnectionLink";
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {map} from "rxjs/operators";
 import {PageableClient} from "./pageable-client";
 
 export abstract class DefaultService<T> {
-  protected base_url = "http://localhost:8080/";
+  protected base_url = "http://localhost:4300/api";
 
   protected constructor(protected key : string, protected URL : string, protected http: HttpClient) {}
 
