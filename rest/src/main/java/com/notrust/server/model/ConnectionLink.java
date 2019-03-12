@@ -67,11 +67,11 @@ public class ConnectionLink {
 
 
     // This is horrible, got to find a better way of doing this.
-    @Formula("SELECT agent.name FROM agent agent WHERE agent.id =  source_agent_id")
+    @Formula("(SELECT agent.name FROM agent agent WHERE agent.id =  source_agent_id)")
     private String sourceAgentName;
 
     // Mate, this too is horrible.
-    @Formula("SELECT agent.name FROM agent agent WHERE agent.id = destination_agent_id")
+    @Formula("(SELECT agent.name FROM agent agent WHERE agent.id = destination_agent_id)")
     private String destinationAgentName;
 
     @NotNull

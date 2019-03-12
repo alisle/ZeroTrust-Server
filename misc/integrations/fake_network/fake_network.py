@@ -9,7 +9,7 @@ import uuid
 import copy
 
 
-NUM_OF_AGENTS=2
+NUM_OF_AGENTS=10
 SERVER = "http://localhost:8080"
 HEADERS = { "Content-Type": "application/json" }
 
