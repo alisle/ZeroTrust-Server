@@ -40,16 +40,16 @@ export class AgentsService  extends DefaultService<Agent> {
     return this.processCount("processes-destination", destinationAgent);
   }
 
-  countConnectionsBySource() : Observable<AgentCount[]> {
-    return this.count("count-by-source-agent").pipe(
+  countIncomingConnections() : Observable<AgentCount[]> {
+    return this.count("count-incoming-connections").pipe(
       map( (res: Object) : AgentCount[] => {
         return res as AgentCount[];
       })
     );
   }
 
-  countConnectionsByDestination() : Observable<AgentCount[]> {
-    return this.count("count-by-destination-agent").pipe(
+  countOutgoingConnections() : Observable<AgentCount[]> {
+    return this.count("count-outgoing-connections").pipe(
       map( (res: Object) : AgentCount[] => {
         return res as AgentCount[];
       })

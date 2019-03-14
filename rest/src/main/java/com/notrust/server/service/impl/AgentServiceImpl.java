@@ -3,7 +3,6 @@ package com.notrust.server.service.impl;
 import com.notrust.server.exception.AgentNotFoundException;
 import com.notrust.server.model.*;
 import com.notrust.server.repository.AgentRepository;
-import com.notrust.server.repository.ConnectionLinkRepository;
 import com.notrust.server.service.AgentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -142,13 +141,13 @@ public class AgentServiceImpl implements AgentService {
     }
 
     @Override
-    public List<AgentCount> sourceAgentCount() {
-        return agentRepository.countGroupBySourceAgentId();
+    public List<AgentCount> countIncomingConnections() {
+        return agentRepository.countIncomingConnections();
     }
 
     @Override
-    public List<AgentCount> destinationAgentCount() {
-        return agentRepository.countGroupByDestinationAgentId();
+    public List<AgentCount> countOutgoingConnections() {
+        return agentRepository.countOutgoingConnections();
     }
 }
 

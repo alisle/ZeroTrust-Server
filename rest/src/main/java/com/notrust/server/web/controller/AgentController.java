@@ -85,14 +85,14 @@ public class AgentController {
         return new ResponseEntity<>(this.agentService.destinationProcessCount(id), null, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/search/count-by-source-agent", method = RequestMethod.GET, produces = MediaTypes.HAL_JSON_VALUE)
-    public ResponseEntity<List<AgentCount>>  getSourceAgentCount() {
-        return new ResponseEntity<>(this.agentService.sourceAgentCount(), null, HttpStatus.OK);
+    @RequestMapping(value = "/search/count-incoming-connections", method = RequestMethod.GET, produces = MediaTypes.HAL_JSON_VALUE)
+    public ResponseEntity<List<AgentCount>>  countIncomingConnections() {
+        return new ResponseEntity<>(this.agentService.countIncomingConnections(), null, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/search/count-by-destination-agent", method = RequestMethod.GET, produces = MediaTypes.HAL_JSON_VALUE)
-    public ResponseEntity<List<AgentCount>>  getDestinationAgentCount() {
-        return new ResponseEntity<>(this.agentService.destinationAgentCount(), null, HttpStatus.OK);
+    @RequestMapping(value = "/search/count-outgoing-connections", method = RequestMethod.GET, produces = MediaTypes.HAL_JSON_VALUE)
+    public ResponseEntity<List<AgentCount>>  countOutgoingConnections() {
+        return new ResponseEntity<>(this.agentService.countOutgoingConnections(), null, HttpStatus.OK);
     }
 
 }

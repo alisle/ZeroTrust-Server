@@ -23,9 +23,9 @@
 
                 <div fxFlex="50">
                   <div fxLayout="column" style="min-height: 400px">
-                    <div fxFlex class="header">Active Incoming Connections</div>
+                    <div fxFlex class="header">Active Incoming Connections to Agents</div>
                     <div fxFlex>
-                      <div *ngIf="!(sourceMap.loading$ | async) else loading">
+                      <div *ngIf="!(incomingMap.loading$ | async) else loading">
                         <ngx-charts-bar-vertical
                           [scheme]="activeIncomingScheme"
                           [results]="activeIncoming"
@@ -43,9 +43,9 @@
                 </div>
                 <div fxFlex="50">
                   <div fxFlex fxLayout="column">
-                    <div fxFlex class="header">Active Outgoing Connections</div>
+                    <div fxFlex class="header">Active Outgoing Connections from Agents</div>
                     <div fxFlex>
-                      <div *ngIf="!(destinationMap.loading$ | async) else loading">
+                      <div *ngIf="!(outgoingMap.loading$ | async) else loading">
                         <ngx-charts-bar-vertical
                           [scheme]="activeOutgoingScheme"
                           [results]="activeOutgoing"

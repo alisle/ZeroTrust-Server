@@ -47,8 +47,8 @@ export class AgentsComponent implements OnInit, AfterViewInit {
 
   totalAgents : LoadableObject<number> = new LoadableObject(true);
   totalAlive : LoadableObject<number> = new LoadableObject(true);
-  sourceMap : LoadableObject<AgentCount[]> = new LoadableObject(true);
-  destinationMap : LoadableObject<AgentCount[]> = new LoadableObject(true);
+  incomingMap : LoadableObject<AgentCount[]> = new LoadableObject(true);
+  outgoingMap : LoadableObject<AgentCount[]> = new LoadableObject(true);
 
   private sourceMapData : AgentCount[];
   private destinationMapData : AgentCount[];
@@ -75,8 +75,8 @@ export class AgentsComponent implements OnInit, AfterViewInit {
 
     this.totalAlive.bind(this.service.totalAlive());
     this.totalAgents.bind(this.service.totalAgents());
-    this.sourceMap.bind(this.service.countConnectionsBySource()).value$.subscribe((value : AgentCount[]) => { this.sourceMapData = value; });
-    this.destinationMap.bind(this.service.countConnectionsByDestination()).value$.subscribe((value : AgentCount[]) => { this.destinationMapData = value; });
+    this.incomingMap.bind(this.service.countIncomingConnections()).value$.subscribe((value : AgentCount[]) => { this.sourceMapData = value; });
+    this.outgoingMap.bind(this.service.countOutgoingConnections()).value$.subscribe((value : AgentCount[]) => { this.destinationMapData = value; });
   }
 
   ngAfterViewInit(): void {
@@ -91,16 +91,17 @@ export class AgentsComponent implements OnInit, AfterViewInit {
       ).subscribe();
 
 
-    this.sourceMap.value$.pipe(
+    this.incomingMap.value$.pipe(
       map((count: AgentCount[]) : ChartNode[] => { return ChartNode.convertAgentCount(count); })
     ).subscribe((nodes : ChartNode[])  => {
       this.activeOutgoingScheme.rainbow(nodes);
       this.activeOutgoing = nodes;
     });
 
-    this.destinationMap.value$.pipe(
+    this.outgoingMap.value$.pipe(
       map((count: AgentCount[]) : ChartNode[] => { return ChartNode.convertAgentCount(count); })
     ).subscribe((nodes: ChartNode[]) => {
+      this.log.debug("setting sourcemap nodes", nodes);
       this.activeIncomingScheme.rainbow(nodes);
       this.activeIncoming = nodes;
     });

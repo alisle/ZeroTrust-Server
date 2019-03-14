@@ -23,7 +23,13 @@ export class ChartNode {
     }
 
     return count.map( (agent: AgentCount ) : ChartNode => {
+      if(agent.uuid == null) {
+        // this is an outside node, we need to clean it up.
+        return new ChartNode("unknown", agent.count, null);
+      }
+
       return new ChartNode(agent.agent, agent.count, agent.uuid);
+
     });
   }
 

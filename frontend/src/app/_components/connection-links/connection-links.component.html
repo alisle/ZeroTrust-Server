@@ -17,7 +17,9 @@
         <mat-card-content>
           <div fxFlexAlign="center center" fxLayout="column" fxFlex>
             <div fxFlex class="mat-title sub-title">Active Links</div>
-            <app-active-connections-graph fxFlex="100"></app-active-connections-graph>
+            <div fxFlex="100" style="z-index: 1; overflow: hidden">
+              <app-active-connections-graph  style="z-index: 0;" fxFlex="100"></app-active-connections-graph>
+            </div>
             <div fxFlex class="mat-title sub-title">All Links</div>
             <app-connection-links-table fxFlex="100" [dataSource]="dataSource"></app-connection-links-table>
           </div>

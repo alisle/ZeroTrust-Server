@@ -30,7 +30,7 @@ public interface AgentService {
     List<ProcessCount> sourceProcessCount(UUID uuid) throws AgentNotFoundException;
     List<ProcessCount> destinationProcessCount(UUID uuid) throws AgentNotFoundException;
 
-    List<AgentCount> sourceAgentCount();
-    List<AgentCount> destinationAgentCount();
+    List<AgentCount> countIncomingConnections();
+    List<AgentCount> countOutgoingConnections();
 
 }

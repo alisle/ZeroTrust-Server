@@ -12,7 +12,7 @@ export class ConnectionLinkService extends DefaultService<ConnectionLink>  {
   private log : LogWriter = new LogWriter("connection-link.service");
 
   constructor(http: HttpClient) {
-    super("connection_links", "connection_links", http);
+    super("connection_links", "/connection_links", http);
   }
 
   allConnectionLinks() : PageableClient<ConnectionLink> {

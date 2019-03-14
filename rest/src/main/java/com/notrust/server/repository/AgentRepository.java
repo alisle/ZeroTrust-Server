@@ -61,13 +61,13 @@ public interface AgentRepository extends JpaRepository<Agent, UUID> {
     @Query(value = "SELECT new com.notrust.server.model.ProcessCount(destinationProcessName, COUNT(*)) FROM ConnectionLink WHERE destinationAgent.id = ?1 GROUP BY destinationProcessName")
     List<ProcessCount> countDestinationProcess(@Param("destination_agent_id") UUID id);
 
-    @RestResource(exported = false, path="count-by-source-agent", rel="countBySourceAgent")
-    @Query(value = "SELECT new com.notrust.server.model.AgentCount((SELECT agent.name FROM Agent agent WHERE agent.id = connection.sourceAgent.id) as agent,  connection.sourceAgent.id as uuid, COUNT(*) as count) FROM ConnectionLink connection GROUP BY connection.sourceAgent")
-    List<AgentCount> countGroupBySourceAgentId();
-
-    @RestResource(exported = false, path="count-by-destination-agent", rel="countByDestinationAgent")
+    @RestResource(exported = false, path="count-incoming-connections", rel="countIncomingConnections")
     @Query(value = "SELECT new com.notrust.server.model.AgentCount((SELECT agent.name FROM Agent agent WHERE agent.id = connection.destinationAgent.id) as agent,  connection.destinationAgent.id as uuid, COUNT(*) as count) FROM ConnectionLink connection GROUP BY connection.destinationAgent")
-    List<AgentCount> countGroupByDestinationAgentId();
+    List<AgentCount> countIncomingConnections();
+
+    @RestResource(exported = false, path="count-outgoing-connections", rel="countOutgoingConnections")
+    @Query(value = "SELECT new com.notrust.server.model.AgentCount((SELECT agent.name FROM Agent agent WHERE agent.id = connection.sourceAgent.id) as agent,  connection.sourceAgent.id as uuid, COUNT(*) as count) FROM ConnectionLink connection GROUP BY connection.sourceAgent")
+    List<AgentCount> countOutgoingConnections();
 
 
     @RestResource(exported = true, path = "total-agents", rel = "totalAgents")
