@@ -3,7 +3,6 @@ import {LogWriter} from "../../log-writer";
 import {ActivatedRoute} from "@angular/router";
 import {ConnectionLinkService} from "../../_services/connection-links/connection-link.service";
 import {ConnectionLink} from "../../_model/ConnectionLink";
-import {FlowGraphService} from "../../_services/flowgraph/FlowGraphService";
 import {LoadableObject} from "../../_model/LoadableObject";
 import {Page} from "../../_model/page/page";
 import {Agent} from "../../_model/Agent";
@@ -22,7 +21,6 @@ enum Type {
   styleUrls: ['./connection-link-details.component.css']
 })
 export class ConnectionLinkDetailsComponent implements OnInit, AfterViewInit {
-  private flowGraph : FlowGraphService = new FlowGraphService();
   private log: LogWriter = new LogWriter("connectionlinks-details-component");
 
   constructor(private route: ActivatedRoute, private service: ConnectionLinkService) { }
@@ -83,8 +81,6 @@ export class ConnectionLinkDetailsComponent implements OnInit, AfterViewInit {
 
     this.graphLoad.value$.subscribe((page : Page<ConnectionLink>) => {
       if( page != null) {
-        this.log.debug("creating graph", page);
-        this.populateFlowGraph(400, 400, page);
         this.links = page.items;
       }
     });
@@ -160,114 +156,6 @@ export class ConnectionLinkDetailsComponent implements OnInit, AfterViewInit {
 
 
   ngAfterViewInit(): void {
-    this.diagramElementContainer.changes.subscribe((components: QueryList<ElementRef>) => {
-      if(components.length >= 1) {
-        this.log.debug("found svg with id, starting to create the picture");
-        this.flowGraph.setElement(components.first);
-      } else {
-        this.log.debug("haven't got a component yet, skipping");
-      }
-    });
   }
 
-
-  private createFlowGraphAgent(type: Type, link: ConnectionLink) : string {
-    const source_prefix = "source";
-    const destination_prefix = "destination";
-
-    let agent : Agent = null;
-    let connection : Connection = null;
-    let prefix = "unknown";
-
-    switch(type) {
-      case Type.SOURCE: {
-        agent = link.sourceAgent;
-        connection = link.sourceConnection;
-        prefix = source_prefix;
-      } break;
-      case Type.DESTINATION: {
-        agent = link.destinationAgent;
-        connection = link.destinationConnection;
-        prefix = destination_prefix;
-      }
-    }
-
-
-    let agentID = prefix + "_agent_" + agent.uuid;
-    let userID = prefix + +"_user_" + connection.username;
-    let processID = prefix + "_process_" + connection.processName;
-
-    this.flowGraph.addNode(agentID, agent.name);
-    this.flowGraph.addNode(userID, connection.username);
-    this.flowGraph.addNode(processID, connection.processName);
-
-    switch(type) {
-      case Type.SOURCE: {
-        this.flowGraph.addEdge(agentID, userID);
-        this.flowGraph.addEdge(userID, processID);
-      } break;
-      case Type.DESTINATION: {
-        this.flowGraph.addEdge(processID, userID);
-        this.flowGraph.addEdge(userID, agentID);
-      }
-    }
-
-    return processID;
-  }
-
-  private createFlowGraphIP(type: Type, link:ConnectionLink) : string {
-    const source_prefix = "source_";
-    const destination_prefix = "destination_";
-
-    let port = 0;
-    let address = "unknown";
-    let prefix = "unknown";
-
-    switch(type) {
-      case Type.SOURCE: {
-        address = link.sourceString;
-        port = link.sourcePort;
-        prefix = source_prefix;
-      } break;
-      case Type.DESTINATION: {
-        address = link.destinationString;
-        port = link.destinationPort;
-        prefix = destination_prefix;
-
-      } break;
-    }
-
-    let addressId = prefix +"_address_" + address;
-    let portId = prefix + "_port_" + port;
-    this.flowGraph.addNode(addressId, address);
-    this.flowGraph.addNode(portId, port + "");
-
-    this.flowGraph.addEdge(addressId, portId);
-
-    return addressId;
-  }
-
-
-  private populateFlowGraph(width: number, height: number, page: Page<ConnectionLink>) : void {
-    page.items.forEach((link) => {
-      let sourceLink : string = null;
-      let destinationLink : string = null;
-
-      if(link.sourceAgent != null) {
-        sourceLink = this.createFlowGraphAgent(Type.SOURCE, link);
-      } else {
-        sourceLink = this.createFlowGraphIP(Type.SOURCE, link);
-      }
-
-      if(link.destinationAgent != null) {
-        destinationLink = this.createFlowGraphAgent(Type.DESTINATION, link);
-      } else {
-        destinationLink = this.createFlowGraphIP(Type.DESTINATION, link);
-      }
-
-      this.flowGraph.addEdge(sourceLink, destinationLink);
-    });
-
-    this.flowGraph.draw();
-  }
 }

@@ -28,6 +28,7 @@ import {NgxChartsModule} from "@swimlane/ngx-charts";
 import {NgxGraphModule} from "@swimlane/ngx-graph";
 import { ActiveConnectionsGraphComponent } from './_components/active-connections-graph/active-connections-graph.component';
 import { ConnectionLinkGraphComponent } from './_components/connection-link-graph/connection-link-graph.component';
+import { AgentInboundConnectionsGraphComponent } from './_components/agent-inbound-connections-graph/agent-inbound-connections-graph.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { ConnectionLinkGraphComponent } from './_components/connection-link-grap
     ProcessCountTableComponent,
     ConnectionLinksTableComponent,
     ActiveConnectionsGraphComponent,
-    ConnectionLinkGraphComponent
+    ConnectionLinkGraphComponent,
+    AgentInboundConnectionsGraphComponent
   ],
   imports: [
     BrowserModule,

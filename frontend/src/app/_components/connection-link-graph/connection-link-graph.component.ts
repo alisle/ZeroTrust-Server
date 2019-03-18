@@ -46,12 +46,28 @@ abstract class Node {
   }
 
   public updatePosition(order : number) {
-    this.y = (order * this.positionOffset) + this.padding ;
+    this.y = (order * this.positionOffset) + this.padding;
   }
 
-  public getViewPortHeight() : number {
+  public getAbsoluteHeight() : number {
     console.log(`my height is ${this.y + this.height}`, this);
     return this.y + this.height;
+  }
+
+  public getAbsoluteWidth(frameWidth : number) : number {
+    return (frameWidth / 100) * (this.width + this.x);
+  }
+
+  public getAbsoluteMidpointX(frameWidth : number) : number {
+    return this.getAbsoluteWidth(frameWidth) - ((frameWidth / 100) * this.width);
+  }
+
+  public getAbsoluteMidpointY(frameWidth : number) : number {
+    return this.getAbsoluteHeight() - (this.height / 2);
+  }
+
+  public getAbsoluteX(framewidth: number) : number {
+    return (framewidth / 100) * this.x;
   }
 
 }
@@ -134,9 +150,12 @@ class Graph {
   private incomingUser : Map<string, Node> = new Map<string, Node>();
   private incomingMachine : Map<string, Node>  = new Map<string, Node>();
 
+  private width : number = 0;
   private edges : Edge[] = new Array();
 
-  constructor(private svg) {};
+  constructor(private svg) {
+    this.width = parseInt(svg.style("width"));
+  };
 
   public addConnectionLink(link: ConnectionLink) : void {
     let outgoingProcess = link.sourceProcessName;
@@ -295,14 +314,29 @@ class Graph {
 
     console.log(`drawing edge between ${source.y}, ${destination.y}`, source, destination);
 
-    this.svg.append("line")
-      .attr("x1", source.x + source.width + "%")
-      .attr("y1", source.y + (source.height / 2) + "px")
-      .attr("x2", destination.x + "%")
-      .attr("y2", destination.y + ( destination.height /2) + "px")
-      .attr("stroke", color)
-      .attr("stroke-width", 1)
+    let x1 = source.getAbsoluteWidth(this.width);
+    let y1 = source.getAbsoluteMidpointY(this.width);
+
+    let x2 = destination.getAbsoluteX(this.width);
+    let y2 = destination.getAbsoluteMidpointY(this.width);
+
+    let points : [number, number][] = [
+      [ x1, y1 ],
+      [ x2, y2 ],
+    ];
+
+    let line = d3.line()
+      .x((d: [number, number]) => { return d[0]; })
+      .y((d: [number, number]) => { return d[1]; })
+      .curve(d3.curveStep);
+
+
+    this.svg.append("path")
+      .attr("d", line(points))
+      .attr("stroke", "blue")
+      .attr("stroke-width", 2)
       .attr("fill", "none");
+
   }
 
   public draw() : void {
@@ -353,7 +387,7 @@ class Graph {
 
   private setHeight() {
     let height = 0;
-    this.nodes.forEach((node : Node) => { height = (node.getViewPortHeight() > height) ? node.getViewPortHeight() : height });
+    this.nodes.forEach((node : Node) => { height = (node.getAbsoluteHeight() > height) ? node.getAbsoluteHeight() : height });
     height = height + 55;
     this.svg.attr("height", height);
   }

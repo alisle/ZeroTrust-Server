@@ -26,17 +26,11 @@
         <div *ngIf="!(connectionCountLoad.loading$ | async) else loadingCount">
           <span>These two machines have spoken {{ connectionCount }} times</span>
         </div>
-      <!--
         <div *ngIf="!(graphLoad.loading$ | async) else loading" fxLayoutAlign="center center">
-          <svg #diagram></svg>
+          <div fxFlex="100">
+            <app-connection-link-graph [links]="links"></app-connection-link-graph>
+          </div>
         </div>
-  -->
-
-      <div *ngIf="!(graphLoad.loading$ | async) else loading" fxLayoutAlign="center center">
-        <div fxFlex="100">
-          <app-connection-link-graph [links]="links"></app-connection-link-graph>
-        </div>
-      </div>
 
         <!-- Program Details -->
       <div fxFlex class="mat-title sub-title">Process Details</div>
