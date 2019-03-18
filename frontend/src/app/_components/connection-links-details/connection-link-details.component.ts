@@ -37,6 +37,7 @@ export class ConnectionLinkDetailsComponent implements OnInit, AfterViewInit {
   connectionLink : ConnectionLink = null;
   connectionCount : number = 0;
 
+  links : ConnectionLink[];
 
   @ViewChildren('diagram', { read: ElementRef })  diagramElementContainer: QueryList<ElementRef>;
 
@@ -84,6 +85,7 @@ export class ConnectionLinkDetailsComponent implements OnInit, AfterViewInit {
       if( page != null) {
         this.log.debug("creating graph", page);
         this.populateFlowGraph(400, 400, page);
+        this.links = page.items;
       }
     });
 

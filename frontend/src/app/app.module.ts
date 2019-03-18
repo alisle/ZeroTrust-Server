@@ -16,7 +16,7 @@ import { AgentDetailsComponent } from './_components/agent-details/agent-details
 import {ConnectionsService} from "./_services/connections/connections.service";
 import {ConnectionLinkService} from "./_services/connection-links/connection-link.service";
 import {ConnectionLinksComponent } from './_components/connection-links/connection-links.component';
-import { ConnectionLinkDetailsComponent } from './_components/connectionlinks-details/connection-link-details.component';
+import { ConnectionLinkDetailsComponent } from './_components/connection-links-details/connection-link-details.component';
 import {FlowGraphService} from "./_services/flowgraph/FlowGraphService";
 import { UserCountTableComponent } from './_components/user-count-table/user-count-table.component';
 import { ProcessCountTableComponent } from './_components/process-count-table/process-count-table.component';
@@ -27,6 +27,7 @@ import {
 import {NgxChartsModule} from "@swimlane/ngx-charts";
 import {NgxGraphModule} from "@swimlane/ngx-graph";
 import { ActiveConnectionsGraphComponent } from './_components/active-connections-graph/active-connections-graph.component';
+import { ConnectionLinkGraphComponent } from './_components/connection-link-graph/connection-link-graph.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { ActiveConnectionsGraphComponent } from './_components/active-connection
     UserCountTableComponent,
     ProcessCountTableComponent,
     ConnectionLinksTableComponent,
-    ActiveConnectionsGraphComponent
+    ActiveConnectionsGraphComponent,
+    ConnectionLinkGraphComponent
   ],
   imports: [
     BrowserModule,

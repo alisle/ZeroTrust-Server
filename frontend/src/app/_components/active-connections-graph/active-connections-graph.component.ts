@@ -8,6 +8,7 @@ import {PageableClient} from "../../_services/pageable-client";
 import {DAG} from "../../_model/graphs/DAG";
 import {map} from "rxjs/operators";
 import {LogWriter} from "../../log-writer";
+import {GraphScheme} from "../../_model/graphs/GraphScheme";
 
 @Component({
   selector: 'app-active-connections-graph',
@@ -19,6 +20,7 @@ export class ActiveConnectionsGraphComponent implements OnInit, AfterViewInit {
   private pageableClient : PageableClient<ConnectionLink> = this.service.aliveConnections();
   curve = shape.curveBundle.beta(1);
   graph : DAG = new DAG();
+  graphScheme : GraphScheme = new GraphScheme();
   activeConnections : LoadableObject<Page<ConnectionLink>> = new LoadableObject(true);
   constructor(private service : ConnectionLinkService) { }
 
@@ -32,6 +34,7 @@ export class ActiveConnectionsGraphComponent implements OnInit, AfterViewInit {
         let dag = new DAG();
 
         if(page != null) {
+          this.graphScheme.rainbow(page.items);
           page.items.forEach((link : ConnectionLink, index : number) => {
             let sourceNodeName = link.sourceAgentName;
             let sourceNodeID : string = null;

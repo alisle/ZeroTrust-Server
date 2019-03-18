@@ -6,10 +6,10 @@ export class GraphScheme {
   private log : LogWriter = new LogWriter("graphscheme");
   public domain : string[];
 
-  rainbow(nodes : ChartNode[]) : void {
+  rainbow(nodes : Object[]) : void {
     this.log.debug("got ndoes", nodes);
     let colorScale = d3.scaleLinear().domain([0, nodes.length]).range([0, 1]);
-    this.domain =  nodes.map((node : ChartNode, index : number) : string => {
+    this.domain =  nodes.map((node : Object, index : number) : string => {
       return d3.interpolateRainbow(colorScale(index));
     });
   }

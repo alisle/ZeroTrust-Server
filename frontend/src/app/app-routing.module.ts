@@ -5,7 +5,7 @@ import {DashboardComponent} from "./_components/dashboard/dashboard.component";
 import {AgentsComponent} from "./_components/agents/agents.component";
 import {AgentDetailsComponent} from "./_components/agent-details/agent-details.component";
 import {ConnectionLinksComponent} from "./_components/connection-links/connection-links.component";
-import {ConnectionLinkDetailsComponent} from "./_components/connectionlinks-details/connection-link-details.component";
+import {ConnectionLinkDetailsComponent} from "./_components/connection-links-details/connection-link-details.component";
 
 const routes: Routes = [
   { path: '', component: WelcomeComponent },

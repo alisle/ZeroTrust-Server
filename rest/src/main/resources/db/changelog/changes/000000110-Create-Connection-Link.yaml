@@ -107,8 +107,6 @@ databaseChangeLog:
                   constraints:
                     nullable: false
 
-
-
               - column:
                   name: alive
                   type: boolean
@@ -144,31 +142,64 @@ databaseChangeLog:
                   type: varchar(255)
                   constraints:
                     nullable: true
+        - createIndex:
+            columns:
+              - column:
+                  name: source_agent_id
+                  type: uuid
+              - column:
+                  name: alive
+                  type: boolean
+            indexName: idx_source_agent_alive
+            tableName: connection_link
 
-  - addForeignKeyConstraint:
-      baseColumnNames: source_agent_id
-      baseTableName: connection_link
-      constraintName: fk_connection_link_source_agent_id
-      referencedColumnNames: id
-      referencedTableName: agent
+        - createIndex:
+            columns:
+              - column:
+                  name: destination_agent_id
+                  type: uuid
+              - column:
+                  name: alive
+                  type: boolean
+            indexName: idx_destination_agent_alive
+            tableName: connection_link
 
-  - addForeignKeyConstraint:
-      baseColumnNames: destination_agent_id
-      baseTableName: connection_link
-      constraintName: fk_connection_link_destination_agent_id
-      referencedColumnNames: id
-      referencedTableName: agent
+        - createIndex:
+            columns:
+              - column:
+                  name: source_agent_id
+                  type: uuid
+              - column:
+                  name: destination_agent_id
+                  type: uuid
+            indexName: idx_source_agent_destination_agent
+            tableName: connection_link
 
-  - addForeignKeyConstraint:
-      baseColumnNames: source_connection
-      baseTableName: connection_link
-      constraintName: fk_connection_link_source_connection_id
-      referencedColumnNames: id
-      referencedTableName: connection
+        - addForeignKeyConstraint:
+            baseColumnNames: source_agent_id
+            baseTableName: connection_link
+            constraintName: fk_connection_link_source_agent_id
+            referencedColumnNames: id
+            referencedTableName: agent
 
-  - addForeignKeyConstraint:
-      baseColumnNames: destination_connection
-      baseTableName: connection_link
-      constraintName: fk_connection_link_destination_connection_id
-      referencedColumnNames: id
-      referencedTableName: connection
+        - addForeignKeyConstraint:
+            baseColumnNames: destination_agent_id
+            baseTableName: connection_link
+            constraintName: fk_connection_link_destination_agent_id
+            referencedColumnNames: id
+            referencedTableName: agent
+
+        - addForeignKeyConstraint:
+            baseColumnNames: source_connection_id
+            baseTableName: connection_link
+            constraintName: fk_connection_link_source_connection_id
+            referencedColumnNames: id
+            referencedTableName: connection
+
+        - addForeignKeyConstraint:
+            baseColumnNames: destination_connection_id
+            baseTableName: connection_link
+            constraintName: fk_connection_link_destination_connection_id
+            referencedColumnNames: id
+            referencedTableName: connection
+

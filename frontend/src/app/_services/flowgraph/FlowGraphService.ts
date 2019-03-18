@@ -109,10 +109,9 @@ export class FlowGraphService {
 
     this.graph.edges().forEach((e) => {
       let edge = this.graph.edge(e);
-      this.log.debug("drawing edge", edge);
 
       // Because of some fuckery between d3 / dagre being JS and converting to TS we need to change this mapping
-      // otherwise the compiler which bitch.
+      // otherwise the compiler will bitch.
 
       let points : [number, number][] = [
         [ edge.points[0].x, edge.points[0].y ],
