@@ -29,13 +29,21 @@
       <div fxFlex>
         <div fxLayout="column">
           <div fxFlex="100" class="header">Active Outbound Connections</div>
-          <!-- <app-agent-inbound-connections-graph></app-agent-inbound-connections-graph> -->
-          <div fxFlex="100" *ngIf="!(sourceGraphLoad.loading$ | async) else loadingGraph" fxLayoutAlign="center center">
-            <svg #sourceDiagram></svg>
+          <div *ngIf="!(sourceGraphLoad.loading$ | async) else loadingGraph" fxLayoutAlign="center center" style="width:100%">
+            <div fxFlex="100">
+              <app-agent-outbound-connections-graph [links]="sourceLinks"></app-agent-outbound-connections-graph>
+            </div>
           </div>
-          <div fxFlex="100" class="header">Active Inbound Connections</div>
+<!--          <div fxFlex="100" class="header">Active Inbound Connections</div> -->
+
           <div fxFlex="100" *ngIf="!(destinationGraphLoad.loading$ | async) else loadingGraph" fxLayoutAlign="center center">
             <svg #destinationDiagram></svg>
+          </div>
+
+          <div *ngIf="!(destinationGraphLoad.loading$ | async) else loadingGraph" fxLayoutAlign="center center" style="width:100%">
+            <div fxFlex="100">
+              <app-agent-inbound-connections-graph [links]="destinationLinks"></app-agent-inbound-connections-graph>
+            </div>
           </div>
         </div>
       </div>

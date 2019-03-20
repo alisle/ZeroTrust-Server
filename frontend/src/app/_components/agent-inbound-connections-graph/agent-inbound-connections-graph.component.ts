@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {ConnectionLink} from "../../_model/ConnectionLink";
 
 @Component({
   selector: 'app-agent-inbound-connections-graph',
@@ -6,6 +7,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./agent-inbound-connections-graph.component.css']
 })
 export class AgentInboundConnectionsGraphComponent implements OnInit {
+
+  @Input()
+  links : ConnectionLink[];
 
   constructor() { }
 

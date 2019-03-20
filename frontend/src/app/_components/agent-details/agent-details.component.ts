@@ -44,6 +44,9 @@ export class AgentDetailsComponent implements OnInit, AfterViewInit {
 
   agent : Agent = null;
 
+  sourceLinks : ConnectionLink[] = [];
+  destinationLinks : ConnectionLink[] = [];
+
   userOutgoingConnectionsScheme : GraphScheme = new GraphScheme();
   userOutgoingConnections : ChartNode[] = [];
 
@@ -57,7 +60,6 @@ export class AgentDetailsComponent implements OnInit, AfterViewInit {
   processIncomingConnectionsScheme : GraphScheme = new GraphScheme();
   processIncomingConnections : ChartNode[] = [];
 
-  @ViewChildren('sourceDiagram', { read: ElementRef }) sourceDiagramElementContainer : QueryList<ElementRef>;
   @ViewChildren('destinationDiagram', { read: ElementRef }) destinationDiagramElementContainer: QueryList<ElementRef>;
 
   constructor(private route: ActivatedRoute, private service: AgentsService, private connectionLinkService: ConnectionLinkService) {
@@ -84,7 +86,6 @@ export class AgentDetailsComponent implements OnInit, AfterViewInit {
       if( agent != null) {
         this.log.debug("loaded agent:", agent);
         this.agent = agent;
-        this.createSourceDiagram(agent);
         this.createDestinationDiagram(agent);
       }
     });
@@ -135,14 +136,23 @@ export class AgentDetailsComponent implements OnInit, AfterViewInit {
     let destination = this.connectionLinkService.activeDestinationConnections(id);
     destination.pageSize = 100;
     this.destinationGraphLoad.bind(destination.page(0))
+
+    this.sourceGraphLoad.value$.subscribe((page : Page<ConnectionLink>) => {
+      if( page != null) {
+        this.sourceLinks = page.items;
+      }
+    });
+
+    this.destinationGraphLoad.value$.subscribe((page : Page<ConnectionLink>) => {
+      if( page != null) {
+        this.destinationLinks = page.items;
+      }
+    });
+
+
   }
 
   ngAfterViewInit(): void {
-    this.sourceDiagramElementContainer.changes.subscribe((components: QueryList<ElementRef>) => {
-      if(components.length >= 1) {
-        this.sourceFlowGraph.setElement(components.first)
-      }
-    });
 
     this.destinationDiagramElementContainer.changes.subscribe((components: QueryList<ElementRef>) => {
       if(components.length >= 1) {
@@ -193,48 +203,6 @@ export class AgentDetailsComponent implements OnInit, AfterViewInit {
     });
 
     this.destinationFlowGraph.draw();
-  }
-  createSourceDiagram(agent: Agent) {
-
-    this.sourceGraphLoad.value$.subscribe((page : Page<ConnectionLink>) => {
-      if(page == null) {
-        return;
-      }
-
-      page.items.forEach((link) => {
-        let process_id = "process_" + link.sourceProcessName;
-        let link_id = link.uuid + "_dest_link";
-        let link_node = link.uuid + "_dest_node";
-
-        this.sourceFlowGraph.addNode(process_id, link.sourceProcessName);
-        this.sourceFlowGraph.addEdge(link.sourceString, process_id);
-
-        if(link.destinationProcessName != null) {
-          this.sourceFlowGraph.addNode(link_id, link.destinationProcessName);
-        } else {
-          this.sourceFlowGraph.addNode(link_id, link.destinationPort + "");
-        }
-
-        this.sourceFlowGraph.addEdge(process_id, link_id);
-
-        if(link.destinationAgent != null) {
-          this.sourceFlowGraph.addNode(link_node, link.destinationAgent.name);
-        } else {
-          this.sourceFlowGraph.addNode(link_node, link.destinationString);
-        }
-
-        this.sourceFlowGraph.addEdge(link_id, link_node);
-
-      });
-    });
-
-    this.sourceFlowGraph.addNode("agent", agent.name);
-    agent.addresses.forEach((address : IPAddress) => {
-      this.sourceFlowGraph.addNode(address.addressString, address.addressString);
-      this.sourceFlowGraph.addEdge("agent", address.addressString);
-    });
-
-    this.sourceFlowGraph.draw();
   }
 
 }
