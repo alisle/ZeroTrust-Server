@@ -31,7 +31,8 @@
           <div fxFlex="100" class="header">Active Outbound Connections</div>
           <div *ngIf="!(sourceGraphLoad.loading$ | async) else loadingGraph" fxLayoutAlign="center center" style="width:100%">
             <div fxFlex="100">
-              <app-agent-outbound-connections-graph [links]="sourceLinks"></app-agent-outbound-connections-graph>
+              <!--<app-agent-outbound-connections-graph [links]="sourceLinks"></app-agent-outbound-connections-graph>-->
+              <app-connection-link-graph [links]="sourceLinks"></app-connection-link-graph>
             </div>
           </div>
           <div fxFlex="100" class="header">Active Inbound Connections</div>

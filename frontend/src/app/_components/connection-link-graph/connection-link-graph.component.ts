@@ -128,7 +128,7 @@ class IncomingPort extends ConnectionGraphNode {
   constructor(id : string, label: string) {
     super("incoming_port_" + id, label);
     this.width = 5;
-    this.x = 51;
+    this.x = 50.5;
   }
 }
 
