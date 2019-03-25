@@ -5,6 +5,7 @@ import com.zerotrust.server.model.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 public interface AgentService {
@@ -32,7 +33,5 @@ public interface AgentService {
 
     List<AgentCount> countIncomingConnections();
     List<AgentCount> countOutgoingConnections();
-
-    List<Connection> aliveConnections(UUID uuid);
 
 }

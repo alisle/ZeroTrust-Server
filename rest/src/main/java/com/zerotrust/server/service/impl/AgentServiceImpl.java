@@ -1,28 +1,28 @@
 package com.zerotrust.server.service.impl;
 
+import com.zerotrust.server.events.NewCloseConnection;
+import com.zerotrust.server.events.NewOpenConnection;
 import com.zerotrust.server.exception.AgentNotFoundException;
 import com.zerotrust.server.model.*;
 import com.zerotrust.server.repository.AgentRepository;
 import com.zerotrust.server.repository.ConnectionRepository;
 import com.zerotrust.server.service.AgentService;
+import com.zerotrust.server.service.ConnectionService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
 public class AgentServiceImpl implements AgentService {
     private final AgentRepository agentRepository;
-    private final ConnectionRepository connectionRepository;
 
-    public AgentServiceImpl(AgentRepository agentRepository, ConnectionRepository connectionRepository) {
+    public AgentServiceImpl(AgentRepository agentRepository) {
         this.agentRepository = agentRepository;
-        this.connectionRepository = connectionRepository;
     }
 
     @Override
@@ -153,10 +153,16 @@ public class AgentServiceImpl implements AgentService {
         return agentRepository.countOutgoingConnections();
     }
 
-    @Override
-    public List<Connection> aliveConnections(UUID uuid) {
-        return connectionRepository.findByAliveIsTrueAndAgentId(uuid);
+    @org.springframework.context.event.EventListener
+    public void onApplicationEvent(NewOpenConnection newOpenConnection) {
+        seen(newOpenConnection.getConnection().getAgent());
     }
+
+    @EventListener
+    public void onApplicationEvent(NewCloseConnection newCloseConnection) {
+        seen(newCloseConnection.getConnection().getAgent());
+    }
+
 }
 
 

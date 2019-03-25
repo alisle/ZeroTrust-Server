@@ -117,7 +117,7 @@ databaseChangeLog:
               nullable: false
         - column:
             name: command_line
-            type: varchar(1024)
+            type: varchar(5120)
 
     - createIndex:
         columns:

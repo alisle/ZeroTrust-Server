@@ -14,33 +14,38 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
 public class ConnectionServiceImpl implements ConnectionService {
+    private final AgentService agentService;
     private final ConnectionMapper connectionMapper;
     private final ConnectionRepository connectionRepository;
-    private final AgentService agentService;
     private final ApplicationEventPublisher applicationEventPublisher;
 
-    public ConnectionServiceImpl(ConnectionMapper connectionMapper, ConnectionRepository connectionRepository, AgentService agentService, ApplicationEventPublisher applicationEventPublisher) {
+    public ConnectionServiceImpl(AgentService agentService, ConnectionMapper connectionMapper, ConnectionRepository connectionRepository, ApplicationEventPublisher applicationEventPublisher) {
+        this.agentService = agentService;
         this.connectionMapper = connectionMapper;
         this.connectionRepository = connectionRepository;
-        this.agentService = agentService;
         this.applicationEventPublisher = applicationEventPublisher;
     }
 
     @Override
     public Optional<Connection> open(ConnectionOpenDTO dto) {
         try {
+
             Connection connection = connectionMapper.OpenDTOtoConnection(dto);
             if(connection.getId() == null) {
                 return Optional.empty();
             }
 
+            log.debug("saving connection:" + connection);
             agentService.seen(connection.getAgent());
 
             connection = connectionRepository.save(connection);
@@ -48,6 +53,9 @@ public class ConnectionServiceImpl implements ConnectionService {
             if(connection != null) {
                 applicationEventPublisher.publishEvent(new NewOpenConnection(this, connection));
             }
+
+            connection = connectionRepository.save(connection);
+
 
             return Optional.ofNullable(connection);
         } catch (InvalidIPAddress exception ) {
@@ -58,29 +66,33 @@ public class ConnectionServiceImpl implements ConnectionService {
     }
 
     @Override
-    public Optional<Connection> close(ConnectionCloseDTO dto) {
-        if(dto.getId() == null) {
-            //  We don't know what started this so we'll ignore it.
-            return Optional.empty();
-        }
-
-
-        Optional<Connection> option = connectionRepository.findById(dto.getId());
+    public Optional<Connection> close(UUID id, Optional<Instant> timestamp) {
+        Optional<Connection> option = connectionRepository.findById(id);
         if(!option.isPresent()) {
             // We don't seem to have the connection in our DB.
             return Optional.empty();
         }
 
-
         Connection connection = option.get();
         agentService.seen(connection.getAgent());
 
-        connection.setEnd(dto.getTimestamp());
+
+        connection.setEnd(timestamp.orElse(Instant.now()));
         connection.setDuration(connection.getEnd().toEpochMilli() - connection.getStart().toEpochMilli());
+
         connection = connectionRepository.save(connection);
         applicationEventPublisher.publishEvent(new NewCloseConnection(this, connection));
 
-        return Optional.ofNullable(connection);
+        return Optional.of(connectionRepository.save(connection));
+    }
+
+    @Override
+    public Optional<Connection> close(ConnectionCloseDTO dto) {
+        if(dto.getId() == null) {
+            //  We don't know what started this so we'll ignore it.
+            return Optional.empty();
+        }
+        return this.close(dto.getId(), Optional.of(dto.getTimestamp()));
     }
 
     @Override
@@ -97,4 +109,24 @@ public class ConnectionServiceImpl implements ConnectionService {
     public List<Connection> findAliveConnections(UUID agent) {
         return connectionRepository.findByAliveIsTrueAndAgentId(agent);
     }
+
+    @Override
+    public List<Connection> aliveConnections(UUID uuid) {
+        return findAliveConnections(uuid);
+    }
+
+    @Override
+    public void validateConnections(UUID id, Set<Long> connections) {
+        List<Connection> dbConnections = findAliveConnections(id);
+        List<Connection> closedConnections = dbConnections.stream().
+                filter(connection ->
+                        connections.contains(connection.getConnectionHash()))
+                .collect(Collectors.toList());
+
+        closedConnections.stream().forEach(connection -> {
+            close(connection.getId(), Optional.empty());
+        });
+    }
+
+
 }

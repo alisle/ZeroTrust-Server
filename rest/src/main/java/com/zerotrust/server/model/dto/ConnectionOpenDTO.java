@@ -24,10 +24,10 @@ public class ConnectionOpenDTO {
     @JsonProperty("protocol")
     private Protocol protocol;
 
-    @JsonProperty("sourceString")
+    @JsonProperty("source")
     private String source;
 
-    @JsonProperty("destinationString")
+    @JsonProperty("destination")
     private String destination;
 
     @JsonProperty("source_port")

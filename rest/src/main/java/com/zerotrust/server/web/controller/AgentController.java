@@ -16,17 +16,22 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.print.attribute.standard.Media;
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/agents")
 @Slf4j
 public class AgentController {
+    private final ConnectionService connectionService;
     private final AgentService agentService;
     private final IPMapper ipMapper;
 
-    public AgentController(AgentService agentService, IPMapper ipMapper) {
+    public AgentController(ConnectionService connectionService, AgentService agentService, IPMapper ipMapper) {
+        this.connectionService = connectionService;
         this.agentService = agentService;
         this.ipMapper = ipMapper;
     }
@@ -49,10 +54,11 @@ public class AgentController {
     }
 
     @RequestMapping( value = "/{id}/alive-connections", method = RequestMethod.POST, produces = MediaTypes.HAL_JSON_VALUE)
-    public ResponseEntity aliveConnections(@PathVariable("id") UUID id)  {
-        log.debug("REST Request to get alive connections for agent: " + id);
-        List<Connection> connections = agentService.aliveConnections(id);
-        return new ResponseEntity<>(connections, null, HttpStatus.OK);
+    public ResponseEntity aliveConnections(@PathVariable("id") UUID id, @Valid @RequestBody Set<Long> connections)  {
+
+        log.debug("REST update to alive connections from : " + id);
+        connectionService.validateConnections(id, connections);
+        return new ResponseEntity(HttpStatus.OK);
     }
 
 

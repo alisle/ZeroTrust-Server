@@ -15,8 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Slf4j
 @RunWith(SpringRunner.class)
@@ -119,5 +118,45 @@ public class ConnectionServiceImplTest {
 
     }
 
+    @Test
+    public void testAliveConnections() throws Exception {
+        ConnectionOpenDTO open = CreationUtils.ConnectionNewDTO();
+        service.open(open).orElseThrow(() -> new RuntimeException("oh dear"));
+        List<Connection> connectionList = service.aliveConnections(open.getAgent());
+
+        Assert.assertEquals(1, connectionList.size());
+        Assert.assertEquals(open.getId(), connectionList.get(0).getId());
+
+    }
+
+    @Test
+    public void testValidConnections() throws Exception {
+        Random random = new Random();
+        UUID agent = UUID.randomUUID();
+        Set<Long> hashes = new HashSet<>();
+        Set<Long> killedHashes = new HashSet<>();
+
+        for(int connection = 0; connection < 100; connection++) {
+            ConnectionOpenDTO open = CreationUtils.ConnectionNewDTO();
+            open.setAgent(agent);
+            open.setHash(random.nextLong());
+            hashes.add(open.getHash());
+
+            if(connection % 2 == 0) {
+                killedHashes.add(open.getHash());
+            }
+
+            service.open(open).orElseThrow(() -> new RuntimeException("oh dear"));
+        }
+
+        Assert.assertEquals(100, service.aliveConnections(agent).size());
+
+        service.validateConnections(agent, killedHashes);
+        Assert.assertEquals(50, service.aliveConnections(agent).size());
+
+        service.aliveConnections(agent).stream().forEach(connection -> {
+            Assert.assertFalse(killedHashes.contains(connection.getConnectionHash()));
+        });
+    }
 }
 
