@@ -1,11 +1,15 @@
 package com.zerotrust.server.web.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.zerotrust.server.CreationUtils;
 import com.zerotrust.server.ServerApplication;
 import com.zerotrust.server.model.Agent;
 import com.zerotrust.server.model.dto.AgentOnlineDTO;
+import com.zerotrust.server.model.dto.ConnectionCloseDTO;
+import com.zerotrust.server.model.dto.ConnectionOpenDTO;
 import com.zerotrust.server.model.dto.UpdateInterfacesDTO;
 import com.zerotrust.server.service.AgentService;
+import com.zerotrust.server.service.ConnectionService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
 import org.junit.Before;
@@ -23,8 +27,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.util.UUID;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Slf4j
@@ -37,6 +40,10 @@ public class AgentControllerTest {
 
     @Autowired
     private AgentService service;
+
+    @Autowired
+    private ConnectionService connectionService;
+
 
     private MockMvc mockMvc;
 
@@ -101,6 +108,24 @@ public class AgentControllerTest {
 
         Agent agent  = service.get(agentdto.getId()).orElseThrow(() -> new RuntimeException("oh dear"));
         Assert.assertEquals(2, agent.getAddresses().size());
+    }
+
+    @Test
+    public void testAliveConnections() throws Exception {
+        ObjectMapper objectMapper = new ObjectMapper();
+        ConnectionOpenDTO open = CreationUtils.ConnectionNewDTO();
+
+        connectionService.open(open).orElseThrow(() -> new RuntimeException("oh dear"));
+
+        MvcResult result = mockMvc.perform(get("/agents/" + open.getAgent())
+                .contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andReturn();
+
+
+
+
+
     }
 
 }

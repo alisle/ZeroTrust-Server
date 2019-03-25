@@ -29,4 +29,8 @@ public interface ConnectionRepository extends JpaRepository<Connection, UUID> {
     @RestResource(exported = false)
     List<Connection> findByConnectionHash(long connectionHash);
 
+    @RestResource(exported = false)
+    List<Connection> findByAliveIsTrueAndAgentId(UUID agent);
+
+
 }

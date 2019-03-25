@@ -3,6 +3,7 @@ package com.zerotrust.server.service.impl;
 import com.zerotrust.server.exception.AgentNotFoundException;
 import com.zerotrust.server.model.*;
 import com.zerotrust.server.repository.AgentRepository;
+import com.zerotrust.server.repository.ConnectionRepository;
 import com.zerotrust.server.service.AgentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -17,9 +18,11 @@ import java.util.UUID;
 @Service
 public class AgentServiceImpl implements AgentService {
     private final AgentRepository agentRepository;
+    private final ConnectionRepository connectionRepository;
 
-    public AgentServiceImpl(AgentRepository agentRepository) {
+    public AgentServiceImpl(AgentRepository agentRepository, ConnectionRepository connectionRepository) {
         this.agentRepository = agentRepository;
+        this.connectionRepository = connectionRepository;
     }
 
     @Override
@@ -148,6 +151,11 @@ public class AgentServiceImpl implements AgentService {
     @Override
     public List<AgentCount> countOutgoingConnections() {
         return agentRepository.countOutgoingConnections();
+    }
+
+    @Override
+    public List<Connection> aliveConnections(UUID uuid) {
+        return connectionRepository.findByAliveIsTrueAndAgentId(uuid);
     }
 }
 

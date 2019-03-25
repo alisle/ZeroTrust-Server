@@ -33,4 +33,6 @@ public interface AgentService {
     List<AgentCount> countIncomingConnections();
     List<AgentCount> countOutgoingConnections();
 
+    List<Connection> aliveConnections(UUID uuid);
+
 }

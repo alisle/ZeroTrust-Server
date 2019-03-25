@@ -67,7 +67,7 @@ public class ConnectionServiceImpl implements ConnectionService {
 
         Optional<Connection> option = connectionRepository.findById(dto.getId());
         if(!option.isPresent()) {
-            // We donn't seem to have the connection in our DB.
+            // We don't seem to have the connection in our DB.
             return Optional.empty();
         }
 
@@ -91,5 +91,10 @@ public class ConnectionServiceImpl implements ConnectionService {
     @Override
     public List<Connection> findConnectionHash(long connectionHash) {
         return connectionRepository.findByConnectionHash(connectionHash);
+    }
+
+    @Override
+    public List<Connection> findAliveConnections(UUID agent) {
+        return connectionRepository.findByAliveIsTrueAndAgentId(agent);
     }
 }

@@ -7,12 +7,14 @@ import com.zerotrust.server.model.dto.AgentOnlineDTO;
 import com.zerotrust.server.model.dto.UpdateInterfacesDTO;
 import com.zerotrust.server.service.AgentService;
 import com.zerotrust.server.model.*;
+import com.zerotrust.server.service.ConnectionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.print.attribute.standard.Media;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
@@ -45,6 +47,14 @@ public class AgentController {
 
         return new ResponseEntity(HttpStatus.OK);
     }
+
+    @RequestMapping( value = "/{id}/alive-connections", method = RequestMethod.POST, produces = MediaTypes.HAL_JSON_VALUE)
+    public ResponseEntity aliveConnections(@PathVariable("id") UUID id)  {
+        log.debug("REST Request to get alive connections for agent: " + id);
+        List<Connection> connections = agentService.aliveConnections(id);
+        return new ResponseEntity<>(connections, null, HttpStatus.OK);
+    }
+
 
     @RequestMapping(value = "/{id}/interfaces", method = RequestMethod.POST, produces = MediaTypes.HAL_JSON_VALUE)
     public ResponseEntity updateInterfaces(@PathVariable("id") UUID id, @Valid @RequestBody UpdateInterfacesDTO dto) throws AgentNotFoundException, InvalidIPAddress {

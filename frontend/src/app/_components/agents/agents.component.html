@@ -23,20 +23,22 @@
 
                 <div fxFlex="50">
                   <div fxLayout="column" style="min-height: 400px">
-                    <div fxFlex class="header">Active Incoming Connections to Agents</div>
-                    <div fxFlex>
+                    <div fxFlex="100" class="header">Active Incoming Connections to Agents</div>
+                    <div fxFlex="100">
                       <div *ngIf="!(incomingMap.loading$ | async) else loading">
-                        <ngx-charts-bar-vertical
-                          [scheme]="activeIncomingScheme"
-                          [results]="activeIncoming"
-                          [gradient]="false"
-                          [xAxis]="true"
-                          [yAxis]="true"
-                          [legend]="false"
-                          [showXAxisLabel]="false"
-                          [showYAxisLabel]="false"
-                          (select)="selectedGraph($event)">
-                        </ngx-charts-bar-vertical>
+                        <div fxFlex="100" style="height: 400px">
+                          <ngx-charts-bar-vertical
+                            [scheme]="activeIncomingScheme"
+                            [results]="activeIncoming"
+                            [gradient]="false"
+                            [xAxis]="true"
+                            [yAxis]="true"
+                            [legend]="false"
+                            [showXAxisLabel]="false"
+                            [showYAxisLabel]="false"
+                            (select)="selectedGraph($event)">
+                          </ngx-charts-bar-vertical>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -46,17 +48,19 @@
                     <div fxFlex class="header">Active Outgoing Connections from Agents</div>
                     <div fxFlex>
                       <div *ngIf="!(outgoingMap.loading$ | async) else loading">
-                        <ngx-charts-bar-vertical
-                          [scheme]="activeOutgoingScheme"
-                          [results]="activeOutgoing"
-                          [gradient]="false"
-                          [xAxis]="true"
-                          [yAxis]="true"
-                          [legend]="false"
-                          [showXAxisLabel]="false"
-                          [showYAxisLabel]="false"
-                          (select)="selectedGraph($event)">
-                        </ngx-charts-bar-vertical>
+                        <div fxFlex="100" style="height: 400px">
+                          <ngx-charts-bar-vertical
+                            [scheme]="activeOutgoingScheme"
+                            [results]="activeOutgoing"
+                            [gradient]="false"
+                            [xAxis]="true"
+                            [yAxis]="true"
+                            [legend]="false"
+                            [showXAxisLabel]="false"
+                            [showYAxisLabel]="false"
+                            (select)="selectedGraph($event)">
+                          </ngx-charts-bar-vertical>
+                        </div>
                       </div>
                     </div>
                   </div>

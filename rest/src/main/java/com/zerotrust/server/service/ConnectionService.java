@@ -13,5 +13,6 @@ public interface ConnectionService {
     Optional<Connection> close(ConnectionCloseDTO dto);
     Optional<Connection> get(UUID id);
 
+    List<Connection> findAliveConnections(UUID agent);
     List<Connection> findConnectionHash(long connectionHash);
 }

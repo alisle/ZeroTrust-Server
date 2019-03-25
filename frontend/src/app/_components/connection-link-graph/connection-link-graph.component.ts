@@ -1,31 +1,40 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {AfterViewInit, Component, Input, OnInit} from '@angular/core';
 import * as d3 from 'd3';
 
 import {ConnectionLink} from "../../_model/ConnectionLink";
 import {ConnectionGraphNode} from "../../_model/graphs/ConnectionGraphNode";
 import {ConnectionGraph} from "../../_model/graphs/ConnectionGraph";
 
+
 @Component({
   selector: 'app-connection-link-graph',
   templateUrl: './connection-link-graph.component.html',
   styleUrls: ['./connection-link-graph.component.css']
 })
-export class ConnectionLinkGraphComponent implements OnInit {
+export class ConnectionLinkGraphComponent implements OnInit, AfterViewInit {
+  static currentID = 0;
+  public id : string = "GRAPHID" + ConnectionLinkGraphComponent.currentID;
   private svg = null;
   private graph : ConnectionGraph = null;
   @Input()
   links : ConnectionLink[] = null;
 
-  constructor() { }
+  constructor() {
+    ConnectionLinkGraphComponent.currentID += 1;
+  }
 
-  ngOnInit() {
-    this.svg = d3.select("#graph");
+  ngAfterViewInit(): void {
+    this.svg = d3.select("#" + this.id);
     this.graph = this.setupGraph(this.svg);
     this.links.forEach((link : ConnectionLink) => {
       this.addConnectionLink(link);
     });
+
     this.graph.draw();
   }
+
+
+  ngOnInit() {}
 
   private setupGraph(svg) : ConnectionGraph {
     let graph = new ConnectionGraph(svg);
@@ -41,6 +50,7 @@ export class ConnectionLinkGraphComponent implements OnInit {
   }
 
   private addConnectionLink(link : ConnectionLink) : void {
+    console.log("Adding connection", link);
 
     let outgoingProcess = link.sourceProcessName;
     let outgoingUser = (link.sourceConnection != null) ? link.sourceConnection.username : null;
@@ -54,7 +64,7 @@ export class ConnectionLinkGraphComponent implements OnInit {
 
     let outgoingMachineNode = new OutgoingMachine(outgoingMachine, outgoingMachine);
     let outgoingUserNode = new OutgoingUser(outgoingUser, outgoingUser);
-    let outgoingProcessNode = new OutgoingProcess(outgoingProcess, outgoingProcess);
+    let outgoingProcessNode = new OutgoingProcess(link.uuid + outgoingProcess, outgoingProcess);
 
     let incomingPortNode = new IncomingPort(incomingPort, incomingPort);
     let incomingProcessNode = new IncomingProcess(incomingProcess, incomingProcess);

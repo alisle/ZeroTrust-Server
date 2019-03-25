@@ -1,10 +1,14 @@
 package com.zerotrust.server.service;
 
 import com.google.common.net.InetAddresses;
+import com.zerotrust.server.CreationUtils;
 import com.zerotrust.server.ServerApplication;
 import com.zerotrust.server.exception.AgentNotFoundException;
 import com.zerotrust.server.model.Agent;
+import com.zerotrust.server.model.Connection;
 import com.zerotrust.server.model.IPAddress;
+import com.zerotrust.server.model.dto.ConnectionCloseDTO;
+import com.zerotrust.server.model.dto.ConnectionOpenDTO;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,6 +19,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -24,6 +29,9 @@ public class AgentServiceImplTest {
 
     @Autowired
     AgentService service;
+
+    @Autowired
+    ConnectionService connectionService;
 
 
 
@@ -143,6 +151,17 @@ public class AgentServiceImplTest {
             Assert.assertTrue(secondTemplate.contains(address));
             firstTemplate.remove(address);
         }
+
+    }
+
+    @Test
+    public void testAliveConnections() throws Exception {
+        ConnectionOpenDTO open = CreationUtils.ConnectionNewDTO();
+        connectionService.open(open).orElseThrow(() -> new RuntimeException("oh dear"));
+        List<Connection> connectionList = service.aliveConnections(open.getAgent());
+
+        Assert.assertEquals(1, connectionList.size());
+        Assert.assertEquals(open.getId(), connectionList.get(0).getId());
 
     }
 }

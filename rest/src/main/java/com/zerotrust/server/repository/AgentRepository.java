@@ -73,6 +73,7 @@ public interface AgentRepository extends JpaRepository<Agent, UUID> {
     List<AgentCount> countOutgoingConnections();
 
 
+
     @RestResource(exported = true, path = "total-agents", rel = "totalAgents")
     long countByAliveIsTrueOrAliveIsFalse();
 

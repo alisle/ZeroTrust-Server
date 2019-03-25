@@ -141,6 +141,26 @@ export class ConnectionGraph {
 
 
     this.setHeight();
+
+    if(this.nodes.size == 0) {
+      this.svg.append("rect")
+        .attr("x", 0)
+        .attr("y", 0)
+        .attr("width", "100%")
+        .attr("height", "100%")
+        .attr("stroke-width", 0)
+        .attr("fill", "white");
+
+      this.svg.append("text")
+        .attr("x","50%")
+        .attr("y",  "50%")
+        .attr("dominant-baseline", "middle")
+        .attr("text-anchor", "middle")
+        .attr("fill", "black")
+        .text("No Links Found!");
+
+    }
+
   }
 
   private setMaxOrder() {
@@ -155,7 +175,14 @@ export class ConnectionGraph {
   private setHeight() {
     let height = 0;
     this.nodes.forEach((node : ConnectionGraphNode) => { height = (node.getAbsoluteHeight() > height) ? node.getAbsoluteHeight() : height });
-    height = height + 55;
+
+
+    if( height == 0) {
+      // Okay we don't have anything to show, set it to 100px;
+      height = 100;
+    } else {
+      height = height + 55;
+    }
     this.svg.attr("height", height);
   }
 

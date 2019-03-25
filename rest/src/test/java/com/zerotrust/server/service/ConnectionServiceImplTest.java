@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -76,7 +77,47 @@ public class ConnectionServiceImplTest {
 
         Assert.assertEquals(openConnection.getId(), getConnection.getId());
 
+    }
+
+    @Test
+    public void testGetAliveConnectionsSameAgent() {
+        ConnectionOpenDTO open = CreationUtils.ConnectionNewDTO();
+        ConnectionOpenDTO newOpen = CreationUtils.ConnectionNewDTO();
+        ConnectionCloseDTO close = CreationUtils.ConnectionCloseDTO();
+
+        close.setId(open.getId());
+        close.setAgent(open.getAgent());
+        newOpen.setAgent(open.getAgent());
+
+        service.open(open).orElseThrow(() -> new RuntimeException("oh dear"));
+        service.open(newOpen).orElseThrow(() -> new RuntimeException("oh dear"));
+        service.close(close).orElseThrow(() -> new RuntimeException("oh dear"));
+
+        List<Connection> connectionList = service.findAliveConnections(newOpen.getAgent());
+
+        Assert.assertEquals(1, connectionList.size());
+        Assert.assertEquals(newOpen.getId(), connectionList.get(0).getId());
 
     }
+
+    @Test
+    public void testGetAliveConnectionsDifferentAgent() {
+        ConnectionOpenDTO open = CreationUtils.ConnectionNewDTO();
+        ConnectionOpenDTO newOpen = CreationUtils.ConnectionNewDTO();
+        ConnectionCloseDTO close = CreationUtils.ConnectionCloseDTO();
+
+        close.setId(open.getId());
+
+        service.open(open).orElseThrow(() -> new RuntimeException("oh dear"));
+        service.open(newOpen).orElseThrow(() -> new RuntimeException("oh dear"));
+        service.close(close).orElseThrow(() -> new RuntimeException("oh dear"));
+
+        List<Connection> connectionList = service.findAliveConnections(newOpen.getAgent());
+
+        Assert.assertEquals(1, connectionList.size());
+        Assert.assertEquals(newOpen.getId(), connectionList.get(0).getId());
+
+    }
+
 }
 
