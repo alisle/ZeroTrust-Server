@@ -135,6 +135,7 @@ public class ConnectionServiceImplTest {
         UUID agent = UUID.randomUUID();
         Set<Long> hashes = new HashSet<>();
         Set<Long> killedHashes = new HashSet<>();
+        Set<Long> aliveHashes = new HashSet<>();
 
         for(int connection = 0; connection < 100; connection++) {
             ConnectionOpenDTO open = CreationUtils.ConnectionNewDTO();
@@ -144,6 +145,8 @@ public class ConnectionServiceImplTest {
 
             if(connection % 2 == 0) {
                 killedHashes.add(open.getHash());
+            } else {
+                aliveHashes.add(open.getHash());
             }
 
             service.open(open).orElseThrow(() -> new RuntimeException("oh dear"));
@@ -151,7 +154,7 @@ public class ConnectionServiceImplTest {
 
         Assert.assertEquals(100, service.aliveConnections(agent).size());
 
-        service.validateConnections(agent, killedHashes);
+        service.validateConnections(agent, aliveHashes);
         Assert.assertEquals(50, service.aliveConnections(agent).size());
 
         service.aliveConnections(agent).stream().forEach(connection -> {

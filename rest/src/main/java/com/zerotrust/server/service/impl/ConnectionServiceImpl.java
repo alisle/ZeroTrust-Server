@@ -120,7 +120,7 @@ public class ConnectionServiceImpl implements ConnectionService {
         List<Connection> dbConnections = findAliveConnections(id);
         List<Connection> closedConnections = dbConnections.stream().
                 filter(connection ->
-                        connections.contains(connection.getConnectionHash()))
+                        !connections.contains(connection.getConnectionHash()))
                 .collect(Collectors.toList());
 
         closedConnections.stream().forEach(connection -> {
