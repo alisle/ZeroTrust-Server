@@ -113,16 +113,16 @@ def connection_base(source_agent, destination_agent, service):
     payload["agent"] = str(source_agent["uuid"])
     payload["uuid"] = str(uuid.uuid4())
     payload["protocol"] = service["protocol"]
-    payload["sourceString"] = source_agent["ip"]
+    payload["source"] = source_agent["ip"]
     payload["source_port"] = random.randint(2000, 60000)
 
     if destination_agent is not None:
-        payload["destinationString"] = destination_agent["ip"]
+        payload["destination"] = destination_agent["ip"]
     else:
         bits = random.getrandbits(32)
         address = IPv4Address(bits)
         addressString = str(address)
-        payload["destinationString"] = addressString
+        payload["destination"] = addressString
 
     payload["destination_port"] = service["destination_port"]
 
@@ -140,7 +140,7 @@ def post_open(is_source, payload, timestamp, service, headers):
         payload["username"] = service["destination_user_name"]
         payload["uid"] = service["destination_uid"]
 
-    payload["program_details"] = create_program_source(is_source, service, payload["sourceString"], payload["destinationString"])
+    payload["program_details"] = create_program_source(is_source, service, payload["source"], payload["destination"])
 
     response = requests.post(SERVER + "/connections/open", json=payload, headers=headers)
 

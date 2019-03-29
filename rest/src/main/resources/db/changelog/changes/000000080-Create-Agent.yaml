@@ -35,11 +35,6 @@ databaseChangeLog:
                 nullable: true
                 unique: true
         - column:
-            name: registered_at
-            type: timestamp
-            constraints:
-              nullable: true
-        - column:
             name: first_seen
             type: timestamp
             constraints:

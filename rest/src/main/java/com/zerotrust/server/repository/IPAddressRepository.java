@@ -6,6 +6,6 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 @SuppressWarnings("unused")
 @RepositoryRestResource(exported = false)
-public interface IPAddressRepository extends JpaRepository<IPAddress, String> {
+public interface IPAddressRepository extends JpaRepository<IPAddress, Integer> {
 
 }

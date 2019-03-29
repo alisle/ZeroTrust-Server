@@ -16,7 +16,7 @@ databaseChangeLog:
       value: float
       dbms: mysql, oracle, mssql
   - changeSet:
-      id: 000000075-Create-Agent-IPAddress
+      id: 000000085-Create-Agent-IPAddress
       author: alisle
       changes:
         - createTable:

@@ -42,7 +42,7 @@ public class IPAddress {
                     return V4;
                default:
                    return Invalid;
-
+    
             }
         }
     }

@@ -8,6 +8,7 @@ import com.zerotrust.server.repository.AgentRepository;
 import com.zerotrust.server.repository.ConnectionRepository;
 import com.zerotrust.server.service.AgentService;
 import com.zerotrust.server.service.ConnectionService;
+import com.zerotrust.server.service.NetworkService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
@@ -19,9 +20,11 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 public class AgentServiceImpl implements AgentService {
+    private final NetworkService networkService;
     private final AgentRepository agentRepository;
 
-    public AgentServiceImpl(AgentRepository agentRepository) {
+    public AgentServiceImpl(NetworkService networkService, AgentRepository agentRepository) {
+        this.networkService = networkService;
         this.agentRepository = agentRepository;
     }
 
@@ -94,6 +97,14 @@ public class AgentServiceImpl implements AgentService {
     public void updateIPs(Agent agent, IPAddress[] ips) {
         agent.getAddresses().clear();
         agent.getAddresses().addAll(Arrays.asList(ips));
+
+        agent.getNetworks().clear();
+        List<Network> networks = new ArrayList<>();
+        Arrays.stream(ips).forEach(ip -> {
+            networks.addAll(networkService.findNetworks(ip.getAddress(), false));
+        });
+        agent.getNetworks().addAll(networks);
+
         seen(agent);
     }
 

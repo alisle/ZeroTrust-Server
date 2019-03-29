@@ -1,0 +1,150 @@
+databaseChangeLog:
+  - changeSet:
+      id:  000000060-Create-Network
+      author: alisle
+      changes:
+        - createTable:
+            tableName: network
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    unique: true
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(1024)
+                  constraints:
+                    unique: false
+                    nullable: false
+              - column:
+                  name: description
+                  type: varchar(4096)
+                  constraints:
+                    unique: false
+                    nullable: true
+              - column:
+                  name: address_string
+                  type: varchar(255)
+                  constraints:
+                    unique: false
+                    nullable: false
+              - column:
+                  name: address
+                  type: bigint
+                  constraints:
+                    unique: false
+                    nullable: false
+              - column:
+                  name: mask_string
+                  type: varchar(255)
+                  constraints:
+                    unique: false
+                    nullable: false
+              - column:
+                  name: mask
+                  type: bigint
+                  constraints:
+                    unique: false
+                    nullable: false
+        - insert:
+            tableName: network
+            columns:
+              - column:
+                  name: "id"
+                  value: "00000000-0000-0000-0000-000000000000"
+              - column:
+                  name: "name"
+                  value: "Internet"
+              - column:
+                  name: "address"
+                  value : 0
+              - column:
+                  name: "address_string"
+                  value: "0.0.0.0"
+              - column:
+                  name: "mask"
+                  value: 0
+              - column:
+                  name: "mask_string"
+                  value: 0
+              - column:
+                  name: "description"
+                  value: "A series of pipes known as the interwebs."
+        - insert:
+            tableName: network
+            columns:
+              - column:
+                  name: "id"
+                  value: "266b7b71-f9e0-40d1-873a-37f319379786"
+              - column:
+                  name: "name"
+                  value: "Private Range, 192.168.0.0/16"
+              - column:
+                  name: "address"
+                  value: -1062731776
+              - column:
+                  name: "address_string"
+                  value: "192.168.0.0"
+              - column:
+                  name: "mask"
+                  value: -65536
+              - column:
+                  name: "mask_string"
+                  value: "255.255.0.0"
+              - column:
+                  name: "description"
+                  value: "Automatically created network for the 192.168.0.0/16 range"
+
+        - insert:
+            tableName: network
+            columns:
+              - column:
+                  name: "id"
+                  value: "a4982521-7061-447a-9e4c-ad5ec3aae1b7"
+              - column:
+                  name: "name"
+                  value: "Private Range, 172.16.0.0/12"
+              - column:
+                  name: "address"
+                  value: -1408237568
+              - column:
+                  name: "address_string"
+                  value: "172.16.0.0"
+              - column:
+                  name: "mask"
+                  value: -1048576
+              - column:
+                  name: "mask_string"
+                  value: "255.240.0.0"
+              - column:
+                  name: "description"
+                  value: "Automatically created network for the 172.16.0.0/12 range"
+
+
+        - insert:
+            tableName: network
+            columns:
+              - column:
+                  name: "id"
+                  value: "59ed5983-da6a-4036-b2e9-9c613594ddb9"
+              - column:
+                  name: "name"
+                  value: "Private Range, 10.0.0.0/8"
+              - column:
+                  name: "address"
+                  value: 167772160
+              - column:
+                  name: "address_string"
+                  value: "10.0.0.0"
+              - column:
+                  name: "mask"
+                  value: -16777216
+              - column:
+                  name: "mask_string"
+                  value: "255.0.0.0"
+              - column:
+                  name: "description"
+                  value: "Automatically created network for the 10.0.0.0/8 range"

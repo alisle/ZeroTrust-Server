@@ -24,9 +24,6 @@ public class Agent {
     @Column(name = "name", nullable = true)
     private String name;
 
-    @Column(name = "registered_at", nullable = true)
-    private Instant registeredAt;
-
     @Column(name = "firstSeen", nullable = true)
     private Instant firstSeen;
 
@@ -86,5 +83,14 @@ public class Agent {
             inverseJoinColumns = @JoinColumn(name = "ip_address", referencedColumnName = "address"))
     private Set<IPAddress> addresses = new HashSet<>();
 
+    @ToString.Exclude
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {
+            CascadeType.ALL
+    })
+    @JoinTable(name = "agent_network",
+            joinColumns = @JoinColumn(name = "agent_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "network_id", referencedColumnName = "id"))
+
+    private Set<Network> networks = new HashSet<>();
 }
 
