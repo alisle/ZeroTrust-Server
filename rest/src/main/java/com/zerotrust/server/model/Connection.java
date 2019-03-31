@@ -45,6 +45,10 @@ public class Connection {
     @Column(name="protocol", nullable =  false)
     private Protocol protocol;
 
+    @ManyToOne
+    @JoinColumn(name="source_network_id", nullable = true)
+    private Network sourceNetwork;
+
     @NotNull
     @Column(name="source_address", nullable = false)
     private int source;
@@ -52,6 +56,10 @@ public class Connection {
     @NotNull
     @Column(name="source_address_string", nullable = false)
     private String sourceString;
+
+    @ManyToOne
+    @JoinColumn(name="destination_network_id", nullable = true)
+    private Network destinationNetwork;
 
     @NotNull
     @Column(name="destination_address", nullable = false)

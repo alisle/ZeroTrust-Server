@@ -60,6 +60,18 @@ databaseChangeLog:
                     nullable: true
 
               - column:
+                  name : source_network_id
+                  type: uuid
+                  constraints:
+                    nullable: true
+
+              - column:
+                  name : destination_network_id
+                  type: uuid
+                  constraints:
+                    nullable: true
+
+              - column:
                   name: destination_agent_id
                   type: uuid
                   constraints:
@@ -202,4 +214,18 @@ databaseChangeLog:
             constraintName: fk_connection_link_destination_connection_id
             referencedColumnNames: id
             referencedTableName: connection
+
+        - addForeignKeyConstraint:
+            baseColumnNames: source_network_id
+            baseTableName: connection_link
+            constraintName: fk_connection_link_source_network_id
+            referencedColumnNames: id
+            referencedTableName: network
+
+        - addForeignKeyConstraint:
+            baseColumnNames: destination_network_id
+            baseTableName: connection_link
+            constraintName: fk_connection_link_destination_network_id
+            referencedColumnNames: id
+            referencedTableName: network
 

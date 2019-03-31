@@ -5,11 +5,13 @@ import com.zerotrust.server.events.NewOpenConnection;
 import com.zerotrust.server.exception.InvalidIPAddress;
 import com.zerotrust.server.mapper.ConnectionMapper;
 import com.zerotrust.server.model.Connection;
+import com.zerotrust.server.model.Network;
 import com.zerotrust.server.model.dto.ConnectionCloseDTO;
 import com.zerotrust.server.model.dto.ConnectionOpenDTO;
 import com.zerotrust.server.repository.ConnectionRepository;
 import com.zerotrust.server.service.AgentService;
 import com.zerotrust.server.service.ConnectionService;
+import com.zerotrust.server.service.NetworkService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -28,12 +30,14 @@ public class ConnectionServiceImpl implements ConnectionService {
     private final ConnectionMapper connectionMapper;
     private final ConnectionRepository connectionRepository;
     private final ApplicationEventPublisher applicationEventPublisher;
+    private final NetworkService networkService;
 
-    public ConnectionServiceImpl(AgentService agentService, ConnectionMapper connectionMapper, ConnectionRepository connectionRepository, ApplicationEventPublisher applicationEventPublisher) {
+    public ConnectionServiceImpl(AgentService agentService, ConnectionMapper connectionMapper, ConnectionRepository connectionRepository, ApplicationEventPublisher applicationEventPublisher, NetworkService networkService) {
         this.agentService = agentService;
         this.connectionMapper = connectionMapper;
         this.connectionRepository = connectionRepository;
         this.applicationEventPublisher = applicationEventPublisher;
+        this.networkService = networkService;
     }
 
     @Override
@@ -44,6 +48,12 @@ public class ConnectionServiceImpl implements ConnectionService {
             if(connection.getId() == null) {
                 return Optional.empty();
             }
+
+            Network sourceNetwork = networkService.findMostRestrictiveNetwork(connection.getSource());
+            Network destinationNetwork = networkService.findMostRestrictiveNetwork(connection.getDestination());
+
+            connection.setSourceNetwork(sourceNetwork);
+            connection.setDestinationNetwork(destinationNetwork);
 
             log.debug("saving connection:" + connection);
             agentService.seen(connection.getAgent());

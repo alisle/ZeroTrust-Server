@@ -65,6 +65,7 @@ public class ConnectionServiceImplTest {
         Assert.assertEquals(open.getTimestamp(), openConnection.getStart());
         Assert.assertEquals(close.getTimestamp(), closeConnection.getEnd());
 
+        Assert.assertEquals("10.0.0.0", openConnection.getDestinationNetwork().getAddressString());
         Assert.assertEquals(close.getTimestamp().toEpochMilli() - open.getTimestamp().toEpochMilli(), closeConnection.getDuration());
     }
 

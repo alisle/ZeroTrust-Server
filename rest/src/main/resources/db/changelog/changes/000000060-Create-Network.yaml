@@ -13,12 +13,14 @@ databaseChangeLog:
                     unique: true
                     primaryKey: true
                     nullable: false
+
               - column:
                   name: name
                   type: varchar(1024)
                   constraints:
                     unique: false
                     nullable: false
+
               - column:
                   name: description
                   type: varchar(4096)
@@ -81,7 +83,7 @@ databaseChangeLog:
                   value: "266b7b71-f9e0-40d1-873a-37f319379786"
               - column:
                   name: "name"
-                  value: "Private Range, 192.168.0.0/16"
+                  value: "192.168.0.0/16"
               - column:
                   name: "address"
                   value: -1062731776
@@ -106,7 +108,7 @@ databaseChangeLog:
                   value: "a4982521-7061-447a-9e4c-ad5ec3aae1b7"
               - column:
                   name: "name"
-                  value: "Private Range, 172.16.0.0/12"
+                  value: "172.16.0.0/12"
               - column:
                   name: "address"
                   value: -1408237568
@@ -132,7 +134,7 @@ databaseChangeLog:
                   value: "59ed5983-da6a-4036-b2e9-9c613594ddb9"
               - column:
                   name: "name"
-                  value: "Private Range, 10.0.0.0/8"
+                  value: "10.0.0.0/8"
               - column:
                   name: "address"
                   value: 167772160

@@ -17,6 +17,17 @@ public class NetworkServiceImpl implements NetworkService {
         this.networks = repository.findAll();
     }
 
+    public Network findMostRestrictiveNetwork(int address) {
+        List<Network> list = findNetworks(address, true);
+        Network best = list.get(0);
+        for(int x = 0; x < list.size(); x++) {
+            Network network = list.get(x);
+            if(Integer.compareUnsigned(best.getMask(), list.get(x).getMask()) < 0) {
+                best = network;
+            }
+        }
+        return best;
+    }
 
     @Override
     public List<Network> findNetworks(int address, boolean includeInternet) {

@@ -12,9 +12,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-
 import java.net.InetAddress;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -109,4 +107,12 @@ public class NetworkServiceImplTest {
         }
     }
 
+    @Test
+    public void testFindMostRestrictiveNetork() throws Exception {
+        InetAddress inetAddress = InetAddress.getByName("192.168.0.2");
+        int address = InetAddresses.coerceToInteger(inetAddress);
+
+        Network network = service.findMostRestrictiveNetwork(address);
+        Assert.assertEquals("192.168.0.0", network.getAddressString());
+    }
 }

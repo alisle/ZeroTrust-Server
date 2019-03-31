@@ -74,6 +74,20 @@ public class ConnectionLink {
     @Formula("(SELECT agent.name FROM agent agent WHERE agent.id = destination_agent_id)")
     private String destinationAgentName;
 
+    @Formula("(SELECT network.name FROM network network WHERE network.id = destination_network_id)")
+    private String destinationNetworkName;
+
+    @Formula("(SELECT network.name FROM network network WHERE network.id = source_network_id)")
+    private String sourceNetworkName;
+
+    @ManyToOne
+    @JoinColumn(name = "source_network_id")
+    private Network sourceNetwork;
+
+    @ManyToOne
+    @JoinColumn(name = "destination_network_id")
+    private Network destinationNetwork;
+
     @NotNull
     @Column(name = "alive")
     private boolean alive;

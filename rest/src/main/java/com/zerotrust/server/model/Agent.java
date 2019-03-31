@@ -85,7 +85,7 @@ public class Agent {
 
     @ToString.Exclude
     @ManyToMany(fetch = FetchType.EAGER, cascade = {
-            CascadeType.ALL
+            CascadeType.DETACH
     })
     @JoinTable(name = "agent_network",
             joinColumns = @JoinColumn(name = "agent_id", referencedColumnName = "id"),

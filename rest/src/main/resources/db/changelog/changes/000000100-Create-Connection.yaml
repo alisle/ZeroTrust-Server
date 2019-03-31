@@ -40,6 +40,7 @@ databaseChangeLog:
             type: uuid
             constraints:
                 nullable: false
+
         - column:
             name: connection_started
             type: timestamp
@@ -71,6 +72,11 @@ databaseChangeLog:
             constraints:
                 nullable: false
         - column:
+              name: source_network_id
+              type: uuid
+              constraints:
+                  nullable: true
+        - column:
             name: destination_address
             type: int
             constraints:
@@ -80,6 +86,13 @@ databaseChangeLog:
             type: varchar(255)
             constraints:
               nullable: false
+
+        - column:
+            name: destination_network_id
+            type: uuid
+            constraints:
+                nullable: true
+
         - column:
             name: source_port
             type: integer
@@ -128,7 +141,6 @@ databaseChangeLog:
         tableName: connection
 
 
-
     - addForeignKeyConstraint:
         baseColumnNames: agent_id
         baseTableName: connection
@@ -136,4 +148,17 @@ databaseChangeLog:
         referencedColumnNames: id
         referencedTableName: agent
 
+    - addForeignKeyConstraint:
+        baseColumnNames: source_network_id
+        baseTableName: connection
+        constraintName: fk_connection_source_network_id
+        referencedColumnNames: id
+        referencedTableName: network
+
+    - addForeignKeyConstraint:
+        baseColumnNames: destination_network_id
+        baseTableName: connection
+        constraintName: fk_connection_destination_network_id
+        referencedColumnNames: id
+        referencedTableName: network
 
