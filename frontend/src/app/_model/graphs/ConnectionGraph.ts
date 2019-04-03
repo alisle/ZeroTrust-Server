@@ -22,8 +22,8 @@ export class ConnectionGraph {
   }
 
 
-  public addEdge(source : ConnectionGraphNode, destination : ConnectionGraphNode) {
-    this.edges.push(new ConnectionGraphEdge(source.id, destination.id));
+  public addEdge(source : ConnectionGraphNode, destination : ConnectionGraphNode, pivot : number = -1) {
+    this.edges.push(new ConnectionGraphEdge(source.id, destination.id, pivot));
   }
 
 
@@ -85,7 +85,7 @@ export class ConnectionGraph {
       .text(node.label);
   }
 
-  private drawEdge(edge: ConnectionGraphEdge, color: string) {
+  private drawEdge(edge: ConnectionGraphEdge) {
     let source = this.nodes.get(edge.source);
     let destination = this.nodes.get(edge.destination);
 
@@ -97,15 +97,27 @@ export class ConnectionGraph {
     let x2 = destination.getAbsoluteX(this.width);
     let y2 = destination.getAbsoluteMidpointY(this.width);
 
-    let points : [number, number][] = [
-      [ x1, y1 ],
-      [ x2, y2 ],
-    ];
+
+    let points : [number, number][] = [];
+
+    if(edge.pivot < 0) {
+      points = [
+        [ x1, y1 ],
+        [ x2, y2 ],
+      ];
+    } else {
+      points = [
+        [ x1, y1 ],
+        [ (this.width / 100) * edge.pivot, y1],
+        [ x2, y2]
+      ];
+    }
 
     let line = d3.line()
       .x((d: [number, number]) => { return d[0]; })
       .y((d: [number, number]) => { return d[1]; })
       .curve(d3.curveStep);
+      //.curve(d3.curveBasis);
 
 
     this.svg.append("path")
@@ -136,7 +148,7 @@ export class ConnectionGraph {
     });
 
     this.edges.forEach((edge: ConnectionGraphEdge) => {
-      this.drawEdge(edge, "blue");
+      this.drawEdge(edge);
     });
 
 

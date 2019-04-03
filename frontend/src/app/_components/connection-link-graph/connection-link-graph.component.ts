@@ -63,7 +63,7 @@ export class ConnectionLinkGraphComponent implements OnInit, AfterViewInit {
 
 
     let outgoingMachineNode = new OutgoingMachine(outgoingMachine, outgoingMachine);
-    let outgoingUserNode = new OutgoingUser(outgoingUser, outgoingUser);
+    let outgoingUserNode = new OutgoingUser(link.uuid + outgoingUser, outgoingUser);
     let outgoingProcessNode = new OutgoingProcess(link.uuid + outgoingProcess, outgoingProcess);
 
     let incomingPortNode = new IncomingPort(incomingPort, incomingPort);
@@ -102,7 +102,7 @@ export class ConnectionLinkGraphComponent implements OnInit, AfterViewInit {
         this.graph.addEdge(incomingProcessNode, incomingMachineNode);
       }
     } else {
-      this.graph.addEdge(incomingPortNode, incomingMachineNode)
+      this.graph.addEdge(incomingPortNode, incomingMachineNode, 84)
     }
 
   }
