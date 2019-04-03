@@ -93,11 +93,6 @@ export class ConnectionLinkService extends DefaultService<ConnectionLink>  {
     return client;
   }
 
-  private count(endpoint: string) : Observable<Object> {
-    let url = `${this.base_url}${this.URL}/search/${endpoint}`;
-
-    return this.http.get(url);
-  }
 
   totalAlive() : Observable<number> {
     return this.count("total-alive-connection-links").pipe(
