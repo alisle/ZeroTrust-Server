@@ -146,6 +146,10 @@
                   <div fxFlex="25" class="right-value">Total Connections</div>
                   <div fxFlex="75">{{connectionLink.sourceAgent.connectionCount}}</div>
                 </div>
+                <div fxLayout="row">
+                  <div fxFlex="25" class="right-value">Network</div>
+                  <div fxFlex="75">{{connectionLink.sourceNetworkName}}</div>
+                </div>
               </div>
             </div>
           </div>
@@ -168,6 +172,10 @@
                 <div fxLayout="row">
                   <div fxFlex="25" class="right-value">Total Connections</div>
                   <div fxFlex="75">{{connectionLink.destinationAgent.connectionCount}}</div>
+                </div>
+                <div fxLayout="row">
+                  <div fxFlex="25" class="right-value">Network</div>
+                  <div fxFlex="75">{{connectionLink.destinationNetworkName}}</div>
                 </div>
               </div>
             </div>

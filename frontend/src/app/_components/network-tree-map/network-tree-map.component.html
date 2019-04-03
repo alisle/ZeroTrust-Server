@@ -1,0 +1,14 @@
+<div *ngIf="nodes.length > 0 else empty">
+  <div style="width: 100%; height: 500px">
+    <ngx-charts-tree-map
+      [scheme]="scheme"
+      [results]="nodes">
+    </ngx-charts-tree-map>
+  </div>
+</div>
+
+<ng-template #empty>
+  <svg width="100%" height="500px">
+    <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">So much empty..</text>
+  </svg>
+</ng-template>

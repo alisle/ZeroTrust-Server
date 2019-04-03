@@ -1,11 +1,13 @@
 package com.zerotrust.server.service.impl;
 
+import com.zerotrust.server.model.AgentCount;
 import com.zerotrust.server.model.Network;
 import com.zerotrust.server.repository.NetworkRepository;
 import com.zerotrust.server.service.NetworkService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -46,4 +48,16 @@ public class NetworkServiceImpl implements NetworkService {
             return null;
         }).filter(network -> network != null).collect(Collectors.toList());
     }
+
+    @Override
+    public List<AgentCount> countActiveDestinationConnections(UUID network) {
+        return repository.activeDestinationConnections(network);
+    }
+
+
+    @Override
+    public List<AgentCount> countActiveSourceConnections(UUID network) {
+        return repository.activeSourceConnections(network);
+    }
+
 }

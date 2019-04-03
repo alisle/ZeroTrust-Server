@@ -2,6 +2,7 @@
 import {Agent} from "./Agent";
 import {Connection} from "./Connection";
 import {LogWriter} from "../log-writer";
+import {Network} from "./Network";
 
 export interface ConnectionLink {
 
@@ -20,6 +21,8 @@ export interface ConnectionLink {
   sourceString: string;
   sourcePort: number;
   sourceProcessName: string;
+  sourceNetworkName: string;
+  sourceNetwork : Network;
 
   destinationAgent: Agent;
   destinationAgentName: string;
@@ -28,4 +31,6 @@ export interface ConnectionLink {
   destinationString: string;
   destinationPort: number;
   destinationProcessName: string;
+  destinationNetworkName: string;
+  destinationNetwork: Network;
 }

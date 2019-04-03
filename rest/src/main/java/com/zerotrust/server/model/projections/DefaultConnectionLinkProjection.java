@@ -3,6 +3,7 @@ package com.zerotrust.server.model.projections;
 import com.zerotrust.server.model.Agent;
 import com.zerotrust.server.model.Connection;
 import com.zerotrust.server.model.ConnectionLink;
+import com.zerotrust.server.model.Network;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.rest.core.config.Projection;
 
@@ -26,10 +27,15 @@ public interface DefaultConnectionLinkProjection {
     int getSourceAddress();
     int getSourcePort();
     Connection getSourceConnection();
+    Network getSourceNetwork();
+    String getSourceNetworkName();
 
     String getDestinationAgentName();
     Agent  getDestinationAgent();
     Connection getDestinationConnection();
+    Network getDestinationNetwork();
+    String getDestinationNetworkName();
+
     String getDestinationString();
     int getDestinationAddress();
     int getDestinationPort();

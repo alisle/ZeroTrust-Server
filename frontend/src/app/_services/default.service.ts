@@ -37,4 +37,19 @@ export abstract class DefaultService<T> {
     );
   }
 
+  protected count(endpoint: string, param_name: string = null, id: string = null) : Observable<Object> {
+    let url = `${this.base_url}${this.URL}/search/${endpoint}`;
+
+    let params : HttpParams = new HttpParams();
+    if(id != null) {
+      params = params.append(param_name, id);
+    }
+
+    return this.http.get(
+      url,
+      {
+        params: params
+      }
+    );
+  }
 }

@@ -26,10 +26,12 @@ export class ConnectionLinksTableComponent implements OnInit, AfterViewInit {
     'timestamp',
     'ended',
     'sourceAgentName',
+    'sourceNetworkName',
     'sourceString',
     'sourcePort',
     'sourceProcessName',
     'destinationAgentName',
+    'destinationNetworkName',
     'destinationString',
     'destinationPort',
     'destinationProcessName'

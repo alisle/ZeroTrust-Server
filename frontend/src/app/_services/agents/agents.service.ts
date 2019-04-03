@@ -73,25 +73,11 @@ export class AgentsService  extends DefaultService<Agent> {
     );
   }
 
-  private count(endpoint: string, agent: string = null) : Observable<Object> {
-    let url = `${this.base_url}${this.URL}/search/${endpoint}`;
 
-    let params : HttpParams = new HttpParams();
-    if(agent != null) {
-      params = params.append("agent_id", agent);
-    }
-
-    return this.http.get(
-      url,
-      {
-        params: params
-      }
-    );
-  }
 
 
   private usersCount(endpoint : string, agent: string) : Observable<UserCount[]> {
-    return this.count(endpoint, agent).pipe(
+    return this.count(endpoint, "agent_id", agent).pipe(
       map( (res: Object) : UserCount[]  => {
         return res as UserCount[];
       })
@@ -99,7 +85,7 @@ export class AgentsService  extends DefaultService<Agent> {
   }
 
   private processCount(endpoint: string, agent: string) : Observable<ProcessCount[]> {
-    return this.count(endpoint, agent).pipe(
+    return this.count(endpoint, "agent_id", agent).pipe(
       map((res: Object) : ProcessCount[] => {
         return res as ProcessCount[];
       })

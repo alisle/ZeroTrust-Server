@@ -14,7 +14,6 @@ import java.util.UUID;
 @Data
 @Entity
 @Table(name = "agent")
-@EqualsAndHashCode(exclude="connections")
 public class Agent {
     private static final long serialVersionUID = 1L;
 
@@ -38,39 +37,38 @@ public class Agent {
 
     @ToString.Exclude
     @OneToMany(mappedBy = "agent", fetch = FetchType.LAZY)
-    private Set<Connection> connections;
-
+    @EqualsAndHashCode.Exclude private Set<Connection> connections;
 
 
     @ToString.Exclude
     @Formula("(SELECT COUNT(*) FROM connection WHERE connection.agent_id = id)")
-    private long connectionCount;
+    @EqualsAndHashCode.Exclude private long connectionCount;
 
     @ToString.Exclude
     @Formula("(SELECT COUNT(*) FROM connection WHERE connection.agent_id = id AND connection.connection_ended IS NULL)")
-    private long aliveConnectionCount;
+    @EqualsAndHashCode.Exclude private long aliveConnectionCount;
 
     @ToString.Exclude
     @Formula("(SELECT COUNT(*) FROM connection_link WHERE connection_link.source_agent_id = id)")
-    private long sourceConnectionCount;
+    @EqualsAndHashCode.Exclude private long sourceConnectionCount;
 
     @ToString.Exclude
     @Formula("(SELECT COUNT(*) FROM connection_link WHERE connection_link.source_agent_id = id AND connection_link.alive = true)")
-    private long aliveSourceConnectionCount;
+    @EqualsAndHashCode.Exclude private long aliveSourceConnectionCount;
 
 
     @ToString.Exclude
     @Formula("(SELECT COUNT(*) FROM connection_link WHERE connection_link.destination_agent_id = id)")
-    private long destinationConnectionCount;
+    @EqualsAndHashCode.Exclude private long destinationConnectionCount;
 
 
     @ToString.Exclude
     @Formula("(SELECT COUNT(*) FROM connection_link WHERE connection_link.destination_agent_id = id AND connection_link.alive = true)")
-    private long aliveDestinationConnectionCount;
+    @EqualsAndHashCode.Exclude private long aliveDestinationConnectionCount;
 
     @ToString.Exclude
     @Formula("id")
-    private UUID uuid;
+    @EqualsAndHashCode.Exclude private UUID uuid;
 
     @ToString.Exclude
     @ManyToMany(fetch = FetchType.EAGER, cascade = {
@@ -81,16 +79,17 @@ public class Agent {
     @JoinTable(name = "agent_ip_address",
             joinColumns = @JoinColumn(name = "agent_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "ip_address", referencedColumnName = "address"))
-    private Set<IPAddress> addresses = new HashSet<>();
+    @EqualsAndHashCode.Exclude private Set<IPAddress> addresses = new HashSet<>();
 
     @ToString.Exclude
     @ManyToMany(fetch = FetchType.EAGER, cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE,
             CascadeType.DETACH
     })
     @JoinTable(name = "agent_network",
             joinColumns = @JoinColumn(name = "agent_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "network_id", referencedColumnName = "id"))
-
-    private Set<Network> networks = new HashSet<>();
+    @EqualsAndHashCode.Exclude private Set<Network> networks = new HashSet<>();
 }
 

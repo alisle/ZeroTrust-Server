@@ -1,0 +1,54 @@
+.main-container {
+  width: 95%;
+  overflow: auto;
+}
+
+
+.icon {
+  display: inline-block;
+  height: 30px;
+  margin: 0 auto;
+  padding-right: 10px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.details {
+
+  padding-top: 5px;
+}
+
+
+.bold {
+  font-weight: bold;
+}
+
+.header {
+  margin: 1px 2px 2px 1px;
+  padding: 5px;
+  font-weight: bolder;;
+}
+
+.icon-header {
+  font-size: 50px;
+}
+
+.network-card {
+  margin: 5px;
+  padding: 5px;
+}
+
+.sub-title {
+  border-bottom: 2px solid #dfdfdf;
+  margin-bottom: 5px;
+  margin-top: 10px;
+  padding: 5px;
+  font-weight: bolder;
+}
+
+.network-card-header {
+  border-bottom-width: 1px;
+  border-bottom-color: lightgray;
+  border-bottom-style: solid;
+  margin-bottom: 10px;
+}

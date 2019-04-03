@@ -16,7 +16,7 @@ export class PageableDataSource<T> extends DataSource<T> {
   public pageSize$ = this.pageSizeSubject.asObservable();
 
 
-  constructor(private service : PageableClient<T>, public search_url : string = null) {
+  constructor(private service : PageableClient<T>) {
     super();
   }
 

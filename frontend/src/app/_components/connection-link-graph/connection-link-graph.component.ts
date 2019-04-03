@@ -13,7 +13,7 @@ import {ConnectionGraph} from "../../_model/graphs/ConnectionGraph";
 })
 export class ConnectionLinkGraphComponent implements OnInit, AfterViewInit {
   static currentID = 0;
-  public id : string = "GRAPHID" + ConnectionLinkGraphComponent.currentID;
+  public id : string = "CLGRAPH" + ConnectionLinkGraphComponent.currentID;
   private svg = null;
   private graph : ConnectionGraph = null;
   @Input()

@@ -1,0 +1,62 @@
+<ng-template #loading>
+  <mat-card fxLayout="column" fxLayoutAlign="center center" class="overview" style="min-height: 400px">
+    <mat-progress-spinner color="primary" mode="indeterminate" value=50></mat-progress-spinner>
+  </mat-card>
+</ng-template>
+
+<div class="container">
+  <div fxLayout="row" fxLayoutAlign="center center" class="content">
+    <mat-card class="card main-container">
+      <mat-card-header>
+        <mat-card-title> Networks </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div style="display: flex; flex-flow: column; align-content: stretch">
+          <div fxFlex="100" *ngFor="let meta of networks" class="network-card">
+            <mat-card>
+              <mat-card-header class="network-card-header">
+                <div mat-card-avatar class="icon-header"> <mat-icon [inline]="true" >group_work</mat-icon> </div>
+                <mat-card-title>{{meta.network.name}}</mat-card-title>
+                <mat-card-subtitle> Address: {{meta.network.addressString}}, Mask: {{meta.network.maskString}}</mat-card-subtitle>
+              </mat-card-header>
+              <mat-card-content fxLayout="column">
+                <div fxFlex>
+                  <div fxFlex fxLayout="row" fxLayoutAlign="center center">
+                    <div fxFlex="50" fxLayout="column" fxLayoutAlign="center center">
+                      <div class="graph-header">Active Source Agents</div>
+                      <div fxFlex style="width: 100%; height: 500px">
+                        <app-network-tree-map [observable]="meta.sourceObjects.value$"></app-network-tree-map>
+                      </div>
+                    </div>
+                    <div fxFlex="50" fxLayout="column" fxLayoutAlign="center center">
+                      <div class="graph-header">Active Destination Agents</div>
+                      <div fxFlex style="width: 100%; height: 500px">
+                        <app-network-tree-map [observable]="meta.destinationObjects.value$"></app-network-tree-map>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div fxflex>
+                  {{meta.network.description}}
+                </div>
+                <div fxLayout="row" class="details">
+                  <div fxFlex="30">
+                    <span class="bold">No. Agents Associated:</span> {{ meta.network.agentNumber }}
+                  </div>
+                  <div fxFlex="30">
+                    <span class="bold">No. of Active links To:</span> {{meta.network.activeDestinationConnectionCount}}
+                  </div>
+                  <div fxFlex="30">
+                    <span class="bold">No. of Active Links From:</span> {{meta.network.activeSourceConnectionCount}}
+                  </div>
+                </div>
+              </mat-card-content>
+            </mat-card>
+          </div>
+        </div>
+        <mat-paginator style="display: flex;" [pageSizeOptions]="[10, 20, 50, 100]" showFirstLastButtons></mat-paginator>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

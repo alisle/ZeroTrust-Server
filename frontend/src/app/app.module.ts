@@ -29,6 +29,9 @@ import {NgxGraphModule} from "@swimlane/ngx-graph";
 import { ActiveConnectionsGraphComponent } from './_components/active-connections-graph/active-connections-graph.component';
 import { ConnectionLinkGraphComponent } from './_components/connection-link-graph/connection-link-graph.component';
 import {AgentOutboundConnectionsGraphComponent} from "./_components/agent-outbound-connections-graph/agent-outbound-connections-graph.component";
+import { NetworksComponent } from './_components/networks/networks.component';
+import {NetworksService} from "./_services/networks/networks.service";
+import { NetworkTreeMapComponent } from './_components/network-tree-map/network-tree-map.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +48,9 @@ import {AgentOutboundConnectionsGraphComponent} from "./_components/agent-outbou
     ConnectionLinksTableComponent,
     ActiveConnectionsGraphComponent,
     ConnectionLinkGraphComponent,
-    AgentOutboundConnectionsGraphComponent
+    AgentOutboundConnectionsGraphComponent,
+    NetworksComponent,
+    NetworkTreeMapComponent
   ],
   imports: [
     BrowserModule,
@@ -62,7 +67,8 @@ import {AgentOutboundConnectionsGraphComponent} from "./_components/agent-outbou
     AgentsService,
     ConnectionsService,
     ConnectionLinkService,
-    FlowGraphService
+    FlowGraphService,
+    NetworksService,
   ],
   entryComponents: [
     ConnectionLinksDetailsDialog

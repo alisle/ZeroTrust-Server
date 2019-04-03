@@ -35,7 +35,10 @@
       <div *ngIf="link.sourceAgentName == null">Unknown</div>
     </mat-cell>
   </ng-container>
-
+  <ng-container matColumnDef="sourceNetworkName">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Source Network</mat-header-cell>
+    <mat-cell *matCellDef="let link">{{ link.sourceNetworkName }}</mat-cell>
+  </ng-container>
   <ng-container matColumnDef="sourceString">
     <mat-header-cell *matHeaderCellDef mat-sort-header>Source IP</mat-header-cell>
     <mat-cell *matCellDef="let link">{{link.sourceString}}</mat-cell>
@@ -60,6 +63,11 @@
       <div *ngIf="link.destinationAgentName != null">{{link.destinationAgentName}}</div>
       <div *ngIf="link.destinationAgentName == null">Unknown</div>
     </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="destinationNetworkName">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Destination Network</mat-header-cell>
+    <mat-cell *matCellDef="let link">{{ link.destinationNetworkName }}</mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="destinationString">

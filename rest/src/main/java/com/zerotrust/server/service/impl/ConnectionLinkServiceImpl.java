@@ -101,11 +101,13 @@ public class ConnectionLinkServiceImpl implements ConnectionLinkService  {
             link.setSourceString(con.getSourceString());
             link.setSourcePort(con.getSourcePort());
             link.setSourceUserName(con.getUsername());
+            link.setSourceNetwork(con.getSourceNetwork());
 
             if(link.getDestinationConnection() == null) {
                 link.setDestinationAddress(con.getDestination());
                 link.setDestinationString(con.getDestinationString());
                 link.setDestinationPort(con.getDestinationPort());
+                link.setDestinationNetwork(con.getDestinationNetwork());
             }
         });
 
@@ -117,11 +119,13 @@ public class ConnectionLinkServiceImpl implements ConnectionLinkService  {
             link.setDestinationString(con.getDestinationString());
             link.setDestinationPort(con.getDestinationPort());
             link.setDestinationUserName(con.getUsername());
-
+            link.setDestinationNetwork(con.getDestinationNetwork())
+            ;
             if(link.getSourceConnection() == null) {
                 link.setSourceAddress(con.getSource());
                 link.setSourceString(con.getSourceString());
                 link.setSourcePort(con.getSourcePort());
+                link.setSourceNetwork(con.getSourceNetwork());
             }
         });
 

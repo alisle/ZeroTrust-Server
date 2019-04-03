@@ -6,6 +6,7 @@ import {AgentsComponent} from "./_components/agents/agents.component";
 import {AgentDetailsComponent} from "./_components/agent-details/agent-details.component";
 import {ConnectionLinksComponent} from "./_components/connection-links/connection-links.component";
 import {ConnectionLinkDetailsComponent} from "./_components/connection-links-details/connection-link-details.component";
+import {NetworksComponent} from "./_components/networks/networks.component";
 
 const routes: Routes = [
   { path: '', component: WelcomeComponent },
@@ -14,6 +15,7 @@ const routes: Routes = [
   { path: 'agents/:id', component: AgentDetailsComponent },
   { path: 'connection_links', component: ConnectionLinksComponent },
   { path: 'connection_links/:id', component: ConnectionLinkDetailsComponent },
+  { path: 'networks', component: NetworksComponent },
 ];
 
 @NgModule({
