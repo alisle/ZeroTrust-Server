@@ -10,6 +10,7 @@
   <name>ZeroTrust Front End</name>
   <description>FrontEnd for the ZeroTrust REST API</description>
 
+
   <build>
     <plugins>
       <plugin>
