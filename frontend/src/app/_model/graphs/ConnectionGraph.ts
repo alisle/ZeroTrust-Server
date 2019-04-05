@@ -117,7 +117,6 @@ export class ConnectionGraph {
       .x((d: [number, number]) => { return d[0]; })
       .y((d: [number, number]) => { return d[1]; })
       .curve(d3.curveStep);
-      //.curve(d3.curveBasis);
 
 
     this.svg.append("path")
