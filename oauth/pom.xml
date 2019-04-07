@@ -147,7 +147,7 @@
                     </dependency>
                 </dependencies>
                 <configuration>
-                    <repository>zerotrust-rest</repository>
+                    <repository>zerotrust-oauth</repository>
                     <tag>latest</tag>
                     <contextDirectory>${project.build.directory}</contextDirectory>
                     <buildArgs>

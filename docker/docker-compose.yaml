@@ -6,14 +6,28 @@ services:
       - POSTGRES_DB=zerotrust
       - POSTGRES_PASSWORD=zerotrust_password
     restart: always
-    ports:
-      - 5400:5432
+
+  zerotrust-oauth-postgresql:
+    image: postgres:latest
+    environment:
+      - POSTGRES_DB=zerotrust_oauth
+      - POSTGRES_PASSWORD=zerotrust_oauth_password
+
+  zerotrust-oauth:
+    image: zerotrust-oauth
+    environment:
+      - "SPRING_PROFILES_ACTIVE=prod"
+    depends_on:
+      - zerotrust-oauth-postgresql
+
   zerotrust-rest:
       image: zerotrust-rest:latest
       environment:
         - "SPRING_PROFILES_ACTIVE=prod"
       depends_on:
         - zerotrust-postgresql
+        - zerotrust-oauth
+
   zerotrust-frontend:
       image: zerotrust-frontend:latest
       ports:
