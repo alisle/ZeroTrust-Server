@@ -1,0 +1,45 @@
+databaseChangeLog:
+  - changeSet:
+      id:  000001020-Create-OAuth-Access-Token
+      author: alisle
+      changes:
+        - createTable:
+            tableName: oauth_access_token
+            columns:
+              - column:
+                  name: authentication_id
+                  type: varchar(255)
+                  constraints:
+                    unique: true
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: token_id
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: token
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: client_id
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: user_name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: refresh_token
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: authentication
+                  type: bigint
+                  constraints:
+                    nullable: false

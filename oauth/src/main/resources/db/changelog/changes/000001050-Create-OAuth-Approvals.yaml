@@ -1,0 +1,40 @@
+databaseChangeLog:
+  - changeSet:
+      id:  000001050-Create-OAuth-Approvals
+      author: alisle
+      changes:
+        - createTable:
+            tableName: oauth_approvals
+            columns:
+              - column:
+                  name: userId
+                  type: varchar(255)
+                  constraints:
+                    unique: true
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: clientId
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: scope
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status
+                  type: VARCHAR(10)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: expiresAt
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: lastModifiedAt
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false

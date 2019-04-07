@@ -1,0 +1,23 @@
+databaseChangeLog:
+  - changeSet:
+      id:  000001030-Create-OAuth-Refresh-Token
+      author: alisle
+      changes:
+        - createTable:
+            tableName: oauth_refresh_token
+            columns:
+              - column:
+                  name: token_id
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: token
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: authentication
+                  type: bigint
+                  constraints:
+                    nullable: false

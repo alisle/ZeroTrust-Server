@@ -1,0 +1,17 @@
+databaseChangeLog:
+- include:
+    file: db/changelog/changes/000001000-Create-OAuth-Client-Details.yaml
+- include:
+    file: db/changelog/changes/000001010-Create-OAuth-Client-Token.yaml
+- include:
+    file: db/changelog/changes/000001020-Create-OAuth-Access-Token.yaml
+- include:
+    file: db/changelog/changes/000001030-Create-OAuth-Refresh-Token.yaml
+- include:
+    file: db/changelog/changes/000001040-Create-OAuth-Code.yaml
+- include:
+    file: db/changelog/changes/000001050-Create-OAuth-Approvals.yaml
+- include:
+    file: db/changelog/changes/000001060-Create-Client-Details.yaml
+
+

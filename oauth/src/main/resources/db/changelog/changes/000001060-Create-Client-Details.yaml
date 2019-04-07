@@ -1,0 +1,66 @@
+databaseChangeLog:
+  - changeSet:
+      id:  000001060-Create-Client-Details
+      author: alisle
+      changes:
+        - createTable:
+            tableName: client_details
+            columns:
+              - column:
+                  name: appId
+                  type: varchar(255)
+                  constraints:
+                    unique: true
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: resourceIds
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: appSecret
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: scope
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: grantTypes
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: redirectUrl
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: authorities
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: access_token_validity
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: refresh_token_validity
+                  type: bigint
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: autoApproveScopes
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: additionalInformation
+                  type: VARCHAR(4096)
+                  constraints:
+                    nullable: false

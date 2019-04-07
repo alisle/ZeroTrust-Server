@@ -1,0 +1,65 @@
+databaseChangeLog:
+  - changeSet:
+      id:  000001000-Create-OAuth-Client-Details
+      author: alisle
+      changes:
+        - createTable:
+            tableName: oauth_client_details
+            columns:
+              - column:
+                  name: client_id
+                  type: varchar(255)
+                  constraints:
+                    unique: true
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: resource_ids
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: client_secret
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: scope
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: authorized_grant_types
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: web_server_redirect_uri
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: authorities
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: access_token_validity
+                  type: bigint
+                  constraints:
+                    nullable: true
+              - column:
+                  name: refresh_token_validity
+                  type: bigint
+                  constraints:
+                    nullable: true
+              - column:
+                  name: additional_information
+                  type: VARCHAR(4096)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: autoapprove
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: true
