@@ -1,0 +1,37 @@
+databaseChangeLog:
+  - property:
+      name: uuid_function
+      value: uuid
+      dbms: postgresql
+  - property:
+      name: uuid_function
+      value: RANDOM_UUID()
+      dbms: h2
+  - changeSet:
+      id: 000009000-Create-Config
+      author: alisle
+      changes:
+        - createTable:
+            tableName: config
+            columns:
+              - column:
+                  name: node
+                  type: uuid
+                  constraints:
+                    unique: true
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: first_run
+                  type: boolean
+                  constraints:
+                    nullable: false
+        - insert:
+            tableName: config
+            columns:
+              - column:
+                  name: node
+                  valueComputed: "${uuid_function}"
+              - column:
+                  name: first_run
+                  value: true

@@ -1,0 +1,49 @@
+databaseChangeLog:
+  - changeSet:
+      id: 000001020-Create-Authorized-Grant-Types
+      author: alisle
+      changes:
+        - createTable:
+            tableName: oauth_authorized_grant_type
+            columns:
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    unique: true
+                    primaryKey: true
+                    nullable: false
+        - insert:
+            tableName: oauth_authorized_grant_type
+            columns:
+              - column:
+                  name: name
+                  value: "implicit"
+
+        - insert:
+            tableName: oauth_authorized_grant_type
+            columns:
+              - column:
+                  name: name
+                  value: "password"
+
+        - insert:
+            tableName: oauth_authorized_grant_type
+            columns:
+              - column:
+                  name: name
+                  value: "authorization_code"
+
+        - insert:
+            tableName: oauth_authorized_grant_type
+            columns:
+              - column:
+                  name: name
+                  value: "refresh_token"
+
+        - insert:
+            tableName: oauth_authorized_grant_type
+            columns:
+              - column:
+                  name: name
+                  value: "client_credentials"

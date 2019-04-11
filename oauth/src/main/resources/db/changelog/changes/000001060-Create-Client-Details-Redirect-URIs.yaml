@@ -1,0 +1,37 @@
+databaseChangeLog:
+  - changeSet:
+      id: 000001060-Create-Client-Details-Redirect-URIs
+      author: alisle
+      changes:
+        - createTable:
+            tableName: oauth_client_detail_redirect_uri
+            columns:
+              - column:
+                  name: client_id
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: uri
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+
+        - addPrimaryKey:
+            columnNames: client_id, uri
+            tableName: oauth_client_detail_redirect_uri
+
+        - addForeignKeyConstraint:
+            baseColumnNames: client_id
+            baseTableName: oauth_client_detail_redirect_uri
+            constraintName: fk_oauth_client_detail_redirect_uri_client_id
+            referencedColumnNames: client_id
+            referencedTableName: oauth_client_detail
+
+        - addForeignKeyConstraint:
+            baseColumnNames: uri
+            baseTableName: oauth_client_detail_redirect_uri
+            constraintName: fk_oauth_client_detail_redirect_uri_grant_name
+            referencedColumnNames: uri
+            referencedTableName: oauth_redirect_uri
+

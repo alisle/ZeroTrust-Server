@@ -1,0 +1,37 @@
+databaseChangeLog:
+  - changeSet:
+      id: 000001040-Create-Client-Details-Scopes
+      author: alisle
+      changes:
+        - createTable:
+            tableName: oauth_client_detail_scope
+            columns:
+              - column:
+                  name: client_id
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: scope_name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+
+        - addPrimaryKey:
+            columnNames: client_id, scope_name
+            tableName: oauth_client_detail_scope
+
+        - addForeignKeyConstraint:
+            baseColumnNames: client_id
+            baseTableName: oauth_client_detail_scope
+            constraintName: fk_oauth_client_detail_scope_client_id
+            referencedColumnNames: client_id
+            referencedTableName: oauth_client_detail
+
+        - addForeignKeyConstraint:
+            baseColumnNames: scope_name
+            baseTableName: oauth_client_detail_scope
+            constraintName: fk_oauth_client_detail_scope_scope_name
+            referencedColumnNames: name
+            referencedTableName: oauth_scope
+

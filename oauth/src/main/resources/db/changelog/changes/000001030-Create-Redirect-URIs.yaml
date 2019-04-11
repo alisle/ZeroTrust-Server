@@ -1,0 +1,15 @@
+databaseChangeLog:
+  - changeSet:
+      id: 000001030-Create-Redirect-URIs
+      author: alisle
+      changes:
+        - createTable:
+            tableName: oauth_redirect_uri
+            columns:
+              - column:
+                  name: uri
+                  type: varchar(2048)
+                  constraints:
+                    unique: true
+                    primaryKey: true
+                    nullable: false

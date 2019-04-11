@@ -1,17 +1,17 @@
 databaseChangeLog:
 - include:
-    file: db/changelog/changes/000001000-Create-OAuth-Client-Details.yaml
+      file: db/changelog/changes/000001000-Create-Client-Details.yaml
 - include:
-    file: db/changelog/changes/000001010-Create-OAuth-Client-Token.yaml
+      file: db/changelog/changes/000001010-Create-Scopes.yaml
 - include:
-    file: db/changelog/changes/000001020-Create-OAuth-Access-Token.yaml
+      file: db/changelog/changes/000001020-Create-Authorized-Grant-Types.yaml
 - include:
-    file: db/changelog/changes/000001030-Create-OAuth-Refresh-Token.yaml
+      file: db/changelog/changes/000001030-Create-Redirect-URIs.yaml
 - include:
-    file: db/changelog/changes/000001040-Create-OAuth-Code.yaml
+      file: db/changelog/changes/000001040-Create-Client-Details-Scopes.yaml
 - include:
-    file: db/changelog/changes/000001050-Create-OAuth-Approvals.yaml
+      file: db/changelog/changes/000001050-Create-Client-Details-Authorized-Grant-Types.yaml
 - include:
-    file: db/changelog/changes/000001060-Create-Client-Details.yaml
-
-
+      file: db/changelog/changes/000001060-Create-Client-Details-Redirect-URIs.yaml
+- include:
+        file: db/changelog/changes/000009000-Create-Config.yaml

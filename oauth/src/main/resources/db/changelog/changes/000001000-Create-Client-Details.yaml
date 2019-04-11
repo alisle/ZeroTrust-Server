@@ -1,45 +1,40 @@
 databaseChangeLog:
   - changeSet:
-      id:  000001020-Create-OAuth-Access-Token
+      id:  000001000-Create-Client-Details
       author: alisle
       changes:
         - createTable:
-            tableName: oauth_access_token
+            tableName: oauth_client_detail
             columns:
               - column:
-                  name: authentication_id
+                  name: client_id
                   type: varchar(255)
                   constraints:
                     unique: true
                     primaryKey: true
                     nullable: false
               - column:
-                  name: token_id
+                  name: client_secret
                   type: VARCHAR(255)
                   constraints:
                     nullable: false
               - column:
-                  name: token
+                  name: access_token_validity
                   type: bigint
                   constraints:
-                    nullable: false
+                    nullable: true
               - column:
-                  name: client_id
-                  type: VARCHAR(255)
-                  constraints:
-                    nullable: false
-              - column:
-                  name: user_name
-                  type: VARCHAR(255)
-                  constraints:
-                    nullable: false
-              - column:
-                  name: refresh_token
-                  type: VARCHAR(255)
-                  constraints:
-                    nullable: false
-              - column:
-                  name: authentication
+                  name: refresh_token_validity
                   type: bigint
+                  constraints:
+                    nullable: true
+              - column:
+                  name: additional_information
+                  type: VARCHAR(4096)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: auto_approve
+                  type: boolean
                   constraints:
                     nullable: false

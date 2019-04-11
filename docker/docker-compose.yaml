@@ -16,17 +16,25 @@ services:
   zerotrust-oauth:
     image: zerotrust-oauth
     environment:
-      - "SPRING_PROFILES_ACTIVE=prod"
+      - SPRING_PROFILES_ACTIVE=prod
+      - ZEROTRUST_REST_CLIENT_ID=rest_client
+      - ZEROTRUST_REST_CLIENT_SECRET=changeme
     depends_on:
       - zerotrust-oauth-postgresql
+    ports:
+        - 5006:5005
 
   zerotrust-rest:
       image: zerotrust-rest:latest
       environment:
-        - "SPRING_PROFILES_ACTIVE=prod"
+        - SPRING_PROFILES_ACTIVE=prod
+        - ZEROTRUST_REST_CLIENT_ID=rest_client
+        - ZEROTRUST_REST_CLIENT_SECRET=changeme
       depends_on:
         - zerotrust-postgresql
         - zerotrust-oauth
+      ports:
+        - 5005:5005
 
   zerotrust-frontend:
       image: zerotrust-frontend:latest

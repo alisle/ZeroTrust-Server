@@ -1,0 +1,37 @@
+databaseChangeLog:
+  - changeSet:
+      id: 000001050-Create-Client-Details-Authorized-Grant-Types
+      author: alisle
+      changes:
+        - createTable:
+            tableName: oauth_client_detail_authorized_grant_type
+            columns:
+              - column:
+                  name: client_id
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: grant_name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+
+        - addPrimaryKey:
+            columnNames: client_id, grant_name
+            tableName: oauth_client_detail_authorized_grant_type
+
+        - addForeignKeyConstraint:
+            baseColumnNames: client_id
+            baseTableName: oauth_client_detail_authorized_grant_type
+            constraintName: fk_oauth_client_detail_authorized_grant_type_client_id
+            referencedColumnNames: client_id
+            referencedTableName: oauth_client_detail
+
+        - addForeignKeyConstraint:
+            baseColumnNames: grant_name
+            baseTableName: oauth_client_detail_authorized_grant_type
+            constraintName: fk_oauth_client_detail_authorized_grant_type_grant_name
+            referencedColumnNames: name
+            referencedTableName: oauth_authorized_grant_type
+

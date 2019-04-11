@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -103,6 +104,7 @@ public class AgentController {
         return new ResponseEntity<>(this.agentService.countIncomingConnections(), null, HttpStatus.OK);
     }
 
+    @PreAuthorize("#oauth2.hasScope('read')")
     @RequestMapping(value = "/search/count-outgoing-connections", method = RequestMethod.GET, produces = MediaTypes.HAL_JSON_VALUE)
     public ResponseEntity<List<AgentCount>>  countOutgoingConnections() {
         return new ResponseEntity<>(this.agentService.countOutgoingConnections(), null, HttpStatus.OK);
