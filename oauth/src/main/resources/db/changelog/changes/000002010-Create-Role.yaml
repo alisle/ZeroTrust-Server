@@ -1,0 +1,36 @@
+databaseChangeLog:
+  - changeSet:
+      id: 000002010-Create-Role
+      author: alisle
+      changes:
+        - createTable:
+            tableName: role
+            columns:
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    unique: true
+                    primarykey: true
+                    nullable: false
+
+        - insert:
+            tableName: role
+            columns:
+              - column:
+                  name: name
+                  value: "admin"
+
+        - insert:
+            tableName: role
+            columns:
+              - column:
+                  name: name
+                  value: "enforcer"
+
+        - insert:
+            tableName: role
+            columns:
+              - column:
+                  name: name
+                  value: "analyst"

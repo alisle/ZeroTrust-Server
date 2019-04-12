@@ -1,0 +1,36 @@
+databaseChangeLog:
+  - changeSet:
+      id: 000002020-Create-User-Role
+      author: alisle
+      changes:
+        - createTable:
+            tableName: user_role
+            columns:
+              - column:
+                  name: email
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: role_name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+
+        - addPrimaryKey:
+            columnNames: email, role_name
+            tableName: user_role
+
+        - addForeignKeyConstraint:
+            baseColumnNames: email
+            baseTableName: user_role
+            constraintName: fk_user_role_email
+            referencedColumnNames: email
+            referencedTableName: user
+
+        - addForeignKeyConstraint:
+            baseColumnNames: role_name
+            baseTableName: user_role
+            constraintName: fk_user_role_role_name
+            referencedColumnNames: name
+            referencedTableName: role
