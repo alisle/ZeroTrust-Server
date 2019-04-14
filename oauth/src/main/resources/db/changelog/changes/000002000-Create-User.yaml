@@ -18,3 +18,23 @@ databaseChangeLog:
                   type: varchar(255)
                   constraints:
                     nullable: false
+              - column:
+                  name: expired
+                  type: boolean
+                  constraints:
+                    nullable: false
+              - column:
+                  name: account_locked
+                  type: boolean
+                  constraints:
+                    nullable: false
+              - column:
+                  name: credentials_expired
+                  type: boolean
+                  constraints:
+                    nullable: false
+              - column:
+                  name: enabled
+                  type: boolean
+                  constraints:
+                    nullable: false

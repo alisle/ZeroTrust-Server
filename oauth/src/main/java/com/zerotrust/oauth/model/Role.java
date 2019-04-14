@@ -3,6 +3,7 @@ package com.zerotrust.oauth.model;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -32,4 +33,13 @@ public class Role {
             joinColumns = @JoinColumn(name = "role_name", referencedColumnName = "name"),
             inverseJoinColumns = @JoinColumn(name = "email", referencedColumnName = "email"))
     private Set<User> clients = new HashSet<>();
+
+    public GrantedAuthority asGrantedAuthority() {
+        return new GrantedAuthority() {
+            @Override
+            public String getAuthority() {
+                return name;
+            }
+        };
+    }
 }

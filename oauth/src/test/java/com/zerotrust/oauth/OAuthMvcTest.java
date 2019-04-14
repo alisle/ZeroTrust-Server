@@ -5,6 +5,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.zerotrust.oauth.service.OAuth2ClientService;
+import com.zerotrust.oauth.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
 import org.junit.Before;
@@ -44,12 +45,13 @@ public class OAuthMvcTest {
     private OAuth2ClientService clientService;
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
     private FilterChainProxy springSecurityFilterChain;
 
     private MockMvc mockMvc;
 
-    private static final String CLIENT_ID = UUID.randomUUID().toString();
-    private static final String CLIENT_SECRET = UUID.randomUUID().toString();
     private static final String CONTENT_TYPE = "application/json;charset=UTF-8";
 
     @Before
@@ -60,23 +62,19 @@ public class OAuthMvcTest {
 
     @Test()
     public void testObtainAccessToken() throws Exception {
+        String CLIENT_ID = UUID.randomUUID().toString();
+        String CLIENT_SECRET = UUID.randomUUID().toString();
+        String USERNAME = "admin";
+        String PASSWORD  = "nimda";
 
-        clientService.getClient(CLIENT_ID).ifPresentOrElse(oAuth2Client -> {
-            log.info("got the client id " + oAuth2Client);
-            log.info("the scopes are " + oAuth2Client.getScopes());
-            log.info("the grants are " + oAuth2Client.getGrants());
-        }, () -> {
-            log.error("creating the client id");
-            clientService.createRestClient(CLIENT_ID, CLIENT_SECRET);
-        });
+        clientService.createRestClient(CLIENT_ID, CLIENT_SECRET);
+        userService.createAdmin(USERNAME, PASSWORD);
 
-        String username = "admin";
-        String password = "nimda";
         final MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("grant_type", "password");
         params.add("client_id", CLIENT_ID);
-        params.add("username", username);
-        params.add("password", password);
+        params.add("username", USERNAME);
+        params.add("password", PASSWORD);
 
 
         ResultActions result = mockMvc.perform(post("/oauth/token")

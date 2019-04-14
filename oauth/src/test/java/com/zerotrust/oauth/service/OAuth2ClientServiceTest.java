@@ -24,18 +24,12 @@ import java.util.UUID;
 @SpringBootTest(classes = AuthorizationServerApplication.class)
 @ActiveProfiles("dev")
 public class OAuth2ClientServiceTest {
-    @Autowired
-    private Environment environment;
 
     @Autowired
     private  OAuth2ClientService service;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
-
-
-    @Autowired
-    private ClientDetailsService clientDetailsService;
 
     @Test
     public void testCreateRestClient() throws Exception {
@@ -47,6 +41,8 @@ public class OAuth2ClientServiceTest {
         Assert.assertTrue(passwordEncoder.matches(password, client.getClientSecret()));
 
         Assert.assertNotNull(service.getClient(id));
+        Assert.assertEquals(client.getGrants(), service.getClient(id).get().getGrants());
+        Assert.assertEquals(client.getScopes(), service.getClient(id).get().getScopes());
     }
 
     @Test

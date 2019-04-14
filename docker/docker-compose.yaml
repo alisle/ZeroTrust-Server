@@ -18,7 +18,9 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=prod
       - ZEROTRUST_REST_CLIENT_ID=rest_client
-      - ZEROTRUST_REST_CLIENT_SECRET=changeme
+      - ZEROTRUST_REST_CLIENT_SECRET=secret
+      - ZEROTRUST_ADMIN_EMAIL=admin@localhost.com
+      - ZEROTRUST_ADMIN_PASSWORD=secret
     depends_on:
       - zerotrust-oauth-postgresql
     ports:
