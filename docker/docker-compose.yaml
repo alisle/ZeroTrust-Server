@@ -21,6 +21,7 @@ services:
       - ZEROTRUST_REST_CLIENT_SECRET=secret
       - ZEROTRUST_ADMIN_EMAIL=admin@localhost.com
       - ZEROTRUST_ADMIN_PASSWORD=secret
+      - ZEROTRUST_SIGN_KEY=2ce142b0-010c-443c-b091-ecb1c6d64a82
     depends_on:
       - zerotrust-oauth-postgresql
     ports:
@@ -32,6 +33,7 @@ services:
         - SPRING_PROFILES_ACTIVE=prod
         - ZEROTRUST_REST_CLIENT_ID=rest_client
         - ZEROTRUST_REST_CLIENT_SECRET=changeme
+        - ZEROTRUST_SIGN_KEY=2ce142b0-010c-443c-b091-ecb1c6d64a82
       depends_on:
         - zerotrust-postgresql
         - zerotrust-oauth
