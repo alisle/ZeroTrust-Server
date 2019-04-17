@@ -51,20 +51,18 @@ public class AgentController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @PreAuthorize("#oauth2.hasScope('read')")
+    @RequestMapping(value = "/{id}/interfaces", method = RequestMethod.POST, produces = MediaTypes.HAL_JSON_VALUE)
+    public ResponseEntity updateInterfaces(@PathVariable("id") UUID id, @Valid @RequestBody UpdateInterfacesDTO dto) throws AgentNotFoundException, InvalidIPAddress {
+        log.debug("REST Request to update interfaces for agent: " + id);
+        agentService.updateIPs(id, ipMapper.convertStrings(dto.getInterfaces()));
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
     @RequestMapping( value = "/{id}/alive-connections", method = RequestMethod.POST, produces = MediaTypes.HAL_JSON_VALUE)
     public ResponseEntity aliveConnections(@PathVariable("id") UUID id, @Valid @RequestBody Set<Long> connections)  {
 
         log.debug("REST update to alive connections from : " + id);
         connectionService.validateConnections(id, connections);
-        return new ResponseEntity(HttpStatus.OK);
-    }
-
-
-    @RequestMapping(value = "/{id}/interfaces", method = RequestMethod.POST, produces = MediaTypes.HAL_JSON_VALUE)
-    public ResponseEntity updateInterfaces(@PathVariable("id") UUID id, @Valid @RequestBody UpdateInterfacesDTO dto) throws AgentNotFoundException, InvalidIPAddress {
-        log.debug("REST Request to update interfaces for agent: " + id);
-        agentService.updateIPs(id, ipMapper.convertStrings(dto.getInterfaces()));
         return new ResponseEntity(HttpStatus.OK);
     }
 

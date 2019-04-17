@@ -132,27 +132,49 @@ public class AgentControllerTest {
         Assert.assertEquals(2, agent.getAddresses().size());
     }
 
+
     @Test
-    public void testAliveConnections() throws Exception {
-        ObjectMapper objectMapper = new ObjectMapper();
-        ConnectionOpenDTO open = CreationUtils.ConnectionNewDTO();
+    public void testUsersSourceWithAuthentication() throws Exception {
+        testEndpointAuthentication("/agents/search/users-source");
+    }
 
-        connectionService.open(open).orElseThrow(() -> new RuntimeException("oh dear"));
+    @Test
+    public void testUsersDestinationWithAuthentication() throws Exception {
+        testEndpointAuthentication("/search/users-destination");
+    }
 
-        MvcResult result = mockMvc.perform(get("/agents/" + open.getAgent())
+    @Test
+    public void testUsersWithAuthentication() throws Exception {
+        testEndpointAuthentication("/agents/search/users");
+    }
+
+    @Test
+    public void testProcessesSourceWithAuthentication() throws Exception {
+        testEndpointAuthentication("/agents/search/processes-source");
+    }
+
+    @Test
+    public void testProcessesDestinationWithAuthentication() throws Exception {
+        testEndpointAuthentication("/agents/search/processes-destination");
+    }
+
+    @Test
+    public void testCountIncomingConnectionsWithAuthentication() throws Exception {
+        testEndpointAuthentication("/agents/search/count-incoming-connections");
+    }
+
+    @Test
+    public void testCountOutgoingConnectionsWithAuthentication() throws Exception {
+        testEndpointAuthentication("/agents/search/count-outgoing-connections");
+    }
+
+
+    private void testEndpointAuthentication(String endpoint) throws Exception {
+        MvcResult result = mockMvc.perform(get(endpoint)
+                .header("Authorization", "Bearer " + authToken)
                 .contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk())
                 .andReturn();
 
     }
-
-    @Test
-    public void testCountOutgoingConnections() throws Exception {
-        MvcResult result = mockMvc.perform(get("/agents/search/count-outgoing-connections")
-                .header("Authorization", "Bearer " + authToken)
-                .contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(status().isOk())
-                .andReturn();
-    }\
-
 }
