@@ -28,6 +28,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.util.UUID;
@@ -140,7 +142,7 @@ public class AgentControllerTest {
 
     @Test
     public void testUsersDestinationWithAuthentication() throws Exception {
-        testEndpointAuthentication("/search/users-destination");
+        testEndpointAuthentication("/agents/search/users-destination");
     }
 
     @Test
@@ -169,11 +171,63 @@ public class AgentControllerTest {
     }
 
 
+
+
+    @Test
+    public void testUsersSourceWithNoAuthentication() throws Exception {
+        testEndpointNoAuthentication("/agents/search/users-source");
+    }
+
+    @Test
+    public void testUsersDestinationWithNoAuthentication() throws Exception {
+        testEndpointNoAuthentication("/agents/search/users-destination");
+    }
+
+    @Test
+    public void testUsersWithNoAuthentication() throws Exception {
+        testEndpointNoAuthentication("/agents/search/users");
+    }
+
+    @Test
+    public void testProcessesSourceWithNoAuthentication() throws Exception {
+        testEndpointNoAuthentication("/agents/search/processes-source");
+    }
+
+    @Test
+    public void testProcessesDestinationWithNoAuthentication() throws Exception {
+        testEndpointNoAuthentication("/agents/search/processes-destination");
+    }
+
+    @Test
+    public void testCountIncomingConnectionsWithNoAuthentication() throws Exception {
+        testEndpointNoAuthentication("/agents/search/count-incoming-connections");
+    }
+
+    @Test
+    public void testCountOutgoingConnectionsWithNoAuthentication() throws Exception {
+        testEndpointNoAuthentication("/agents/search/count-outgoing-connections");
+    }
+
     private void testEndpointAuthentication(String endpoint) throws Exception {
+        final MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("agent_id", "afdbbc76-5dc9-452c-a248-45cb5aa0f769");
+
         MvcResult result = mockMvc.perform(get(endpoint)
                 .header("Authorization", "Bearer " + authToken)
+                .params(params)
                 .contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk())
+                .andReturn();
+    }
+
+    private void testEndpointNoAuthentication(String endpoint) throws Exception {
+        final MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("agent_id", "afdbbc76-5dc9-452c-a248-45cb5aa0f769");
+
+        MvcResult result = mockMvc.perform(get(endpoint)
+                .params(params)
+                .contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isUnauthorized())
                 .andReturn();
 
     }
