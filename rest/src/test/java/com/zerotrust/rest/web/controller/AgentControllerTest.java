@@ -1,6 +1,7 @@
 package com.zerotrust.rest.web.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.zerotrust.rest.AuthTokenTestUtils;
 import com.zerotrust.rest.CreationUtils;
 import com.zerotrust.rest.ServerApplication;
 import com.zerotrust.rest.model.Agent;
@@ -19,6 +20,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.web.FilterChainProxy;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -32,11 +37,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @Slf4j
 @RunWith(SpringRunner.class)
+@ActiveProfiles("test")
 @SpringBootTest(classes = ServerApplication.class)
+@SqlGroup({
+        @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "classpath:insert_test_data.sql"),
+        @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, scripts = "classpath:delete_test_data.sql")
+})
 public class AgentControllerTest {
 
     @Autowired
     private WebApplicationContext webApplicationContext;
+
+    @Autowired
+    private FilterChainProxy springSecurityFilterChain;
 
     @Autowired
     private AgentService service;
@@ -45,12 +58,21 @@ public class AgentControllerTest {
     private ConnectionService connectionService;
 
 
+
     private MockMvc mockMvc;
 
+    @Autowired
+    AuthTokenTestUtils authTokenTestUtils;
+
+    private String authToken;
+
     @Before
-    public void setup() {
+    public void setup() throws Exception {
         MockitoAnnotations.initMocks(this);
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).addFilter(springSecurityFilterChain).build();
+
+        authToken = authTokenTestUtils.grabAccessToken(mockMvc);
     }
 
     @Test
@@ -122,10 +144,15 @@ public class AgentControllerTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-
-
-
-
     }
+
+    @Test
+    public void testCountOutgoingConnections() throws Exception {
+        MvcResult result = mockMvc.perform(get("/agents/search/count-outgoing-connections")
+                .header("Authorization", "Bearer " + authToken)
+                .contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andReturn();
+    }\
 
 }
