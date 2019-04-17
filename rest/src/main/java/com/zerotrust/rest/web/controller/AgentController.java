@@ -66,21 +66,21 @@ public class AgentController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @PreAuthorize("#oauth2.hasScope('read')")
+    @PreAuthorize("#oauth2.hasScope('read') and hasRole('read')")
     @RequestMapping(value = "/search/users-source", method = RequestMethod.GET, produces = MediaTypes.HAL_JSON_VALUE)
     public ResponseEntity<List<UserCount>> getSourceUsers(@RequestParam("agent_id") UUID id)  throws AgentNotFoundException {
         log.debug("REST Request for source users:" + id);
         return new ResponseEntity<>(this.agentService.sourceUsersCount(id), null, HttpStatus.OK);
     }
 
-    @PreAuthorize("#oauth2.hasScope('read')")
+    @PreAuthorize("#oauth2.hasScope('read') and hasRole('read')")
     @RequestMapping(value = "/search/users-destination", method = RequestMethod.GET, produces = MediaTypes.HAL_JSON_VALUE)
     public ResponseEntity<List<UserCount>> getDestinationUsers(@RequestParam("agent_id") UUID id) throws AgentNotFoundException {
         log.debug("REST Request for source users:" + id);
         return new ResponseEntity<>(this.agentService.destinationUsersCount(id), null, HttpStatus.OK);
     }
 
-    @PreAuthorize("#oauth2.hasScope('read')")
+    @PreAuthorize("#oauth2.hasScope('read') and hasRole('read')")
     @RequestMapping(value = "/search/users", method = RequestMethod.GET, produces = MediaTypes.HAL_JSON_VALUE)
     public ResponseEntity<List<UserCount>> getUsers(@RequestParam("agent_id") UUID id) throws AgentNotFoundException {
         log.debug("REST Request for source users:" + id);
@@ -88,27 +88,27 @@ public class AgentController {
         return new ResponseEntity<>(users, null, HttpStatus.OK);
     }
 
-    @PreAuthorize("#oauth2.hasScope('read')")
+    @PreAuthorize("#oauth2.hasScope('read') and hasRole('read')")
     @RequestMapping(value = "/search/processes-source", method = RequestMethod.GET, produces = MediaTypes.HAL_JSON_VALUE)
     public ResponseEntity<List<ProcessCount>> getSourceProcesses(@RequestParam("agent_id") UUID id)  throws AgentNotFoundException {
         log.debug("REST Request for source users:" + id);
         return new ResponseEntity<>(this.agentService.sourceProcessCount(id), null, HttpStatus.OK);
     }
 
-    @PreAuthorize("#oauth2.hasScope('read')")
+    @PreAuthorize("#oauth2.hasScope('read') and hasRole('read')")
     @RequestMapping(value = "/search/processes-destination", method = RequestMethod.GET, produces = MediaTypes.HAL_JSON_VALUE)
     public ResponseEntity<List<ProcessCount>> getDestinationProcesses(@RequestParam("agent_id") UUID id) throws AgentNotFoundException {
         log.debug("REST Request for source users:" + id);
         return new ResponseEntity<>(this.agentService.destinationProcessCount(id), null, HttpStatus.OK);
     }
 
-    @PreAuthorize("#oauth2.hasScope('read')")
+    @PreAuthorize("#oauth2.hasScope('read') and hasRole('read')")
     @RequestMapping(value = "/search/count-incoming-connections", method = RequestMethod.GET, produces = MediaTypes.HAL_JSON_VALUE)
     public ResponseEntity<List<AgentCount>>  countIncomingConnections() {
         return new ResponseEntity<>(this.agentService.countIncomingConnections(), null, HttpStatus.OK);
     }
 
-    @PreAuthorize("#oauth2.hasScope('read')")
+    @PreAuthorize("#oauth2.hasScope('read') and hasRole('read')")
     @RequestMapping(value = "/search/count-outgoing-connections", method = RequestMethod.GET, produces = MediaTypes.HAL_JSON_VALUE)
     public ResponseEntity<List<AgentCount>>  countOutgoingConnections() {
         return new ResponseEntity<>(this.agentService.countOutgoingConnections(), null, HttpStatus.OK);

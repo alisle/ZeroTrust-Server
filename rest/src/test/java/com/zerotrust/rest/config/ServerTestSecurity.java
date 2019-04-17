@@ -19,7 +19,7 @@ public class ServerTestSecurity extends WebSecurityConfigurerAdapter {
     @Autowired
     public void globalUserDetails(final AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
-                .withUser("testAdmin").password(passwordEncoder.encode("password")).roles("ADMIN");
+                .withUser("testAdmin").password(passwordEncoder.encode("password")).roles("admin", "read", "write");
     }
 
 

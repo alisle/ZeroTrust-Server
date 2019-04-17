@@ -26,11 +26,11 @@ databaseChangeLog:
             columns:
               - column:
                   name: name
-                  value: "enforcer"
+                  value: "read"
 
         - insert:
             tableName: role
             columns:
               - column:
                   name: name
-                  value: "analyst"
+                  value: "write"

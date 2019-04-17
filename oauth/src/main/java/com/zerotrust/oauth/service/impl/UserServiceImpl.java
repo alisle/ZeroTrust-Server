@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService  {
 
     @Override
     public Optional<User> createAdmin(String email, String password) {
-        return createUser(email, password, new Role[] { new Role( "admin"), new Role("enforcer"), new Role("analyst")});
+        return createUser(email, password, new Role[] { new Role( "admin"), new Role("read"), new Role("write")});
     }
 
     @EventListener
