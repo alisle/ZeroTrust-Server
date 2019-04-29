@@ -18,18 +18,24 @@ import java.util.*;
 @SuppressWarnings("unused")
 @RepositoryRestResource(exported = true, path = "agents", collectionResourceRel = "agents", itemResourceRel = "agent")
 public interface AgentRepository extends JpaRepository<Agent, UUID> {
+
+    @PreAuthorize("#oauth2.hasScope('read') and hasRole('agent_read')")
     @RestResource(exported = true)
     Page<Agent> findAll(Pageable pageable);
 
+    @PreAuthorize("#oauth2.hasScope('read') and hasRole('agent_read')")
     @RestResource(path = "connection", exported = true)
     Page<Agent> findAllOrderByConnections(Pageable pageable);
 
 
+    @RestResource(exported = false)
     ArrayList<Agent> findAll();
 
-    @RestResource(exported = true)
+
+    @RestResource(exported = false)
     Optional<Agent> findById(UUID id);
 
+    @PreAuthorize("#oauth2.hasScope('read') and hasRole('agent_read')")
     @RestResource(path = "known", rel = "known")
     Page<Agent> findAllByKnown(@Param("known") boolean known, Pageable pageable);
 
@@ -37,6 +43,7 @@ public interface AgentRepository extends JpaRepository<Agent, UUID> {
     ArrayList<Agent> findAllByKnown(boolean known);
 
 
+    @PreAuthorize("#oauth2.hasScope('read') and hasRole('agent_read')")
     @RestResource(path = "alive", rel = "alive")
     Page<Agent> findAllByAlive(@Param("alive") boolean alive, Pageable pageable);
 
@@ -74,10 +81,11 @@ public interface AgentRepository extends JpaRepository<Agent, UUID> {
     List<AgentCount> countOutgoingConnections();
 
 
-
+    @PreAuthorize("#oauth2.hasScope('read') and hasRole('agent_read')")
     @RestResource(exported = true, path = "total-agents", rel = "totalAgents")
     long countByAliveIsTrueOrAliveIsFalse();
 
+    @PreAuthorize("#oauth2.hasScope('read') and hasRole('agent_read')")
     @RestResource(exported = true, path = "total-alive-agents", rel = "totalAliveAgents")
     long countByAliveIsTrue();
 }

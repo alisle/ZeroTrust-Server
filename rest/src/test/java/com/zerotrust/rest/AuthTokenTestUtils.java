@@ -1,13 +1,18 @@
 package com.zerotrust.rest;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.json.JacksonJsonParser;
+import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
+import org.springframework.security.web.FilterChainProxy;
 import org.springframework.stereotype.Service;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -16,7 +21,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Service
 @ActiveProfiles("test")
 public class AuthTokenTestUtils {
-    public String grabAccessToken(MockMvc mockMvc) throws Exception {
+
+    private MockMvc mockMvc;
+
+    public MockMvc setup(WebApplicationContext webApplicationContext, FilterChainProxy springSecurityFilterChain) throws Exception {
+        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).addFilter(springSecurityFilterChain).build();
+        return mockMvc;
+    }
+
+    public String grabAccessToken() throws Exception {
 
         final String CLIENT_ID = "test";
         final String CLIENT_SECRET = "secret";

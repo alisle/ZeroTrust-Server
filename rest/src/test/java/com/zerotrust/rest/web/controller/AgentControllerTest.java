@@ -71,10 +71,8 @@ public class AgentControllerTest {
     @Before
     public void setup() throws Exception {
         MockitoAnnotations.initMocks(this);
-        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).addFilter(springSecurityFilterChain).build();
-
-        authToken = authTokenTestUtils.grabAccessToken(mockMvc);
+        mockMvc = authTokenTestUtils.setup(webApplicationContext, springSecurityFilterChain);
+        authToken = authTokenTestUtils.grabAccessToken();
     }
 
     @Test
