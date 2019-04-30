@@ -49,3 +49,16 @@ databaseChangeLog:
                   name: name
                   value: "connections_write"
 
+        - insert:
+            tableName: role
+            columns:
+              - column:
+                  name: name
+                  value: "networks_read"
+
+        - insert:
+            tableName: role
+            columns:
+              - column:
+                  name: name
+                  value: "networks_write"

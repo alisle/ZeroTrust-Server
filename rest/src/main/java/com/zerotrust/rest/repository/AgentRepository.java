@@ -16,7 +16,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import java.util.*;
 
 @SuppressWarnings("unused")
-@RepositoryRestResource(exported = false, path = "agents", collectionResourceRel = "agents", itemResourceRel = "agent")
+@RepositoryRestResource(exported = false)
 public interface AgentRepository extends JpaRepository<Agent, UUID> {
 
     Page<Agent> findAll(Pageable pageable);

@@ -13,12 +13,10 @@ import java.util.Optional;
 import java.util.UUID;
 
 @SuppressWarnings("unused")
-@RepositoryRestResource(exported = true, path = "connections", collectionResourceRel = "connections", itemResourceRel = "connection")
+@RepositoryRestResource(exported = false)
 public interface ConnectionRepository extends JpaRepository<Connection, UUID> {
     @RestResource(exported = true)
     Page<Connection> findAll(Pageable pageable);
-
-    
 
     @RestResource(exported = false)
     ArrayList<Connection> findAll();

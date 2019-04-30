@@ -21,7 +21,15 @@ public class ServerTestSecurity extends WebSecurityConfigurerAdapter {
         auth.inMemoryAuthentication()
                 .withUser("testAdmin")
                 .password(passwordEncoder.encode("password"))
-                .roles("admin", "agent_read", "agent_write", "connections_read", "connections_write");
+                .roles(
+                        "admin",
+                        "agent_read",
+                        "agent_write",
+                        "connections_read",
+                        "connections_write",
+                        "networks_read",
+                        "networks_write"
+                );
     }
 
 

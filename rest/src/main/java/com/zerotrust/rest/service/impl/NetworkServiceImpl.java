@@ -4,6 +4,8 @@ import com.zerotrust.rest.model.AgentCount;
 import com.zerotrust.rest.model.Network;
 import com.zerotrust.rest.repository.NetworkRepository;
 import com.zerotrust.rest.service.NetworkService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -60,4 +62,8 @@ public class NetworkServiceImpl implements NetworkService {
         return repository.activeSourceConnections(network);
     }
 
+    @Override
+    public Page<Network> getPage(Pageable pageable) {
+        return repository.findAll(pageable);
+    }
 }

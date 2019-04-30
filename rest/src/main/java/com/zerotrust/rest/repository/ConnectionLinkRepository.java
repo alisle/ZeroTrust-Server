@@ -16,7 +16,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @SuppressWarnings("unused")
-@RepositoryRestResource(exported = false, path = "connection_links", collectionResourceRel = "connection_links", itemResourceRel = "connection_link", excerptProjection = DefaultConnectionLinkProjection.class)
+@RepositoryRestResource(exported = false)
 public interface ConnectionLinkRepository extends JpaRepository<ConnectionLink, UUID> {
 
     Page<ConnectionLink> findAll(Pageable pageable);
