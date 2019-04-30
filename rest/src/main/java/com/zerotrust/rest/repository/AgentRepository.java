@@ -16,76 +16,36 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import java.util.*;
 
 @SuppressWarnings("unused")
-@RepositoryRestResource(exported = true, path = "agents", collectionResourceRel = "agents", itemResourceRel = "agent")
+@RepositoryRestResource(exported = false, path = "agents", collectionResourceRel = "agents", itemResourceRel = "agent")
 public interface AgentRepository extends JpaRepository<Agent, UUID> {
 
-    @PreAuthorize("#oauth2.hasScope('read') and hasRole('agent_read')")
-    @RestResource(exported = true)
     Page<Agent> findAll(Pageable pageable);
-
-    @PreAuthorize("#oauth2.hasScope('read') and hasRole('agent_read')")
-    @RestResource(path = "connection", exported = true)
-    Page<Agent> findAllOrderByConnections(Pageable pageable);
-
-
-    @RestResource(exported = false)
     ArrayList<Agent> findAll();
-
-
-    @RestResource(exported = false)
     Optional<Agent> findById(UUID id);
-
-    @PreAuthorize("#oauth2.hasScope('read') and hasRole('agent_read')")
-    @RestResource(path = "known", rel = "known")
-    Page<Agent> findAllByKnown(@Param("known") boolean known, Pageable pageable);
-
-    @RestResource(exported = false)
-    ArrayList<Agent> findAllByKnown(boolean known);
-
-
-    @PreAuthorize("#oauth2.hasScope('read') and hasRole('agent_read')")
-    @RestResource(path = "alive", rel = "alive")
-    Page<Agent> findAllByAlive(@Param("alive") boolean alive, Pageable pageable);
-
-    @RestResource(exported = false)
     ArrayList<Agent> findAllByAlive(boolean agent);
 
-    @RestResource(exported = false)
+    long countByAliveIsTrueOrAliveIsFalse();
+    long countByAliveIsTrue();
+
     @Query("SELECT new com.zerotrust.rest.model.UserCount(sourceUserName, COUNT(*)) FROM ConnectionLink WHERE sourceAgent.id = ?1 GROUP BY sourceUserName")
     List<UserCount> countSourceUsername(@Param("source_agent_id") UUID id);
 
-
-    @RestResource(exported = false)
     @Query("SELECT new com.zerotrust.rest.model.UserCount(destinationUserName, COUNT(*)) FROM ConnectionLink WHERE destinationAgent.id = ?1 GROUP BY destinationUserName")
     List<UserCount> countDestinationUsername(@Param("destination_agent_id") UUID id);
 
-    @RestResource(exported = false)
     @Query("SELECT new com.zerotrust.rest.model.UserCount(username, COUNT(*)) FROM Connection WHERE agent.id = ?1 GROUP BY username")
     List<UserCount> countUsername(@Param("agent_id") UUID id);
 
-
-    @RestResource(exported = false)
     @Query("SELECT new com.zerotrust.rest.model.ProcessCount(sourceProcessName, COUNT(*)) FROM ConnectionLink WHERE sourceAgent.id = ?1 GROUP BY sourceProcessName")
     List<ProcessCount> countSourceProcess(@Param("source_agent_id") UUID id);
 
-    @RestResource(exported = false)
     @Query(value = "SELECT new com.zerotrust.rest.model.ProcessCount(destinationProcessName, COUNT(*)) FROM ConnectionLink WHERE destinationAgent.id = ?1 GROUP BY destinationProcessName")
     List<ProcessCount> countDestinationProcess(@Param("destination_agent_id") UUID id);
 
-    @RestResource(exported = false, path="count-incoming-connections", rel="countIncomingConnections")
     @Query(value = "SELECT new com.zerotrust.rest.model.AgentCount((SELECT agent.name FROM Agent agent WHERE agent.id = connection.destinationAgent.id) as agent,  connection.destinationAgent.id as uuid, COUNT(*) as count) FROM ConnectionLink connection GROUP BY connection.destinationAgent")
     List<AgentCount> countIncomingConnections();
 
-    @RestResource(exported = false, path="count-outgoing-connections", rel="countOutgoingConnections")
     @Query(value = "SELECT new com.zerotrust.rest.model.AgentCount((SELECT agent.name FROM Agent agent WHERE agent.id = connection.sourceAgent.id) as agent,  connection.sourceAgent.id as uuid, COUNT(*) as count) FROM ConnectionLink connection GROUP BY connection.sourceAgent")
     List<AgentCount> countOutgoingConnections();
 
-
-    @PreAuthorize("#oauth2.hasScope('read') and hasRole('agent_read')")
-    @RestResource(exported = true, path = "total-agents", rel = "totalAgents")
-    long countByAliveIsTrueOrAliveIsFalse();
-
-    @PreAuthorize("#oauth2.hasScope('read') and hasRole('agent_read')")
-    @RestResource(exported = true, path = "total-alive-agents", rel = "totalAliveAgents")
-    long countByAliveIsTrue();
 }

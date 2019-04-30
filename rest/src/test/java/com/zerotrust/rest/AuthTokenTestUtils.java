@@ -3,17 +3,20 @@ package com.zerotrust.rest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.json.JacksonJsonParser;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
+import org.springframework.http.MediaType;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.security.web.FilterChainProxy;
 import org.springframework.stereotype.Service;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -23,6 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class AuthTokenTestUtils {
 
     private MockMvc mockMvc;
+    private String authToken;
 
     public MockMvc setup(WebApplicationContext webApplicationContext, FilterChainProxy springSecurityFilterChain) throws Exception {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).addFilter(springSecurityFilterChain).build();
@@ -56,8 +60,39 @@ public class AuthTokenTestUtils {
         String resultString = result.andReturn().getResponse().getContentAsString();
 
         JacksonJsonParser jsonParser = new JacksonJsonParser();
-        String value = jsonParser.parseMap(resultString).get("access_token").toString();
+        authToken = jsonParser.parseMap(resultString).get("access_token").toString();
 
-        return value;
+        return authToken;
     }
+
+    public MvcResult testEndpointAuthentication(String endpoint, MultiValueMap<String, String> params ) throws Exception {
+
+        if(params == null) {
+            params = new LinkedMultiValueMap<>();
+        }
+
+        MvcResult result = mockMvc.perform(get(endpoint)
+                .header("Authorization", "Bearer " + authToken)
+                .params(params)
+                .contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        return result;
+    }
+
+    public MvcResult testEndpointNoAuthentication(String endpoint, MultiValueMap<String, String> params ) throws Exception {
+        if(params == null) {
+            params = new LinkedMultiValueMap<>();
+        }
+
+        MvcResult result = mockMvc.perform(get(endpoint)
+                .params(params)
+                .contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isUnauthorized())
+                .andReturn();
+
+        return result;
+    }
+
 }

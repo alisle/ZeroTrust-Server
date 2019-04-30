@@ -35,3 +35,17 @@ databaseChangeLog:
                   name: name
                   value: "agent_write"
 
+        - insert:
+            tableName: role
+            columns:
+              - column:
+                  name: name
+                  value: "connections_read"
+
+        - insert:
+            tableName: role
+            columns:
+              - column:
+                  name: name
+                  value: "connections_write"
+

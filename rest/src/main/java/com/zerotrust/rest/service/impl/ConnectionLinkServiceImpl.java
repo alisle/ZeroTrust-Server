@@ -14,6 +14,8 @@ import com.zerotrust.rest.service.ConnectionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.event.EventListener;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
@@ -218,4 +220,53 @@ public class ConnectionLinkServiceImpl implements ConnectionLinkService  {
         close(newCloseConnection.getConnection());
     }
 
+    @Override
+    public Page<ConnectionLink> getPage(Pageable pageable) {
+        return repository.findAll(pageable);
+    }
+
+    @Override
+    public Page<ConnectionLink> getByAgentConnections(Pageable pageable, UUID agent) {
+        return repository.findAllByAgentId(pageable, agent);
+    }
+
+    @Override
+    public Page<ConnectionLink> getLinksBetweenSourceAgentAndDestinationAgent(Pageable pageable, UUID source, UUID destination) {
+        return repository.findAllBySourceAgentIdAndDestinationAgentId(pageable, source, destination);
+    }
+
+    @Override
+    public Page<ConnectionLink> getLinksBetweenSourceAgentAndDestinationIP(Pageable pageable, UUID source, String address) {
+        return repository.findAllBySourceAgentIdAndDestinationString(pageable, source, address);
+    }
+
+    @Override
+    public Page<ConnectionLink> getLinksbetweenSourceIPAndDestinationAgent(Pageable pageable, String source, UUID destination) {
+        return repository.findAllBySourceStringAndDestinationAgentId(pageable, source, destination);
+    }
+
+    @Override
+    public Page<ConnectionLink> getActiveLinksFromSourceAgent(Pageable pageable, UUID source) {
+        return repository.findAllBySourceAgentIdAndAliveTrue(pageable, source);
+    }
+
+    @Override
+    public Page<ConnectionLink> getActiveLinksFromDestinationAgent(Pageable pageable, UUID destination) {
+        return repository.findAllByDestinationAgentIdAndAliveTrue(pageable, destination);
+    }
+
+    @Override
+    public Page<ConnectionLink> getAllActiveLinks(Pageable pageable) {
+        return repository.findAllByAliveIsTrue(pageable);
+    }
+
+    @Override
+    public long getTotalLinks() {
+        return repository.countByAliveIsTrueOrAliveIsFalse();
+    }
+
+    @Override
+    public long getTotalActiveLinks() {
+        return repository.countByAliveIsTrue();
+    }
 }

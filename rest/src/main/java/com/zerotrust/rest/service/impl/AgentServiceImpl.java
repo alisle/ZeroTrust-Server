@@ -9,6 +9,8 @@ import com.zerotrust.rest.service.AgentService;
 import com.zerotrust.rest.service.NetworkService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -171,6 +173,21 @@ public class AgentServiceImpl implements AgentService {
         seen(newCloseConnection.getConnection().getAgent());
     }
 
+
+    @Override
+    public Page<Agent> getPage(Pageable pageable) {
+        return agentRepository.findAll(pageable);
+    }
+
+    @Override
+    public long totalAliveAgents() {
+        return agentRepository.countByAliveIsTrue();
+    }
+
+    @Override
+    public long totalAgents() {
+        return agentRepository.countByAliveIsTrueOrAliveIsFalse();
+    }
 }
 
 

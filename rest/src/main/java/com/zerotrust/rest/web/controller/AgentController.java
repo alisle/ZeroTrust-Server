@@ -9,6 +9,8 @@ import com.zerotrust.rest.service.AgentService;
 import com.zerotrust.rest.model.*;
 import com.zerotrust.rest.service.ConnectionService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +35,14 @@ public class AgentController {
         this.agentService = agentService;
         this.ipMapper = ipMapper;
     }
+
+    @PreAuthorize("#oauth2.hasScope('read') and hasRole('agent_read')")
+    @RequestMapping( value = "", method = RequestMethod.GET, produces = MediaTypes.HAL_JSON_VALUE)
+    public ResponseEntity<Page<Agent>> all(Pageable pageable) {
+        log.debug("REST request to get all agents");
+        return new ResponseEntity<>(this.agentService.getPage(pageable), null, HttpStatus.OK);
+    }
+
 
     @RequestMapping( value = "/online", method = RequestMethod.POST, produces = MediaTypes.HAL_JSON_VALUE)
     public ResponseEntity online(@Valid @RequestBody AgentOnlineDTO dto) throws InvalidIPAddress {
@@ -115,10 +125,25 @@ public class AgentController {
     }
 
     @PreAuthorize("#oauth2.hasScope('read') and hasRole('agent_read')")
-    @RequestMapping(value = "/{id}", method = RequestMethod.POST, produces = MediaTypes.HAL_JSON_VALUE)
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaTypes.HAL_JSON_VALUE)
     public ResponseEntity<Agent> get(@PathVariable("id") UUID id) throws AgentNotFoundException {
         log.debug("REST Request for agent " + id);
         Agent agent = agentService.get(id).orElseThrow(() -> new AgentNotFoundException());
         return new ResponseEntity<>(agent, null, HttpStatus.OK);
+    }
+
+
+    @PreAuthorize("#oauth2.hasScope('read') and hasRole('agent_read')")
+    @RequestMapping(value = "/search/total-alive-agents", method = RequestMethod.GET, produces = MediaTypes.HAL_JSON_VALUE)
+    public ResponseEntity<Long> totalAliveAgents() {
+        log.debug("REST Request for total alive agents");
+        return new ResponseEntity<>(agentService.totalAliveAgents(), null, HttpStatus.OK);
+    }
+
+    @PreAuthorize("#oauth2.hasScope('read') and hasRole('agent_read')")
+    @RequestMapping(value = "/search/total-agents", method = RequestMethod.GET, produces = MediaTypes.HAL_JSON_VALUE)
+    public ResponseEntity<Long> totalAgents() {
+        log.debug("REST Request for total agents");
+        return new ResponseEntity<>(agentService.totalAgents(), null, HttpStatus.OK);
     }
 }

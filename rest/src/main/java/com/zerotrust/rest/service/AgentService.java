@@ -2,6 +2,8 @@ package com.zerotrust.rest.service;
 
 import com.zerotrust.rest.exception.AgentNotFoundException;
 import com.zerotrust.rest.model.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,6 +19,7 @@ public interface AgentService {
     Agent online(UUID uuid, String name);
     void offline(UUID uuid) throws AgentNotFoundException;
 
+    Page<Agent> getPage(Pageable pageable);
     Optional<Agent> get(UUID uuid);
 
     void updateIPs(UUID uuid, IPAddress[] ips) throws AgentNotFoundException;
@@ -33,4 +36,6 @@ public interface AgentService {
     List<AgentCount> countIncomingConnections();
     List<AgentCount> countOutgoingConnections();
 
+    long totalAliveAgents();
+    long totalAgents();
 }
