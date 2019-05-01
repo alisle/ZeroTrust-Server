@@ -10,8 +10,8 @@ import copy
 
 
 NUM_OF_AGENTS=10
-SERVER = "http://localhost:8080"
-#SERVER = "http://localhost:4300/api"
+#SERVER = "http://localhost:8080/api"
+SERVER = "http://localhost:4300/api"
 HEADERS = { "Content-Type": "application/json" }
 
 SERVICES_EXTERNAL = [
@@ -79,6 +79,7 @@ def unleash_agents(number_of_agents, names, headers):
         agent_online = { 'name' : agent_name, 'uuid' : str(agent_uuid), 'interfaces': [ agent_ip ] }
         agent_online_response = requests.post(SERVER + "/agents/online", json=agent_online, headers=headers)
         if agent_online_response.status_code != 200:
+            print SERVER + "/agents/online"
             print "Unable to set agent online", agent_online_response.status_code
         else:
             agent = {}
