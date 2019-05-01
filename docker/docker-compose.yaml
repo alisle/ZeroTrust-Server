@@ -12,6 +12,7 @@ services:
     environment:
       - POSTGRES_DB=zerotrust_oauth
       - POSTGRES_PASSWORD=zerotrust_oauth_password
+    restart: always
 
   zerotrust-oauth:
     image: zerotrust-oauth

@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 @Data
 @Entity
-@Table(name = "user")
+@Table(name = "client_user")
 public class User {
     @Id
     @NotNull
@@ -47,7 +47,7 @@ public class User {
             CascadeType.MERGE,
             CascadeType.DETACH
     })
-    @JoinTable(name="user_role",
+    @JoinTable(name="client_user_role",
             joinColumns = @JoinColumn(name = "email", referencedColumnName = "email"),
             inverseJoinColumns = @JoinColumn(name = "role_name", referencedColumnName = "name"))
     private Set<Role> roles = new HashSet<>();

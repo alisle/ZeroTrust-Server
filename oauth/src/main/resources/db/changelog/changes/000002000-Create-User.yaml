@@ -4,7 +4,7 @@ databaseChangeLog:
       author: alisle
       changes:
         - createTable:
-            tableName: user
+            tableName: client_user
             columns:
               - column:
                   name: email

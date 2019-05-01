@@ -1,7 +1,7 @@
 databaseChangeLog:
   - property:
       name: uuid_function
-      value: uuid
+      value: uuid_generate_v4()
       dbms: postgresql
   - property:
       name: uuid_function
@@ -30,8 +30,8 @@ databaseChangeLog:
             tableName: config
             columns:
               - column:
-                  name: node
-                  valueComputed: "${uuid_function}"
+                  name: "node"
+                  value: "c1fb479e-cfe3-4dfb-8e1a-7dd7e5facc86"
               - column:
                   name: first_run
                   value: true

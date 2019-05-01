@@ -4,7 +4,7 @@ databaseChangeLog:
       author: alisle
       changes:
         - createTable:
-            tableName: user_role
+            tableName: client_user_role
             columns:
               - column:
                   name: email
@@ -19,18 +19,18 @@ databaseChangeLog:
 
         - addPrimaryKey:
             columnNames: email, role_name
-            tableName: user_role
+            tableName: client_user_role
 
         - addForeignKeyConstraint:
             baseColumnNames: email
-            baseTableName: user_role
+            baseTableName: client_user_role
             constraintName: fk_user_role_email
             referencedColumnNames: email
-            referencedTableName: user
+            referencedTableName: client_user
 
         - addForeignKeyConstraint:
             baseColumnNames: role_name
-            baseTableName: user_role
+            baseTableName: client_user_role
             constraintName: fk_user_role_role_name
             referencedColumnNames: name
             referencedTableName: role

@@ -29,7 +29,7 @@ public class Role {
             CascadeType.MERGE,
             CascadeType.DETACH,
     })
-    @JoinTable(name="user_role",
+    @JoinTable(name="client_user_role",
             joinColumns = @JoinColumn(name = "role_name", referencedColumnName = "name"),
             inverseJoinColumns = @JoinColumn(name = "email", referencedColumnName = "email"))
     private Set<User> clients = new HashSet<>();
