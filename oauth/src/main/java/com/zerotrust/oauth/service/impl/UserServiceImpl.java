@@ -18,10 +18,10 @@ import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService  {
-    @Value("${environment.ZEROTRUST_ADMIN_EMAIL:admin@localhost.com}")
+    @Value("${com.zerotrust.oauth.admin-email}")
     private String admin_email;
 
-    @Value("${environment.ZEROTRUST_ADMIN_PASSWORD:secret}")
+    @Value("${com.zerotrust.oauth.admin-password}")
     private String admin_password;
 
     private final ConfigService configService;

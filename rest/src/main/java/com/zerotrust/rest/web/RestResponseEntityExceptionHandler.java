@@ -34,4 +34,9 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     protected ResponseEntity<Object> handleConnectionLinkNotFoundException(ConnectionLinkNotFoundException exception) {
         return new ResponseEntity<>("Connection Link not found!", HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(value = {InvalidCredentialsException.class})
+    protected ResponseEntity<Object> handleInvalidCredentialsException(InvalidCredentialsException ex) {
+        return new ResponseEntity<>("Invalid credentials", HttpStatus.UNAUTHORIZED);
+    }
 }

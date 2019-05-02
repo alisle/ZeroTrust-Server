@@ -25,10 +25,10 @@ public class OAuth2ClientServiceImpl implements OAuth2ClientService {
     private final OAuth2ClientRepository repository;
     private final PasswordEncoder passwordEncoder;
 
-    @Value("${environment.ZEROTRUST_REST_CLIENT_ID:rest_client_id}")
+    @Value("${com.zeortrust.oauth.rest-client-id}")
     private String rest_client_id;
 
-    @Value("${environment.ZEROTRUST_REST_CLIENT_SECRET:secret}")
+    @Value("${com.zerotrust.oauth.rest-client-secret}")
     private String rest_client_secret;
 
     public OAuth2ClientServiceImpl(ConfigService configService, Environment environment, OAuth2ClientRepository repository, PasswordEncoder passwordEncoder) {

@@ -9,7 +9,7 @@ import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenCo
 @Slf4j
 @Configuration
 public class AccessTokenConverterConfig {
-    @Value("${environment.ZEROTRUST_SIGN_KEY:db5bc76a-d0dd-420d-bca4-a3178be18189}")
+    @Value("${com.zerotrust.oauth.sign-key}")
     private String key;
 
     @Bean
