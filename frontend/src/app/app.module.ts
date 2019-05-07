@@ -32,6 +32,10 @@ import {AgentOutboundConnectionsGraphComponent} from "./_components/agent-outbou
 import { NetworksComponent } from './_components/networks/networks.component';
 import {NetworksService} from "./_services/networks/networks.service";
 import { NetworkTreeMapComponent } from './_components/network-tree-map/network-tree-map.component';
+import {AuthGuardService} from "./_guards/auth-guard.service";
+import {AuthService} from "./_services/auth/auth.service";
+import { LoginComponent } from './_components/login/login.component';
+import {ReactiveFormsModule} from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -50,7 +54,8 @@ import { NetworkTreeMapComponent } from './_components/network-tree-map/network-
     ConnectionLinkGraphComponent,
     AgentOutboundConnectionsGraphComponent,
     NetworksComponent,
-    NetworkTreeMapComponent
+    NetworkTreeMapComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -62,6 +67,7 @@ import { NetworkTreeMapComponent } from './_components/network-tree-map/network-
     MomentModule,
     NgxChartsModule,
     NgxGraphModule,
+    ReactiveFormsModule,
   ],
   providers: [
     AgentsService,
@@ -69,6 +75,8 @@ import { NetworkTreeMapComponent } from './_components/network-tree-map/network-
     ConnectionLinkService,
     FlowGraphService,
     NetworksService,
+    AuthGuardService,
+    AuthService,
   ],
   entryComponents: [
     ConnectionLinksDetailsDialog

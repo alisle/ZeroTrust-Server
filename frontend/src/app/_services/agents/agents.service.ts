@@ -8,11 +8,12 @@ import {ProcessCount} from "../../_model/ProcessCount";
 import {DefaultService} from "../default.service";
 import {PageableClient} from "../pageable-client";
 import {AgentCount} from "../../_model/AgentCount";
+import {AuthService} from "../auth/auth.service";
 
 @Injectable()
 export class AgentsService  extends DefaultService<Agent> {
-  constructor(http: HttpClient) {
-    super("agents", "/agents", http);
+  constructor(http: HttpClient, auth: AuthService) {
+    super("agents", "/agents", http, auth);
   }
 
   allAgents() : PageableClient<Agent> {

@@ -2,14 +2,12 @@ package com.zerotrust.rest.repository;
 
 import com.zerotrust.rest.model.AgentCount;
 import com.zerotrust.rest.model.Network;
-import com.zerotrust.rest.model.projections.DefaultNetworkProjection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
-import org.springframework.data.rest.core.annotation.RestResource;
 
 import java.util.List;
 import java.util.UUID;

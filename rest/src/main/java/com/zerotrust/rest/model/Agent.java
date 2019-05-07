@@ -3,6 +3,7 @@ package com.zerotrust.rest.model;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
@@ -37,6 +38,7 @@ public class Agent {
 
     @ToString.Exclude
     @OneToMany(mappedBy = "agent", fetch = FetchType.LAZY)
+    @JsonIgnore
     @EqualsAndHashCode.Exclude private Set<Connection> connections;
 
 

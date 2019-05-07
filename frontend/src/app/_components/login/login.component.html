@@ -1,0 +1,44 @@
+<ng-template #loading>
+  <mat-card-content class="full-width" style="height: 100px;" >
+    <div
+      fxLayout="row"
+      fxLayout.xs="column"
+      fxFlexFill
+      fxLayoutAlign="center center"
+    >
+      <mat-spinner></mat-spinner>
+    </div>
+  </mat-card-content>
+</ng-template>
+<section class="container">
+  <div
+    fxLayout="row"
+    fxLayout.xs="column"
+    fxFlexFill
+    fxLayoutAlign="center center"
+  >
+    <mat-card fxFlex="30%">
+      <mat-card-title>Login</mat-card-title>
+        <mat-card-content style="height: 100px;" *ngIf="!(loading$ | async) else loading">
+          <mat-form-field class="full-width">
+            <input [(ngModel)]="email" matInput placeholder="Email" [formControl]="emailFormControl" [errorStateMatcher]="matcher">
+            <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
+              Please enter a valid email address
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field  class="full-width">
+            <input [(ngModel)]="password" matInput placeholder="Password" [formControl]="passwordFormControl" type="password">
+          </mat-form-field>
+        </mat-card-content>
+         <div
+           fxLayout="row"
+           fxLayout.xs="column"
+           fxFlexFill
+           fxLayoutAlign="center end"
+         >
+          <button mat-flat-button color="accent" (click)="submit()" [disabled]="(loading$ | async) || enabled()">Login</button>
+      </div>
+      </mat-card>
+  </div>
+</section>
+

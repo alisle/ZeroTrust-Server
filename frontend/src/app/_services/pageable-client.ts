@@ -3,6 +3,7 @@ import {Observable} from "rxjs";
 import {map} from "rxjs/operators";
 import {Page} from "../_model/page/page";
 import {LogWriter} from "../log-writer";
+import {AuthService} from "./auth/auth.service";
 
 export class PageableClient<T> {
   private _log : LogWriter = new LogWriter("pageable.client");
@@ -11,7 +12,7 @@ export class PageableClient<T> {
   public sortOn: string = 'id';
   private optionalParams : HttpParams = new HttpParams();
 
-  constructor(protected key: string, protected URL: string, protected http: HttpClient) {}
+  constructor(protected key: string, protected URL: string, protected http: HttpClient, private auth : AuthService) {}
 
   addParam(key: string, value: string) {
     this.optionalParams = this.optionalParams
@@ -23,8 +24,10 @@ export class PageableClient<T> {
     return this.http.get(
       `${url}`,
       {
-        params: params
+        params: params,
+        headers: this.auth.getHeaders()
       })
+
       .pipe(map((res: any) => {
         this._log.debug(`received page object:`, res);
         let page = this.objToPage(res);
@@ -41,6 +44,8 @@ export class PageableClient<T> {
     if (projection != null) {
       params = params.append("projection", projection);
     }
+
+
 
     return params;
   }

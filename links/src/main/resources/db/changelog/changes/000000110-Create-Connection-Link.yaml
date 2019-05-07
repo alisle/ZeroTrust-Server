@@ -1,0 +1,231 @@
+databaseChangeLog:
+  - property:
+      name: now
+      value: now()
+      dbms: h2
+  - property:
+      name: now
+      value: current_timestamp
+      dbms: postgresql
+  - property:
+      name: floatType
+      value: float4
+      dbms: postgres, h2
+  - property:
+      name: floatType
+      value: float
+      dbms: mysql, oracle, mssql
+  - changeSet:
+      id: 000000100-Create-Connection
+      author: alisle
+      changes:
+        - createTable:
+            tableName: connection_link
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+
+              - column:
+                  name: connection_hash
+                  type: bigint
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: created_on
+                  type: timestamp
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: ended_on
+                  type: timestamp
+                  constraints:
+                    nullable: true
+
+              - column:
+                  name: duration
+                  type: bigint
+                  constraints:
+                    nullable: true
+
+              - column:
+                  name: source_agent_id
+                  type: uuid
+                  constraints:
+                    nullable: true
+
+              - column:
+                  name : source_network_id
+                  type: uuid
+                  constraints:
+                    nullable: true
+
+              - column:
+                  name : destination_network_id
+                  type: uuid
+                  constraints:
+                    nullable: true
+
+              - column:
+                  name: destination_agent_id
+                  type: uuid
+                  constraints:
+                    nullable: true
+
+              - column:
+                  name: source_connection_id
+                  type: uuid
+                  constraints:
+                    nullable: true
+
+              - column:
+                  name: source_address
+                  type: int
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: source_address_string
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: source_port
+                  type: int
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: destination_address
+                  type: int
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: destination_address_string
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: destination_port
+                  type: int
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: alive
+                  type: boolean
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: destination_connection_id
+                  type: uuid
+                  constraints:
+                    nullable: true
+
+              - column:
+                  name: source_process_name
+                  type: varchar(255)
+                  constraints:
+                    nullable: true
+
+              - column:
+                  name: destination_process_name
+                  type: varchar(255)
+                  constraints:
+                     nullable: true
+
+              - column:
+                  name: source_username
+                  type: varchar(255)
+                  constraints:
+                    nullable: true
+
+              - column:
+                  name: destination_username
+                  type: varchar(255)
+                  constraints:
+                    nullable: true
+        - createIndex:
+            columns:
+              - column:
+                  name: source_agent_id
+                  type: uuid
+              - column:
+                  name: alive
+                  type: boolean
+            indexName: idx_source_agent_alive
+            tableName: connection_link
+
+        - createIndex:
+            columns:
+              - column:
+                  name: destination_agent_id
+                  type: uuid
+              - column:
+                  name: alive
+                  type: boolean
+            indexName: idx_destination_agent_alive
+            tableName: connection_link
+
+        - createIndex:
+            columns:
+              - column:
+                  name: source_agent_id
+                  type: uuid
+              - column:
+                  name: destination_agent_id
+                  type: uuid
+            indexName: idx_source_agent_destination_agent
+            tableName: connection_link
+
+        - addForeignKeyConstraint:
+            baseColumnNames: source_agent_id
+            baseTableName: connection_link
+            constraintName: fk_connection_link_source_agent_id
+            referencedColumnNames: id
+            referencedTableName: agent
+
+        - addForeignKeyConstraint:
+            baseColumnNames: destination_agent_id
+            baseTableName: connection_link
+            constraintName: fk_connection_link_destination_agent_id
+            referencedColumnNames: id
+            referencedTableName: agent
+
+        - addForeignKeyConstraint:
+            baseColumnNames: source_connection_id
+            baseTableName: connection_link
+            constraintName: fk_connection_link_source_connection_id
+            referencedColumnNames: id
+            referencedTableName: connection
+
+        - addForeignKeyConstraint:
+            baseColumnNames: destination_connection_id
+            baseTableName: connection_link
+            constraintName: fk_connection_link_destination_connection_id
+            referencedColumnNames: id
+            referencedTableName: connection
+
+        - addForeignKeyConstraint:
+            baseColumnNames: source_network_id
+            baseTableName: connection_link
+            constraintName: fk_connection_link_source_network_id
+            referencedColumnNames: id
+            referencedTableName: network
+
+        - addForeignKeyConstraint:
+            baseColumnNames: destination_network_id
+            baseTableName: connection_link
+            constraintName: fk_connection_link_destination_network_id
+            referencedColumnNames: id
+            referencedTableName: network
+

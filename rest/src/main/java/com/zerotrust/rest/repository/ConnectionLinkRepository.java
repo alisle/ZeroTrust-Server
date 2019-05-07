@@ -39,9 +39,6 @@ public interface ConnectionLinkRepository extends JpaRepository<ConnectionLink, 
 
     Page<ConnectionLink> findAllBySourceStringAndDestinationAgentId(Pageable pageable, @Param("source_address") String address, @Param("destination_agent_id") UUID destination);
 
-    ConnectionLink findBySourceConnectionId(UUID connection);
-
-    ConnectionLink findByDestinationConnectionId(UUID connection);
 
     Page<ConnectionLink> findAllBySourceAgentIdAndAliveTrue(Pageable pageable, @Param("source_agent_id") UUID source);
 

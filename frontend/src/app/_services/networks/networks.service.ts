@@ -6,11 +6,12 @@ import {PageableClient} from "../pageable-client";
 import {Observable} from "rxjs";
 import {AgentCount} from "../../_model/AgentCount";
 import {map} from "rxjs/operators";
+import {AuthService} from "../auth/auth.service";
 
 @Injectable()
 export class NetworksService extends DefaultService<Network> {
-  constructor(http: HttpClient) {
-    super("networks", "/networks", http);
+  constructor(http: HttpClient, auth: AuthService) {
+    super("networks", "/networks", http, auth);
   }
 
   allNetworks() : PageableClient<Network> {

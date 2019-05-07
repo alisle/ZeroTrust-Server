@@ -1,0 +1,64 @@
+databaseChangeLog:
+- property:
+    name: now
+    value: now()
+    dbms: h2
+- property:
+    name: now
+    value: current_timestamp
+    dbms: postgresql
+- property:
+    name: floatType
+    value: float4
+    dbms: postgres, h2
+- property:
+    name: floatType
+    value: float
+    dbms: mysql, oracle, mssql
+- changeSet:
+    id: 000000090-Create-Program
+    author: alisle
+    changes:
+    - createTable:
+        tableName: program
+        columns:
+        - column:
+            name: id
+            type: bigint
+            autoIncrement: true
+            constraints:
+              primaryKey: true
+              nullable: false
+        - column:
+            name: inode
+            type: integer
+            constraints:
+              nullable: false
+        - column:
+            name: pid
+            type: integer
+            constraints:
+              nullable: false
+        - column:
+            name: process_name
+            type: varchar(255)
+            constraints:
+              nullable: false
+        - column:
+            name: command_line
+            type: varchar(1024)
+
+    - createIndex:
+          columns:
+            - column:
+                name: process_name
+                type: varchar(255)
+          indexName: idx_program_process_name
+          tableName: program
+
+
+    - createSequence:
+        sequenceName: program_sequence
+        startValue: 1
+        incrementBy: 1
+

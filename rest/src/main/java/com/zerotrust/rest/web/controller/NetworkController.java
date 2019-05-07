@@ -29,20 +29,20 @@ public class NetworkController {
         this.service = service;
     }
 
-    @PreAuthorize("#oauth2.hasScope('read') and hasRole('networks_read')")
+    @PreAuthorize("hasAuthority('networks_read')")
     @RequestMapping( value = "", method = RequestMethod.GET, produces = MediaTypes.HAL_JSON_VALUE)
     public ResponseEntity<Page<Network>> all(Pageable pageable) {
         log.debug("REST request for all connection links");
         return new ResponseEntity<>(this.service.getPage(pageable), null, HttpStatus.OK);
     }
 
-    @PreAuthorize("#oauth2.hasScope('read') and hasRole('networks_read')")
+    @PreAuthorize("hasAuthority('networks_read')")
     @RequestMapping(value = "/search/count-active-destination-connections", method = RequestMethod.GET, produces = MediaTypes.HAL_JSON_VALUE)
     public ResponseEntity<List<AgentCount>> countActiveDestinationConnections(@RequestParam("network_id") UUID id) {
         return new ResponseEntity<>(service.countActiveDestinationConnections(id), null, HttpStatus.OK);
     }
 
-    @PreAuthorize("#oauth2.hasScope('read') and hasRole('networks_read')")
+    @PreAuthorize("hasAuthority('networks_read')")
     @RequestMapping(value = "/search/count-active-source-connections", method = RequestMethod.GET, produces = MediaTypes.HAL_JSON_VALUE)
     public ResponseEntity<List<AgentCount>> countActiveSourceConnections(@RequestParam("network_id") UUID id) {
         return new ResponseEntity<>(service.countActiveSourceConnections(id), null, HttpStatus.OK);

@@ -6,13 +6,14 @@ import {LogWriter} from "../../log-writer";
 import {DefaultService} from "../default.service";
 import {Observable} from "rxjs";
 import {map} from "rxjs/operators";
+import {AuthService} from "../auth/auth.service";
 
 @Injectable()
 export class ConnectionLinkService extends DefaultService<ConnectionLink>  {
   private log : LogWriter = new LogWriter("connection-link.service");
 
-  constructor(http: HttpClient) {
-    super("connection_links", "/connection_links", http);
+  constructor(http: HttpClient, auth: AuthService) {
+    super("connection_links", "/connection_links", http, auth);
   }
 
   allConnectionLinks() : PageableClient<ConnectionLink> {

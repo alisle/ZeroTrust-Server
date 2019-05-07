@@ -2,20 +2,22 @@ import {Observable} from "rxjs";
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {map} from "rxjs/operators";
 import {PageableClient} from "./pageable-client";
+import {AuthService} from "./auth/auth.service";
 
 export abstract class DefaultService<T> {
-  protected base_url = "http://localhost:4300/api";
-  //protected base_url = "http://localhost:8080";
+  public static base_url = "http://localhost:4300/api";
+  //public static base_url = "http://localhost:8080";
 
-  protected constructor(protected key : string, protected URL : string, protected http: HttpClient) {}
+  protected constructor(protected key : string, protected URL : string, protected http: HttpClient, protected auth: AuthService ) {}
 
   protected default() : PageableClient<T> {
-    return new PageableClient(this.key, `${this.base_url}${this.URL}`, this.http);
+    return new PageableClient(this.key, `${DefaultService.base_url}${this.URL}`, this.http, this.auth);
   }
 
   protected search(searchURL: string) : PageableClient<T> {
-    return new PageableClient(this.key, `${this.base_url}${this.URL}/search/${searchURL}`, this.http);
+    return new PageableClient(this.key, `${DefaultService.base_url}${this.URL}/search/${searchURL}`, this.http, this.auth);
   }
+
 
   get(id: string, projection: string = null): Observable<T> {
     let params = new HttpParams();
@@ -25,9 +27,10 @@ export abstract class DefaultService<T> {
     }
 
     return this.http.get(
-      `${this.base_url}${this.URL}/${id}`,
+      `${DefaultService.base_url}${this.URL}/${id}`,
       {
-        params: params
+        params: params,
+        headers: this.auth.getHeaders()
       }
     ).pipe(
       map((res: any) => {
@@ -38,7 +41,7 @@ export abstract class DefaultService<T> {
   }
 
   protected count(endpoint: string, param_name: string = null, id: string = null) : Observable<Object> {
-    let url = `${this.base_url}${this.URL}/search/${endpoint}`;
+    let url = `${DefaultService.base_url}${this.URL}/search/${endpoint}`;
 
     let params : HttpParams = new HttpParams();
     if(id != null) {
@@ -48,7 +51,8 @@ export abstract class DefaultService<T> {
     return this.http.get(
       url,
       {
-        params: params
+        params: params,
+        headers: this.auth.getHeaders()
       }
     );
   }

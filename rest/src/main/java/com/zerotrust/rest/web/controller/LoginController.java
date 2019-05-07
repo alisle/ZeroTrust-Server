@@ -1,7 +1,7 @@
 package com.zerotrust.rest.web.controller;
 
 import com.zerotrust.rest.exception.InvalidCredentialsException;
-import com.zerotrust.rest.model.dto.LoginRequestDTO;
+import com.zerotrust.rest.dto.LoginRequestDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.hateoas.MediaTypes;

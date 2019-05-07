@@ -1,7 +1,7 @@
 #!/bin/sh
 
 GRANT_TYPE="password"
-CLIENT_ID="rest_client_id"
+CLIENT_ID="rest_client"
 CLIENT_SECRET='secret'
 USERNAME="admin@localhost.com"
 PASSWORD="secret"
