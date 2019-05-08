@@ -2,8 +2,7 @@ package com.zerotrust.rest.web.controller;
 
 import com.zerotrust.rest.AuthTokenTestUtils;
 import com.zerotrust.rest.ServerApplication;
-import com.zerotrust.rest.service.AgentService;
-import com.zerotrust.rest.service.NetworkService;
+import com.zerotrust.rest.repository.NetworkRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,6 +10,7 @@ import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.web.FilterChainProxy;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
@@ -37,15 +37,15 @@ public class NetworkControllerTest {
     @Autowired
     private FilterChainProxy springSecurityFilterChain;
 
-    @Autowired
-    private NetworkService service;
-
 
     private MockMvc mockMvc;
     private final MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 
     @Autowired
     AuthTokenTestUtils authTokenTestUtils;
+
+    @Autowired
+    NetworkRepository networkRepository;
 
     @Before
     public void setup() throws Exception {
@@ -57,32 +57,32 @@ public class NetworkControllerTest {
 
     @Test
     public void testAllAuthenticated() throws Exception {
-        authTokenTestUtils.testEndpointAuthentication("/networks", null);
+        authTokenTestUtils.testEndpointAuthentication("/api/networks", null);
     }
 
     @Test
     public void testAllUnauthenticated() throws Exception {
-        authTokenTestUtils.testEndpointNoAuthentication("/networks", null);
+        authTokenTestUtils.testEndpointNoAuthentication("/api/networks", null);
     }
 
     @Test
     public void testCountActiveDestinationConnectionsAuthenticated() throws Exception {
-        authTokenTestUtils.testEndpointAuthentication("/networks/search/count-active-destination-connections", params);
+        authTokenTestUtils.testEndpointAuthentication("/api/networks/search/count-active-destination-connections", params);
     }
 
     @Test
     public void testCountActiveDestinationConnectionsUnauthenticated() throws Exception {
-        authTokenTestUtils.testEndpointNoAuthentication("/networks/search/count-active-destination-connections", params);
+        authTokenTestUtils.testEndpointNoAuthentication("/api/networks/search/count-active-destination-connections", params);
     }
 
     @Test
     public void testCountActiveSourceConnectionsAuthenticated() throws Exception {
-        authTokenTestUtils.testEndpointAuthentication("/networks/search/count-active-destination-connections", params);
+        authTokenTestUtils.testEndpointAuthentication("/api/networks/search/count-active-destination-connections", params);
     }
 
     @Test
     public void testCountActiveSourceConnectionsUnAuthenticated() throws Exception {
-        authTokenTestUtils.testEndpointNoAuthentication("/networks/search/count-active-destination-connections", params);
+        authTokenTestUtils.testEndpointNoAuthentication("/api/networks/search/count-active-destination-connections", params);
     }
 
 }

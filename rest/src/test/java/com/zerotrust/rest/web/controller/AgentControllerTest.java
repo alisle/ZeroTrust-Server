@@ -2,7 +2,7 @@ package com.zerotrust.rest.web.controller;
 
 import com.zerotrust.rest.AuthTokenTestUtils;
 import com.zerotrust.rest.ServerApplication;
-import com.zerotrust.rest.service.AgentService;
+import com.zerotrust.rest.repository.AgentRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,9 +36,9 @@ public class AgentControllerTest {
     @Autowired
     private FilterChainProxy springSecurityFilterChain;
 
-    @Autowired
-    private AgentService service;
 
+    @Autowired
+    private AgentRepository agentRepository;
 
     private MockMvc mockMvc;
 
@@ -57,105 +57,105 @@ public class AgentControllerTest {
 
     @Test
     public void testFindAllWithAuthentication() throws Exception {
-        authTokenTestUtils.testEndpointAuthentication("/agents", params);
+        authTokenTestUtils.testEndpointAuthentication("/api/agents", params);
     }
 
     @Test
     public void testTotalAliveAgentsWithAuthentication() throws Exception {
-        authTokenTestUtils.testEndpointAuthentication("/agents/search/total-alive-agents", params);
+        authTokenTestUtils.testEndpointAuthentication("/api/agents/search/total-alive-agents", params);
     }
 
     @Test
     public void testTotalAgentsWithAuthentication() throws Exception {
-        authTokenTestUtils.testEndpointAuthentication("/agents/search/total-agents", params);
+        authTokenTestUtils.testEndpointAuthentication("/api/agents/search/total-agents", params);
     }
 
     @Test
     public void testUsersSourceWithAuthentication() throws Exception {
-        authTokenTestUtils.testEndpointAuthentication("/agents/search/users-source", params);
+        authTokenTestUtils.testEndpointAuthentication("/api//agents/search/users-source", params);
     }
 
     @Test
     public void testUsersDestinationWithAuthentication() throws Exception {
-        authTokenTestUtils.testEndpointAuthentication("/agents/search/users-destination", params);
+        authTokenTestUtils.testEndpointAuthentication("/api//agents/search/users-destination", params);
     }
 
     @Test
     public void testUsersWithAuthentication() throws Exception {
-        authTokenTestUtils.testEndpointAuthentication("/agents/search/users", params);
+        authTokenTestUtils.testEndpointAuthentication("/api//agents/search/users", params);
     }
 
     @Test
     public void testProcessesSourceWithAuthentication() throws Exception {
-        authTokenTestUtils.testEndpointAuthentication("/agents/search/processes-source", params);
+        authTokenTestUtils.testEndpointAuthentication("/api//agents/search/processes-source", params);
     }
 
     @Test
     public void testProcessesDestinationWithAuthentication() throws Exception {
-        authTokenTestUtils.testEndpointAuthentication("/agents/search/processes-destination", params);
+        authTokenTestUtils.testEndpointAuthentication("/api//agents/search/processes-destination", params);
     }
 
     @Test
     public void testCountIncomingConnectionsWithAuthentication() throws Exception {
-        authTokenTestUtils.testEndpointAuthentication("/agents/search/count-incoming-connections", params);
+        authTokenTestUtils.testEndpointAuthentication("/api//agents/search/count-incoming-connections", params);
     }
 
     @Test
     public void testCountOutgoingConnectionsWithAuthentication() throws Exception {
-        authTokenTestUtils.testEndpointAuthentication("/agents/search/count-outgoing-connections", params);
+        authTokenTestUtils.testEndpointAuthentication("/api//agents/search/count-outgoing-connections", params);
     }
 
 
 
     @Test
     public void testFindAllWithNoAuthentication() throws Exception {
-        authTokenTestUtils.testEndpointNoAuthentication("/agents", params);
+        authTokenTestUtils.testEndpointNoAuthentication("/api/agents", params);
     }
 
     @Test
     public void testTotalAliveAgentsWithNoAuthentication() throws Exception {
-        authTokenTestUtils.testEndpointNoAuthentication("/agents/search/total-alive-agents", params);
+         authTokenTestUtils.testEndpointNoAuthentication("/api/agents/search/total-alive-agents", params);
     }
 
     @Test
     public void testTotalAgentsWithNoAuthentication() throws Exception {
-        authTokenTestUtils.testEndpointNoAuthentication("/agents/search/total-agents", params);
+        authTokenTestUtils.testEndpointNoAuthentication("/api/agents/search/total-agents", params);
     }
 
 
     @Test
     public void testUsersSourceWithNoAuthentication() throws Exception {
-        authTokenTestUtils.testEndpointNoAuthentication("/agents/search/users-source", params);
+        authTokenTestUtils.testEndpointNoAuthentication("/api//agents/search/users-source", params);
     }
 
     @Test
     public void testUsersDestinationWithNoAuthentication() throws Exception {
-        authTokenTestUtils.testEndpointNoAuthentication("/agents/search/users-destination", params);
+        authTokenTestUtils.testEndpointNoAuthentication("/api//agents/search/users-destination", params);
     }
 
     @Test
     public void testUsersWithNoAuthentication() throws Exception {
-        authTokenTestUtils.testEndpointNoAuthentication("/agents/search/users", params);
+        authTokenTestUtils.testEndpointNoAuthentication("/api//agents/search/users", params);
     }
 
     @Test
     public void testProcessesSourceWithNoAuthentication() throws Exception {
-        authTokenTestUtils.testEndpointNoAuthentication("/agents/search/processes-source", params);
+        authTokenTestUtils.testEndpointNoAuthentication("/api//agents/search/processes-source", params);
     }
 
     @Test
     public void testProcessesDestinationWithNoAuthentication() throws Exception {
-        authTokenTestUtils.testEndpointNoAuthentication("/agents/search/processes-destination", params);
+        authTokenTestUtils.testEndpointNoAuthentication("/api//agents/search/processes-destination", params);
     }
 
     @Test
     public void testCountIncomingConnectionsWithNoAuthentication() throws Exception {
-        authTokenTestUtils.testEndpointNoAuthentication("/agents/search/count-incoming-connections", params);
+        authTokenTestUtils.testEndpointNoAuthentication("/api//agents/search/count-incoming-connections", params);
     }
 
     @Test
     public void testCountOutgoingConnectionsWithNoAuthentication() throws Exception {
-        authTokenTestUtils.testEndpointNoAuthentication("/agents/search/count-outgoing-connections", params);
+        authTokenTestUtils.testEndpointNoAuthentication("/api//agents/search/count-outgoing-connections", params);
     }
 
 

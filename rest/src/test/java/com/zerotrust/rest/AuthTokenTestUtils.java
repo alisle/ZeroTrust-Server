@@ -1,8 +1,6 @@
 package com.zerotrust.rest;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.json.JacksonJsonParser;
-import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.security.web.FilterChainProxy;

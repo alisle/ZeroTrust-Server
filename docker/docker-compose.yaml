@@ -15,7 +15,7 @@ services:
     restart: always
 
   zerotrust-oauth:
-    image: zerotrust-oauth
+    image: zerotrust-oauth:latest
     environment:
       - SPRING_PROFILES_ACTIVE=prod
       - ZEROTRUST_REST_CLIENT_ID=rest_client
@@ -27,6 +27,15 @@ services:
       - zerotrust-oauth-postgresql
     ports:
         - 5006:5005
+
+  zerotrust-links:
+    image: zerotrust-links:latest
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+    depends_on:
+      - zerotrust-postgresql
+    ports:
+      - 5007:5005
 
   zerotrust-rest:
       image: zerotrust-rest:latest
@@ -40,6 +49,7 @@ services:
       depends_on:
         - zerotrust-postgresql
         - zerotrust-oauth
+        - zerotrust-links
       ports:
         - 5005:5005
 

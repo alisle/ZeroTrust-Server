@@ -1,4 +1,4 @@
-package com.zerotrust.rest.model.projections;
+package com.zerotrust.rest.projections;
 
 import com.zerotrust.rest.model.Agent;
 import com.zerotrust.rest.model.Connection;

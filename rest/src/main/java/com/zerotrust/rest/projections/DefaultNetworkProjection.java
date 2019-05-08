@@ -1,4 +1,4 @@
-package com.zerotrust.rest.model.projections;
+package com.zerotrust.rest.projections;
 
 import com.zerotrust.rest.model.Network;
 import org.springframework.beans.factory.annotation.Value;

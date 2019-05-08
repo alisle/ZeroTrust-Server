@@ -10,8 +10,8 @@ import copy
 
 
 NUM_OF_AGENTS=10
-#SERVER = "http://localhost:8080/api"
-SERVER = "http://localhost:4300/api"
+#SERVER = "http://localhost:8080/links"
+SERVER = "http://localhost:4300/links"
 HEADERS = { "Content-Type": "application/json" }
 
 SERVICES_EXTERNAL = [
