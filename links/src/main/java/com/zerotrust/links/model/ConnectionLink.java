@@ -65,21 +65,6 @@ public class ConnectionLink {
     @JoinColumn(name="destination_connection_id", nullable = true)
     private Connection destinationConnection;
 
-
-    // This is horrible, got to find a better way of doing this.
-    @Formula("(SELECT agent.name FROM agent agent WHERE agent.id =  source_agent_id)")
-    private String sourceAgentName;
-
-    // Mate, this too is horrible.
-    @Formula("(SELECT agent.name FROM agent agent WHERE agent.id = destination_agent_id)")
-    private String destinationAgentName;
-
-    @Formula("(SELECT network.name FROM network network WHERE network.id = destination_network_id)")
-    private String destinationNetworkName;
-
-    @Formula("(SELECT network.name FROM network network WHERE network.id = source_network_id)")
-    private String sourceNetworkName;
-
     @ManyToOne
     @JoinColumn(name = "source_network_id")
     private Network sourceNetwork;

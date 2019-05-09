@@ -37,42 +37,6 @@ public class Agent {
     private Instant lastSeen;
 
     @ToString.Exclude
-    @OneToMany(mappedBy = "agent", fetch = FetchType.LAZY)
-    @JsonIgnore
-    @EqualsAndHashCode.Exclude private Set<Connection> connections;
-
-
-    @ToString.Exclude
-    @Formula("(SELECT COUNT(*) FROM connection WHERE connection.agent_id = id)")
-    @EqualsAndHashCode.Exclude private long connectionCount;
-
-    @ToString.Exclude
-    @Formula("(SELECT COUNT(*) FROM connection WHERE connection.agent_id = id AND connection.connection_ended IS NULL)")
-    @EqualsAndHashCode.Exclude private long aliveConnectionCount;
-
-    @ToString.Exclude
-    @Formula("(SELECT COUNT(*) FROM connection_link WHERE connection_link.source_agent_id = id)")
-    @EqualsAndHashCode.Exclude private long sourceConnectionCount;
-
-    @ToString.Exclude
-    @Formula("(SELECT COUNT(*) FROM connection_link WHERE connection_link.source_agent_id = id AND connection_link.alive = true)")
-    @EqualsAndHashCode.Exclude private long aliveSourceConnectionCount;
-
-
-    @ToString.Exclude
-    @Formula("(SELECT COUNT(*) FROM connection_link WHERE connection_link.destination_agent_id = id)")
-    @EqualsAndHashCode.Exclude private long destinationConnectionCount;
-
-
-    @ToString.Exclude
-    @Formula("(SELECT COUNT(*) FROM connection_link WHERE connection_link.destination_agent_id = id AND connection_link.alive = true)")
-    @EqualsAndHashCode.Exclude private long aliveDestinationConnectionCount;
-
-    @ToString.Exclude
-    @Formula("id")
-    @EqualsAndHashCode.Exclude private UUID uuid;
-
-    @ToString.Exclude
     @ManyToMany(fetch = FetchType.EAGER, cascade = {
             CascadeType.PERSIST,
             CascadeType.MERGE,
