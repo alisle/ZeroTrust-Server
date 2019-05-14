@@ -31,8 +31,7 @@ export abstract class DefaultService<T> {
     return this.http.get(
       `${DefaultService.base_url}${this.URL}/${id}`,
       {
-        params: params,
-        headers: this.auth.getHeaders()
+        params: params
       }
     ).pipe(
       map((res: any) => {
@@ -52,8 +51,7 @@ export abstract class DefaultService<T> {
     return this.http.get(
       url,
       {
-        params: params,
-        headers: this.auth.getHeaders()
+        params: params
       }
     );
   }

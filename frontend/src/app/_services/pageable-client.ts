@@ -24,8 +24,7 @@ export class PageableClient<T> {
     return this.http.get(
       `${url}`,
       {
-        params: params,
-        headers: this.auth.getHeaders()
+        params: params
       })
 
       .pipe(map((res: any) => {

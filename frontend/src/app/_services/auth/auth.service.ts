@@ -5,22 +5,30 @@ import {DefaultService} from "../default.service";
 import {BehaviorSubject, Observable, ObservableInput, of} from "rxjs";
 import {catchError, finalize, map} from "rxjs/operators";
 import {Token} from "../../_model/token";
+import {local} from "d3-selection";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   private log : LogWriter = new LogWriter("auth-service");
-  public token : Token = null;
-  private authenticated : boolean = false;
-
   private loadingSubject : BehaviorSubject<boolean> = new BehaviorSubject(false);
   public loading$  = this.loadingSubject.asObservable();
 
   constructor(private http : HttpClient) {}
 
   isAuthenticated() : boolean {
-    return this.authenticated;
+    return !(localStorage.getItem("auth_token") === null);
+  }
+
+  private setAuthentication(token : Token) {
+    localStorage.setItem("auth_token", token.access_token);
+    localStorage.setItem("auth_expires", token.expires_in + "");
+  }
+
+  private removeAuthentication() {
+    localStorage.removeItem("auth_token");
+    localStorage.removeItem("auth_expires");
   }
 
 
@@ -38,7 +46,7 @@ export class AuthService {
     ).pipe(
       catchError(() => {
         this.log.error("unable to login");
-        this.authenticated = false;
+        this.removeAuthentication();
         return of(null);
       }),
       finalize(() => {
@@ -47,8 +55,7 @@ export class AuthService {
     ).subscribe((token : Token) => {
       if(token != null) {
         this.log.debug("logged in");
-        this.token = token;
-        this.authenticated = true;
+        this.setAuthentication(token);
       }
     });
 
@@ -56,10 +63,11 @@ export class AuthService {
   }
 
   getBearerToken() {
-    return `Bearer ${this.token.access_token}`;
+    let token = localStorage.getItem("auth_token");
+    return `Bearer ${token}`;
   }
 
-  getHeaders() : HttpHeaders {
-    return new HttpHeaders().append("Authorization", this.getBearerToken());
+  logout() {
+    this.removeAuthentication();
   }
 }

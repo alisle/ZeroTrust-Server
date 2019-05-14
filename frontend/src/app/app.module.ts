@@ -10,7 +10,7 @@ import { WelcomeComponent } from './_components/welcome/welcome.component';
 import { DashboardComponent } from './_components/dashboard/dashboard.component';
 import { AgentsService} from "./_services/agents/agents.service";
 import { AgentsComponent } from './_components/agents/agents.component';
-import { HttpClientModule} from "@angular/common/http";
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {MomentModule} from "ngx-moment";
 import { AgentDetailsComponent } from './_components/agent-details/agent-details.component';
 import {ConnectionsService} from "./_services/connections/connections.service";
@@ -36,6 +36,8 @@ import {AuthGuardService} from "./_guards/auth-guard.service";
 import {AuthService} from "./_services/auth/auth.service";
 import { LoginComponent } from './_components/login/login.component';
 import {ReactiveFormsModule} from '@angular/forms';
+import {ErrorInterceptor} from "./_helpers/error-interceptor/error.interceptor";
+import {AuthInterceptor} from "./_helpers/auth-interceptor/auth.interceptor";
 
 @NgModule({
   declarations: [
@@ -77,6 +79,9 @@ import {ReactiveFormsModule} from '@angular/forms';
     NetworksService,
     AuthGuardService,
     AuthService,
+    // Interceptors
+    { provide: HTTP_INTERCEPTORS, multi: true, useClass: ErrorInterceptor  },
+    { provide: HTTP_INTERCEPTORS, multi: true, useClass: AuthInterceptor },
   ],
   entryComponents: [
     ConnectionLinksDetailsDialog
