@@ -1,8 +1,8 @@
 package com.zerotrust.links.service;
 
 import com.zerotrust.links.exception.AgentNotFoundException;
-import com.zerotrust.links.model.Agent;
-import com.zerotrust.links.model.IPAddress;
+import com.zerotrust.model.Agent;
+import com.zerotrust.model.IPAddress;
 
 import java.util.Optional;
 import java.util.UUID;

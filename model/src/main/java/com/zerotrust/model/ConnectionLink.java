@@ -1,7 +1,6 @@
-package com.zerotrust.links.model;
+package com.zerotrust.model;
 
 import lombok.Data;
-import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;

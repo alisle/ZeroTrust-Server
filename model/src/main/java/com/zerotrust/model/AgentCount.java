@@ -1,4 +1,4 @@
-package com.zerotrust.rest.model;
+package com.zerotrust.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

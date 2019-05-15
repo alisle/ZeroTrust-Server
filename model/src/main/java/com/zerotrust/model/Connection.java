@@ -1,4 +1,4 @@
-package com.zerotrust.rest.model;
+package com.zerotrust.model;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -26,7 +26,7 @@ public class Connection {
     @NotNull
     @ManyToOne
     @JoinColumn(name="agent_id", nullable = false)
-    private ViewAgent agent;
+    private Agent agent;
 
     @NotNull
     @Column(name = "connection_started", nullable = false)

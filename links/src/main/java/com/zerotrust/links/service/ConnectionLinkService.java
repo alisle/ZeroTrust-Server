@@ -1,7 +1,7 @@
 package com.zerotrust.links.service;
 
-import com.zerotrust.links.model.Connection;
-import com.zerotrust.links.model.ConnectionLink;
+import com.zerotrust.model.Connection;
+import com.zerotrust.model.ConnectionLink;
 
 import java.util.List;
 import java.util.Optional;

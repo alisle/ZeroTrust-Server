@@ -2,7 +2,7 @@ package com.zerotrust.links.dto;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.zerotrust.links.model.Protocol;
+import com.zerotrust.model.Protocol;
 import lombok.Data;
 
 import java.time.Instant;

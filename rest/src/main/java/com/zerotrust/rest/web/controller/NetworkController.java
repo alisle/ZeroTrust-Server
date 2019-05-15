@@ -1,7 +1,7 @@
 package com.zerotrust.rest.web.controller;
 
 
-import com.zerotrust.rest.model.AgentCount;
+import com.zerotrust.model.AgentCount;
 import com.zerotrust.rest.repository.NetworkRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

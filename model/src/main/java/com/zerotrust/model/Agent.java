@@ -1,10 +1,8 @@
-package com.zerotrust.links.model;
+package com.zerotrust.model;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.codehaus.jackson.annotate.JsonIgnore;
-import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
 import java.time.Instant;

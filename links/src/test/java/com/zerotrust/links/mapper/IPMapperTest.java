@@ -3,7 +3,7 @@ package com.zerotrust.links.mapper;
 
 import com.zerotrust.links.LinksServerApplication;
 import com.zerotrust.links.exception.InvalidIPAddress;
-import com.zerotrust.links.model.IPAddress;
+import com.zerotrust.model.IPAddress;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

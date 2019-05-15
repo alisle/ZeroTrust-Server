@@ -1,9 +1,9 @@
-package com.zerotrust.rest.model;
+package com.zerotrust.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;

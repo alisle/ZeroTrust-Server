@@ -1,9 +1,9 @@
 package com.zerotrust.rest.projections;
 
-import com.zerotrust.rest.model.ViewAgent;
-import com.zerotrust.rest.model.Connection;
-import com.zerotrust.rest.model.ViewConnectionLink;
-import com.zerotrust.rest.model.Network;
+import com.zerotrust.model.ViewAgent;
+import com.zerotrust.model.Connection;
+import com.zerotrust.model.ViewConnectionLink;
+import com.zerotrust.model.Network;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.rest.core.config.Projection;
 

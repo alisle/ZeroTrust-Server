@@ -3,7 +3,7 @@ package com.zerotrust.links.service;
 
 import com.google.common.net.InetAddresses;
 import com.zerotrust.links.LinksServerApplication;
-import com.zerotrust.links.model.Network;
+import com.zerotrust.model.Network;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
 import org.junit.Before;

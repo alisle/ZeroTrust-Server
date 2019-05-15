@@ -1,6 +1,6 @@
 package com.zerotrust.links.service.impl;
 
-import com.zerotrust.links.model.Network;
+import com.zerotrust.model.Network;
 import com.zerotrust.links.repository.NetworkRepository;
 import com.zerotrust.links.service.NetworkService;
 import org.springframework.stereotype.Service;

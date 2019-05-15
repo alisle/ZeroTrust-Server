@@ -1,6 +1,6 @@
 package com.zerotrust.links.service;
 
-import com.zerotrust.links.model.Network;
+import com.zerotrust.model.Network;
 
 import java.util.List;
 import java.util.UUID;

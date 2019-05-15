@@ -1,6 +1,6 @@
 package com.zerotrust.rest.events;
 
-import com.zerotrust.rest.model.Connection;
+import com.zerotrust.model.Connection;
 import lombok.Getter;
 import org.springframework.context.ApplicationEvent;
 

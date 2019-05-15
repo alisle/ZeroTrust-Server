@@ -1,4 +1,4 @@
-package com.zerotrust.rest.model;
+package com.zerotrust.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;

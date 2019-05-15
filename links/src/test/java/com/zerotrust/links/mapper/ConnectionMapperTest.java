@@ -3,7 +3,7 @@ package com.zerotrust.links.mapper;
 import com.zerotrust.links.CreationUtils;
 import com.zerotrust.links.LinksServerApplication;
 import com.zerotrust.links.dto.ConnectionOpenDTO;
-import com.zerotrust.links.model.Connection;
+import com.zerotrust.model.Connection;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

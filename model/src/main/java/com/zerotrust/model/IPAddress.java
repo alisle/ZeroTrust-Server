@@ -1,4 +1,5 @@
-package com.zerotrust.links.model;
+package com.zerotrust.model;
+
 
 import lombok.Data;
 import org.hibernate.annotations.Formula;
@@ -39,9 +40,9 @@ public class IPAddress {
                     return V6;
                 case "v4":
                     return V4;
-                default:
-                    return Invalid;
-
+               default:
+                   return Invalid;
+    
             }
         }
     }

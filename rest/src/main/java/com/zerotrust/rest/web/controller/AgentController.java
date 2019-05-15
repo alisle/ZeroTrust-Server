@@ -1,8 +1,10 @@
 package com.zerotrust.rest.web.controller;
 
+import com.zerotrust.model.AgentCount;
+import com.zerotrust.model.ProcessCount;
+import com.zerotrust.model.UserCount;
 import com.zerotrust.rest.exception.AgentNotFoundException;
 import com.zerotrust.rest.repository.AgentRepository;
-import com.zerotrust.rest.model.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.HttpStatus;

@@ -11,6 +11,7 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>model</module>
         <module>frontend</module>
         <module>links</module>
         <module>rest</module>

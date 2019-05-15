@@ -2,7 +2,7 @@ package com.zerotrust.links.service;
 
 import com.zerotrust.links.dto.ConnectionCloseDTO;
 import com.zerotrust.links.dto.ConnectionOpenDTO;
-import com.zerotrust.links.model.Connection;
+import com.zerotrust.model.Connection;
 
 import java.time.Instant;
 import java.util.List;

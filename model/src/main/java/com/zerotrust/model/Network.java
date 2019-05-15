@@ -1,5 +1,4 @@
-package com.zerotrust.links.model;
-
+package com.zerotrust.model;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -64,7 +63,7 @@ public class Network {
             CascadeType.DETACH
     })
     @JoinTable(name = "agent_network",
-            joinColumns = @JoinColumn(name = "network_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "agent_id", referencedColumnName = "id"))
-    @EqualsAndHashCode.Exclude private Set<Agent> agents = new HashSet<>();
+        joinColumns = @JoinColumn(name = "network_id", referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name = "agent_id", referencedColumnName = "id"))
+    @EqualsAndHashCode.Exclude private Set<ViewAgent> agents = new HashSet<>();
 }
