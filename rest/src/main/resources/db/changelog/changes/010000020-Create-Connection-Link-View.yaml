@@ -1,0 +1,10 @@
+databaseChangeLog:
+  - changeSet:
+      id: 010000020-Create-Connection-Link-View
+      author: alisle
+      changes:
+        - createView:
+            replaceIfExists: true
+            schemaName: public
+            selectQuery: SELECT link.id AS id, link.connection_hash AS connection_hash, link.created_on AS created_on, link.ended_on AS ended_on, link.duration AS duration, link.source_address_string AS source_address_string, link.source_address AS source_address, link.destination_address_string AS destination_address_string, link.destination_address AS destination_address, link.source_port AS source_port, link.destination_port AS destination_port, link.source_agent_id AS source_agent_id, link.destination_agent_id AS destination_agent_id, link.source_connection_id AS source_connection_id, link.destination_connection_id AS destination_connection_id, link.source_network_id AS source_network_id, link.destination_network_id AS destination_network_id, link.alive AS alive, link.source_process_name AS source_process_name, link.destination_process_name AS destination_process_name, link.source_username AS source_username, link.destination_username AS destination_username, (SELECT agent.name FROM agent agent WHERE agent.id =  source_agent_id) AS source_agent_name, (SELECT agent.name FROM agent agent WHERE agent.id = destination_agent_id) AS destination_agent_name, (SELECT network.name FROM network network WHERE network.id = source_network_id) AS source_network_name, (SELECT network.name FROM network network WHERE network.id = destination_network_id) as destination_network_name FROM connection_link link;
+            viewName: v_connection_link

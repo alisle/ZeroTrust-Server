@@ -16,7 +16,7 @@ import javax.annotation.PostConstruct;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping(value = "/auth")
+@RequestMapping(value = "/api/auth")
 @Slf4j
 public class LoginController {
     @Value("${com.zerotrust.oauth.server}")

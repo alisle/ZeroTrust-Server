@@ -26,7 +26,7 @@ public class Connection {
     @NotNull
     @ManyToOne
     @JoinColumn(name="agent_id", nullable = false)
-    private Agent agent;
+    private ViewAgent agent;
 
     @NotNull
     @Column(name = "connection_started", nullable = false)

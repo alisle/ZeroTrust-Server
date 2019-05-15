@@ -1,0 +1,10 @@
+databaseChangeLog:
+  - changeSet:
+      id: 010000010-Create-Agent-View
+      author: alisle
+      changes:
+        - createView:
+            replaceIfExists: true
+            schemaName: public
+            selectQuery: SELECT agent.id AS id, agent.name AS name, agent.first_seen AS first_seen, agent.last_seen AS last_seen, agent.alive AS alive, agent.known AS known, (SELECT COUNT(*) FROM connection WHERE connection.agent_id = id) AS connection_count, (SELECT COUNT(*) FROM connection WHERE connection.agent_id = id AND connection.connection_ended IS NULL) AS alive_connection_count, (SELECT COUNT(*) FROM connection_link WHERE connection_link.source_agent_id = id) AS source_connection_count, (SELECT COUNT(*) FROM connection_link WHERE connection_link.source_agent_id = id AND connection_link.alive = true) as alive_source_connection_count, (SELECT COUNT(*) FROM connection_link WHERE connection_link.destination_agent_id = id) AS destination_connection_count, (SELECT COUNT(*) FROM connection_link WHERE connection_link.destination_agent_id = id AND connection_link.alive = true) AS alive_destination_connection_count FROM agent agent
+            viewName: v_agent

@@ -65,5 +65,5 @@ public class Network {
     @JoinTable(name = "agent_network",
         joinColumns = @JoinColumn(name = "network_id", referencedColumnName = "id"),
         inverseJoinColumns = @JoinColumn(name = "agent_id", referencedColumnName = "id"))
-    @EqualsAndHashCode.Exclude private Set<Agent> agents = new HashSet<>();
+    @EqualsAndHashCode.Exclude private Set<ViewAgent> agents = new HashSet<>();
 }

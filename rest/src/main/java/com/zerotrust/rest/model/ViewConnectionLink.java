@@ -10,8 +10,8 @@ import java.util.UUID;
 
 @Data
 @Entity
-@Table(name = "connection_link")
-public class ConnectionLink {
+@Table(name = "v_connection_link")
+public class ViewConnectionLink {
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -51,11 +51,11 @@ public class ConnectionLink {
 
     @ManyToOne
     @JoinColumn(name="source_agent_id", nullable = false)
-    private Agent sourceAgent;
+    private ViewAgent sourceAgent;
 
     @ManyToOne
     @JoinColumn(name="destination_agent_id", nullable = false)
-    private Agent destinationAgent;
+    private ViewAgent destinationAgent;
 
     @OneToOne
     @JoinColumn(name="source_connection_id", nullable = true)
@@ -67,17 +67,17 @@ public class ConnectionLink {
 
 
     // This is horrible, got to find a better way of doing this.
-    @Formula("(SELECT agent.name FROM agent agent WHERE agent.id =  source_agent_id)")
+    @Column(name = "source_agent_name")
     private String sourceAgentName;
 
     // Mate, this too is horrible.
-    @Formula("(SELECT agent.name FROM agent agent WHERE agent.id = destination_agent_id)")
+    @Column(name = "destination_agent_name")
     private String destinationAgentName;
 
-    @Formula("(SELECT network.name FROM network network WHERE network.id = destination_network_id)")
+    @Column(name = "destination_network_name")
     private String destinationNetworkName;
 
-    @Formula("(SELECT network.name FROM network network WHERE network.id = source_network_id)")
+    @Column(name = "source_network_name")
     private String sourceNetworkName;
 
     @ManyToOne
@@ -91,7 +91,6 @@ public class ConnectionLink {
     @NotNull
     @Column(name = "alive")
     private boolean alive;
-
 
     @Column(name = "source_process_name")
     private String sourceProcessName;

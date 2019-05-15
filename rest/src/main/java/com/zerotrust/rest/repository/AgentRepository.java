@@ -1,6 +1,6 @@
 package com.zerotrust.rest.repository;
 
-import com.zerotrust.rest.model.Agent;
+import com.zerotrust.rest.model.ViewAgent;
 import com.zerotrust.rest.model.AgentCount;
 import com.zerotrust.rest.model.ProcessCount;
 import com.zerotrust.rest.model.UserCount;
@@ -18,13 +18,13 @@ import java.util.*;
 @SuppressWarnings("unused")
 @PreAuthorize("hasAuthority('agent_read')")
 @RepositoryRestResource(exported = true, path = "agents", collectionResourceRel = "agents", itemResourceRel = "agent")
-public interface AgentRepository extends JpaRepository<Agent, UUID> {
+public interface AgentRepository extends JpaRepository<ViewAgent, UUID> {
 
     @RestResource(exported = true)
-    Page<Agent> findAll(Pageable pageable);
+    Page<ViewAgent> findAll(Pageable pageable);
 
     @RestResource(exported = true)
-    Optional<Agent> findById(UUID id);
+    Optional<ViewAgent> findById(UUID id);
 
 
     @RestResource(exported = true, path="total-agents", rel="totalAgents")
@@ -35,12 +35,12 @@ public interface AgentRepository extends JpaRepository<Agent, UUID> {
 
     // We need to put these in a controller to get around the issue that Data REST has
     @RestResource(exported = false)
-    @Query("SELECT new com.zerotrust.rest.model.UserCount(sourceUserName, COUNT(*)) FROM ConnectionLink WHERE sourceAgent.id = ?1 GROUP BY sourceUserName")
+    @Query("SELECT new com.zerotrust.rest.model.UserCount(sourceUserName, COUNT(*)) FROM ViewConnectionLink WHERE sourceAgent.id = ?1 GROUP BY sourceUserName")
     List<UserCount> countSourceUsername(@Param("source_agent_id") UUID id);
 
 
     @RestResource(exported = false)
-    @Query("SELECT new com.zerotrust.rest.model.UserCount(destinationUserName, COUNT(*)) FROM ConnectionLink WHERE destinationAgent.id = ?1 GROUP BY destinationUserName")
+    @Query("SELECT new com.zerotrust.rest.model.UserCount(destinationUserName, COUNT(*)) FROM ViewConnectionLink WHERE destinationAgent.id = ?1 GROUP BY destinationUserName")
     List<UserCount> countDestinationUsername(@Param("destination_agent_id") UUID id);
 
     @RestResource(exported = false)
@@ -48,19 +48,19 @@ public interface AgentRepository extends JpaRepository<Agent, UUID> {
     List<UserCount> countUsername(@Param("agent_id") UUID id);
 
     @RestResource(exported = false)
-    @Query("SELECT new com.zerotrust.rest.model.ProcessCount(sourceProcessName, COUNT(*)) FROM ConnectionLink WHERE sourceAgent.id = ?1 GROUP BY sourceProcessName")
+    @Query("SELECT new com.zerotrust.rest.model.ProcessCount(sourceProcessName, COUNT(*)) FROM ViewConnectionLink WHERE sourceAgent.id = ?1 GROUP BY sourceProcessName")
     List<ProcessCount> countSourceProcess(@Param("source_agent_id") UUID id);
 
     @RestResource(exported = false)
-    @Query(value = "SELECT new com.zerotrust.rest.model.ProcessCount(destinationProcessName, COUNT(*)) FROM ConnectionLink WHERE destinationAgent.id = ?1 GROUP BY destinationProcessName")
+    @Query(value = "SELECT new com.zerotrust.rest.model.ProcessCount(destinationProcessName, COUNT(*)) FROM ViewConnectionLink WHERE destinationAgent.id = ?1 GROUP BY destinationProcessName")
     List<ProcessCount> countDestinationProcess(@Param("destination_agent_id") UUID id);
 
     @RestResource(exported = false)
-    @Query(value = "SELECT new com.zerotrust.rest.model.AgentCount((SELECT agent.name FROM Agent agent WHERE agent.id = connection.destinationAgent.id) as agent,  connection.destinationAgent.id as uuid, COUNT(*) as count) FROM ConnectionLink connection GROUP BY connection.destinationAgent")
+    @Query(value = "SELECT new com.zerotrust.rest.model.AgentCount((SELECT agent.name FROM ViewAgent  agent WHERE agent.id = connection.destinationAgent.id) as agent,  connection.destinationAgent.id as uuid, COUNT(*) as count) FROM ViewConnectionLink connection GROUP BY connection.destinationAgent")
     List<AgentCount> countIncomingConnections();
 
     @RestResource(exported = false)
-    @Query(value = "SELECT new com.zerotrust.rest.model.AgentCount((SELECT agent.name FROM Agent agent WHERE agent.id = connection.sourceAgent.id) as agent,  connection.sourceAgent.id as uuid, COUNT(*) as count) FROM ConnectionLink connection GROUP BY connection.sourceAgent")
+    @Query(value = "SELECT new com.zerotrust.rest.model.AgentCount((SELECT agent.name FROM ViewAgent agent WHERE agent.id = connection.sourceAgent.id) as agent,  connection.sourceAgent.id as uuid, COUNT(*) as count) FROM ViewConnectionLink connection GROUP BY connection.sourceAgent")
     List<AgentCount> countOutgoingConnections();
 
 }

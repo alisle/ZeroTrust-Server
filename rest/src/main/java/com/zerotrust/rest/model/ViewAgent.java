@@ -14,8 +14,8 @@ import java.util.UUID;
 
 @Data
 @Entity
-@Table(name = "agent")
-public class Agent {
+@Table(name = "v_agent")
+public class ViewAgent {
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -43,29 +43,29 @@ public class Agent {
 
 
     @ToString.Exclude
-    @Formula("(SELECT COUNT(*) FROM connection WHERE connection.agent_id = id)")
+    @Column(name = "connection_count")
     @EqualsAndHashCode.Exclude private long connectionCount;
 
     @ToString.Exclude
-    @Formula("(SELECT COUNT(*) FROM connection WHERE connection.agent_id = id AND connection.connection_ended IS NULL)")
+    @Column(name = "alive_connection_count")
     @EqualsAndHashCode.Exclude private long aliveConnectionCount;
 
     @ToString.Exclude
-    @Formula("(SELECT COUNT(*) FROM connection_link WHERE connection_link.source_agent_id = id)")
+    @Column(name = "source_connection_count")
     @EqualsAndHashCode.Exclude private long sourceConnectionCount;
 
     @ToString.Exclude
-    @Formula("(SELECT COUNT(*) FROM connection_link WHERE connection_link.source_agent_id = id AND connection_link.alive = true)")
+    @Column(name = "alive_source_connection_count")
     @EqualsAndHashCode.Exclude private long aliveSourceConnectionCount;
 
 
     @ToString.Exclude
-    @Formula("(SELECT COUNT(*) FROM connection_link WHERE connection_link.destination_agent_id = id)")
+    @Column(name = "destination_connection_count")
     @EqualsAndHashCode.Exclude private long destinationConnectionCount;
 
 
     @ToString.Exclude
-    @Formula("(SELECT COUNT(*) FROM connection_link WHERE connection_link.destination_agent_id = id AND connection_link.alive = true)")
+    @Column(name = "alive_destination_connection_count")
     @EqualsAndHashCode.Exclude private long aliveDestinationConnectionCount;
 
     @ToString.Exclude

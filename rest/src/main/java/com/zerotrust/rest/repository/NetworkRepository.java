@@ -34,12 +34,12 @@ public interface  NetworkRepository extends JpaRepository<Network, UUID> {
 
 
     @RestResource(exported = false)
-    @Query(value = "SELECT new com.zerotrust.rest.model.AgentCount((SELECT agent.name FROM Agent agent WHERE agent.id = connection.destinationAgent.id) as agent,  connection.destinationAgent.id as uuid, COUNT(*) as count) FROM ConnectionLink connection WHERE connection.alive = TRUE AND connection.destinationNetwork.id = ?1 GROUP BY connection.destinationAgent")
+    @Query(value = "SELECT new com.zerotrust.rest.model.AgentCount((SELECT agent.name FROM ViewAgent agent WHERE agent.id = connection.destinationAgent.id) as agent,  connection.destinationAgent.id as uuid, COUNT(*) as count) FROM ViewConnectionLink connection WHERE connection.alive = TRUE AND connection.destinationNetwork.id = ?1 GROUP BY connection.destinationAgent")
     List<AgentCount> activeDestinationConnections(@Param("network_id") UUID network);
 
 
     @RestResource(exported = false)
-    @Query(value = "SELECT new com.zerotrust.rest.model.AgentCount((SELECT agent.name FROM Agent agent WHERE agent.id = connection.sourceAgent.id) as agent,  connection.sourceAgent.id as uuid, COUNT(*) as count) FROM ConnectionLink connection WHERE connection.alive = TRUE AND connection.sourceNetwork.id = ?1 GROUP BY connection.sourceAgent")
+    @Query(value = "SELECT new com.zerotrust.rest.model.AgentCount((SELECT agent.name FROM ViewAgent agent WHERE agent.id = connection.sourceAgent.id) as agent,  connection.sourceAgent.id as uuid, COUNT(*) as count) FROM ViewConnectionLink connection WHERE connection.alive = TRUE AND connection.sourceNetwork.id = ?1 GROUP BY connection.sourceAgent")
     List<AgentCount> activeSourceConnections(@Param("network_id") UUID network);
 
 
