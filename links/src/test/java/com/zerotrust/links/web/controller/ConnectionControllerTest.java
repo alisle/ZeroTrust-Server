@@ -1,7 +1,7 @@
 package com.zerotrust.links.web.controller;
 
 import com.zerotrust.links.LinksServerApplication;
-import com.zerotrust.model.Connection;
+import com.zerotrust.model.entity.Connection;
 import com.zerotrust.links.service.ConnectionService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;

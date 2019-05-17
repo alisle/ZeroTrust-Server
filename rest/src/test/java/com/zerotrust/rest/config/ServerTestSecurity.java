@@ -23,8 +23,8 @@ public class ServerTestSecurity extends WebSecurityConfigurerAdapter {
                 .password(passwordEncoder.encode("password"))
                 .authorities(
                         "admin",
-                        "agent_read",
-                        "agent_write",
+                        "agents_read",
+                        "agents_write",
                         "connections_read",
                         "connections_write",
                         "networks_read",

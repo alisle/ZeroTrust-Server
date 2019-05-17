@@ -1,6 +1,6 @@
 package com.zerotrust.links.event;
 
-import com.zerotrust.model.Connection;
+import com.zerotrust.model.entity.Connection;
 import lombok.Getter;
 import org.springframework.context.ApplicationEvent;
 

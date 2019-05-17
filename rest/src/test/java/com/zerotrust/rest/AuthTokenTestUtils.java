@@ -63,6 +63,17 @@ public class AuthTokenTestUtils {
         return authToken;
     }
 
+    public MvcResult authenticatedPost(String endpoint, String content) throws Exception {
+        MvcResult result = mockMvc.perform(post(endpoint)
+                .header("Authorization", "Bearer " + authToken)
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(content))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        return result;
+    }
+
     public MvcResult testEndpointAuthentication(String endpoint, MultiValueMap<String, String> params ) throws Exception {
 
         if(params == null) {

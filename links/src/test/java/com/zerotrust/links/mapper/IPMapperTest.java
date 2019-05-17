@@ -3,7 +3,7 @@ package com.zerotrust.links.mapper;
 
 import com.zerotrust.links.LinksServerApplication;
 import com.zerotrust.links.exception.InvalidIPAddress;
-import com.zerotrust.model.IPAddress;
+import com.zerotrust.model.entity.IPAddress;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,6 +17,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = LinksServerApplication.class)
 @ActiveProfiles("test")
+
 public class IPMapperTest {
 
     @Autowired

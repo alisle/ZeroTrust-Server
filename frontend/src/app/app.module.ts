@@ -38,6 +38,8 @@ import { LoginComponent } from './_components/login/login.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import {ErrorInterceptor} from "./_helpers/error-interceptor/error.interceptor";
 import {AuthInterceptor} from "./_helpers/auth-interceptor/auth.interceptor";
+import { LogoutComponent } from './_components/logout/logout.component';
+import { AdminComponent } from './_components/admin/admin.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +59,9 @@ import {AuthInterceptor} from "./_helpers/auth-interceptor/auth.interceptor";
     AgentOutboundConnectionsGraphComponent,
     NetworksComponent,
     NetworkTreeMapComponent,
-    LoginComponent
+    LoginComponent,
+    LogoutComponent,
+    AdminComponent
   ],
   imports: [
     BrowserModule,

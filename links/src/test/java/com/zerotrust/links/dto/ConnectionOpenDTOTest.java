@@ -3,7 +3,7 @@ package com.zerotrust.links.dto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.zerotrust.links.LinksServerApplication;
-import com.zerotrust.model.Protocol;
+import com.zerotrust.model.entity.Protocol;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

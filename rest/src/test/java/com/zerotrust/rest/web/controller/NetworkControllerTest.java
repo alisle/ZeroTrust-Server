@@ -17,6 +17,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
@@ -53,6 +54,12 @@ public class NetworkControllerTest {
         mockMvc = authTokenTestUtils.setup(webApplicationContext, springSecurityFilterChain);
         authTokenTestUtils.grabAccessToken();
         params.add("network_id", "59ed5983-da6a-4036-b2e9-9c613594ddb9");
+    }
+
+    @Test
+    public void testPostNetwork() throws Exception {
+        String json = "{ \"name\" : \"test_network\", \"description\" : \"I am a test network\", \"network\" : \"192.168.0.0\", \"mask\" : \"255.0.0.0\" }";
+        authTokenTestUtils.authenticatedPost("/api/networks", json);
     }
 
     @Test

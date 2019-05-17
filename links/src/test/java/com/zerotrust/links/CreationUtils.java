@@ -3,7 +3,7 @@ package com.zerotrust.links;
 import com.zerotrust.links.dto.ConnectionCloseDTO;
 import com.zerotrust.links.dto.ConnectionOpenDTO;
 import com.zerotrust.links.dto.ProgramDTO;
-import com.zerotrust.model.Protocol;
+import com.zerotrust.model.entity.Protocol;
 
 import java.time.Instant;
 import java.util.UUID;

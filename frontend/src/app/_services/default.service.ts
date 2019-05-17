@@ -5,9 +5,9 @@ import {PageableClient} from "./pageable-client";
 import {AuthService} from "./auth/auth.service";
 
 export abstract class DefaultService<T> {
-  //public static base_url = `http://localhost:4300/api`;
+  public static base_url = `http://localhost:4300/api`;
 
-  public static base_url = `${window.location.origin}/api`;
+  //public static base_url = `${window.location.origin}/api`;
 
 
   protected constructor(protected key : string, protected URL : string, protected http: HttpClient, protected auth: AuthService ) {}

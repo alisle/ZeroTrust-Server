@@ -54,3 +54,35 @@ databaseChangeLog:
             type: boolean
             constraints:
                 nullable: false
+
+        - createIndex:
+              columns:
+                  - column:
+                        name: name
+                        type: varchar(255)
+              indexName: idx_agent_name
+              tableName: agent
+
+        - createIndex:
+              columns:
+                  - column:
+                        name: last_seen
+                        type: timestamp
+              indexName: idx_agent_last_seen
+              tableName: agent
+
+        - createIndex:
+              columns:
+                  - column:
+                        name: alive
+                        type: boolean
+              indexName: idx_agent_alive
+              tableName: agent
+
+        - createIndex:
+              columns:
+                  - column:
+                        name: known
+                        type: boolean
+              indexName: idx_agent_known
+              tableName: agent

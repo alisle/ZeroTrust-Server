@@ -9,16 +9,19 @@ import {ConnectionLinkDetailsComponent} from "./_components/connection-links-det
 import {NetworksComponent} from "./_components/networks/networks.component";
 import {AuthGuardService} from "./_guards/auth-guard.service";
 import {LoginComponent} from "./_components/login/login.component";
+import {LogoutComponent} from "./_components/logout/logout.component";
+import {AdminComponent} from "./_components/admin/admin.component";
 
 const routes: Routes = [
-  { path: '', component: WelcomeComponent, canActivate: [ AuthGuardService ] },
-  { path: 'dashboard', component: DashboardComponent, canActivate: [ AuthGuardService ]  },
+  { path: '', component: DashboardComponent, canActivate: [ AuthGuardService ] },
   { path: 'agents', component: AgentsComponent, canActivate: [ AuthGuardService ]  },
   { path: 'agents/:id', component: AgentDetailsComponent, canActivate: [ AuthGuardService ]  },
   { path: 'connection_links', component: ConnectionLinksComponent, canActivate: [ AuthGuardService ]  },
   { path: 'connection_links/:id', component: ConnectionLinkDetailsComponent, canActivate: [ AuthGuardService ]  },
   { path: 'networks', component: NetworksComponent, canActivate: [ AuthGuardService ]  },
   { path: 'login', component: LoginComponent },
+  { path: 'logout', component: LogoutComponent, canActivate: [ AuthGuardService ]  },
+  { path: 'admin', component: AdminComponent, canActivate: [ AuthGuardService ]  }
 ];
 
 @NgModule({

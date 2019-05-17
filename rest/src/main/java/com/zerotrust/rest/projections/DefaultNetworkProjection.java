@@ -1,6 +1,6 @@
 package com.zerotrust.rest.projections;
 
-import com.zerotrust.model.Network;
+import com.zerotrust.model.entity.Network;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.rest.core.config.Projection;
 

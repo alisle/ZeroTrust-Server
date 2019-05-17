@@ -40,3 +40,11 @@ databaseChangeLog:
                   type: varchar(10)
                   constraints:
                     nullable: false
+
+        - createIndex:
+            columns:
+              - column:
+                  name: address
+                  type: bigint
+            indexName: idx_ip_address_address
+            tableName: ip_address

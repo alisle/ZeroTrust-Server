@@ -53,8 +53,7 @@ public class UserServiceImpl implements UserService  {
     public Optional<User> createAdmin(String email, String password) {
         return createUser(email, password, new Role[] {
                 new Role( "admin"),
-                new Role("agent_read"),
-                new Role("agent_write"),
+                new Role("agents_read"),
                 new Role("connections_read"),
                 new Role( "networks_read")
         });

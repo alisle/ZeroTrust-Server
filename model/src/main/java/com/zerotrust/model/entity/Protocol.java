@@ -1,4 +1,4 @@
-package com.zerotrust.model;
+package com.zerotrust.model.entity;
 
 public enum Protocol {
     TCP,

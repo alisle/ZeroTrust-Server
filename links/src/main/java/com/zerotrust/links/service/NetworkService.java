@@ -1,9 +1,8 @@
 package com.zerotrust.links.service;
 
-import com.zerotrust.model.Network;
+import com.zerotrust.model.entity.Network;
 
 import java.util.List;
-import java.util.UUID;
 
 public interface NetworkService {
     Network findMostRestrictiveNetwork(int address);

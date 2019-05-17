@@ -46,11 +46,13 @@ databaseChangeLog:
             type: timestamp
             constraints:
               nullable: false
+
         - column:
             name: connection_ended
             type: timestamp
             constraints:
                 nullable: true
+
         - column:
             name: duration
             type: bigint
@@ -139,6 +141,71 @@ databaseChangeLog:
             type: varchar(255)
         indexName: idx_connection_process_name
         tableName: connection
+
+    - createIndex:
+          columns:
+              - column:
+                    name: connection_hash
+                    type: bigint
+          indexName: idx_connection_connection_hash
+          tableName: connection
+
+    - createIndex:
+          columns:
+              - column:
+                    name: agent_id
+                    type: uuid
+          indexName: idx_connection_agent_id
+          tableName: connection
+
+    - createIndex:
+          columns:
+              - column:
+                    name: connection_started
+                    type: timestamp
+          indexName: idx_connection_connection_started
+          tableName: connection
+
+    - createIndex:
+          columns:
+              - column:
+                    name: connection_ended
+                    type: timestamp
+          indexName: idx_connection_connection_ended
+          tableName: connection
+
+    - createIndex:
+          columns:
+              - column:
+                    name: duration
+                    type: bigint
+          indexName: idx_connection_duration
+          tableName: connection
+
+    - createIndex:
+          columns:
+              - column:
+                    name: source_address_string
+                    type: varchar(255)
+          indexName: idx_connection_source_address_string
+          tableName: connection
+
+    - createIndex:
+          columns:
+              - column:
+                    name: destination_address_string
+                    type: varchar(255)
+          indexName: idx_connection_destination_address_string
+          tableName: connection
+
+    - createIndex:
+          columns:
+              - column:
+                    name: username
+                    type: varchar(255)
+          indexName: idx_connection_username
+          tableName: connection
+
 
 
     - addForeignKeyConstraint:

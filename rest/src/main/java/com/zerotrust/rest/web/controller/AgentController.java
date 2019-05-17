@@ -1,8 +1,8 @@
 package com.zerotrust.rest.web.controller;
 
-import com.zerotrust.model.AgentCount;
-import com.zerotrust.model.ProcessCount;
-import com.zerotrust.model.UserCount;
+import com.zerotrust.model.entity.AgentCount;
+import com.zerotrust.model.entity.ProcessCount;
+import com.zerotrust.model.entity.UserCount;
 import com.zerotrust.rest.exception.AgentNotFoundException;
 import com.zerotrust.rest.repository.AgentRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -25,21 +25,21 @@ public class AgentController {
         this.agentRepository = agentRepository;
     }
 
-    @PreAuthorize("hasAuthority('agent_read')")
+    @PreAuthorize("hasAuthority('agents_read')")
     @RequestMapping(value = "/search/users-source", method = RequestMethod.GET, produces = MediaTypes.HAL_JSON_VALUE)
     public ResponseEntity<List<UserCount>> getSourceUsers(@RequestParam("agent_id") UUID id)  throws AgentNotFoundException {
         log.debug("REST Request for source users:" + id);
         return new ResponseEntity<>(this.agentRepository.countSourceUsername(id), null, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAuthority('agent_read')")
+    @PreAuthorize("hasAuthority('agents_read')")
     @RequestMapping(value = "/search/users-destination", method = RequestMethod.GET, produces = MediaTypes.HAL_JSON_VALUE)
     public ResponseEntity<List<UserCount>> getDestinationUsers(@RequestParam("agent_id") UUID id) throws AgentNotFoundException {
         log.debug("REST Request for source users:" + id);
         return new ResponseEntity<>(this.agentRepository.countDestinationUsername(id), null, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAuthority('agent_read')")
+    @PreAuthorize("hasAuthority('agents_read')")
     @RequestMapping(value = "/search/users", method = RequestMethod.GET, produces = MediaTypes.HAL_JSON_VALUE)
     public ResponseEntity<List<UserCount>> getUsers(@RequestParam("agent_id") UUID id) throws AgentNotFoundException {
         log.debug("REST Request for source users:" + id);
@@ -47,27 +47,27 @@ public class AgentController {
         return new ResponseEntity<>(users, null, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAuthority('agent_read')")
+    @PreAuthorize("hasAuthority('agents_read')")
     @RequestMapping(value = "/search/processes-source", method = RequestMethod.GET, produces = MediaTypes.HAL_JSON_VALUE)
     public ResponseEntity<List<ProcessCount>> getSourceProcesses(@RequestParam("agent_id") UUID id)  throws AgentNotFoundException {
         log.debug("REST Request for source users:" + id);
         return new ResponseEntity<>(this.agentRepository.countSourceProcess(id), null, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAuthority('agent_read')")
+    @PreAuthorize("hasAuthority('agents_read')")
     @RequestMapping(value = "/search/processes-destination", method = RequestMethod.GET, produces = MediaTypes.HAL_JSON_VALUE)
     public ResponseEntity<List<ProcessCount>> getDestinationProcesses(@RequestParam("agent_id") UUID id) throws AgentNotFoundException {
         log.debug("REST Request for source users:" + id);
         return new ResponseEntity<>(this.agentRepository.countDestinationProcess(id), null, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAuthority('agent_read')")
+    @PreAuthorize("hasAuthority('agents_read')")
     @RequestMapping(value = "/search/count-incoming-connections", method = RequestMethod.GET, produces = MediaTypes.HAL_JSON_VALUE)
     public ResponseEntity<List<AgentCount>>  countIncomingConnections() {
         return new ResponseEntity<>(this.agentRepository.countIncomingConnections(), null, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAuthority('agent_read')")
+    @PreAuthorize("hasAuthority('agents_read')")
     @RequestMapping(value = "/search/count-outgoing-connections", method = RequestMethod.GET, produces = MediaTypes.HAL_JSON_VALUE)
     public ResponseEntity<List<AgentCount>>  countOutgoingConnections() {
         return new ResponseEntity<>(this.agentRepository.countOutgoingConnections(), null, HttpStatus.OK);

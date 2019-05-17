@@ -26,14 +26,14 @@ databaseChangeLog:
             columns:
               - column:
                   name: name
-                  value: "agent_read"
+                  value: "agents_read"
 
         - insert:
             tableName: role
             columns:
               - column:
                   name: name
-                  value: "agent_write"
+                  value: "agents_write"
 
         - insert:
             tableName: role

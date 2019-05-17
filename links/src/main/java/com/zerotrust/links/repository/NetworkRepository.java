@@ -1,6 +1,6 @@
 package com.zerotrust.links.repository;
 
-import com.zerotrust.model.Network;
+import com.zerotrust.model.entity.Network;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 

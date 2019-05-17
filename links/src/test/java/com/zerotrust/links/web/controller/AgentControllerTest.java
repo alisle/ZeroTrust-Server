@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zerotrust.links.LinksServerApplication;
 import com.zerotrust.links.dto.AgentOnlineDTO;
 import com.zerotrust.links.dto.UpdateInterfacesDTO;
-import com.zerotrust.model.Agent;
+import com.zerotrust.model.entity.Agent;
 import com.zerotrust.links.service.AgentService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;

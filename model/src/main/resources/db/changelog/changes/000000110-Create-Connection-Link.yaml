@@ -154,6 +154,7 @@ databaseChangeLog:
                   type: varchar(255)
                   constraints:
                     nullable: true
+
         - createIndex:
             columns:
               - column:
@@ -185,6 +186,95 @@ databaseChangeLog:
                   name: destination_agent_id
                   type: uuid
             indexName: idx_source_agent_destination_agent
+            tableName: connection_link
+
+        - createIndex:
+            columns:
+              - column:
+                  name: connection_hash
+                  type: bigint
+            indexName: idx_connection_link_connection_hash
+            tableName: connection_link
+
+        - createIndex:
+            columns:
+              - column:
+                  name: created_on
+                  type: timestamp
+            indexName: idx_connection_link_created_on
+            tableName: connection_link
+
+        - createIndex:
+            columns:
+              - column:
+                  name: ended_on
+                  type: timestamp
+            indexName: idx_connection_link_ended_on
+            tableName: connection_link
+
+        - createIndex:
+            columns:
+              - column:
+                  name: duration
+                  type: bigint
+            indexName: idx_connection_link_duration
+            tableName: connection_link
+
+        - createIndex:
+            columns:
+              - column:
+                  name: source_address_string
+                  type: varchar(255)
+            indexName: idx_connection_link_source_address_string
+            tableName: connection_link
+
+
+        - createIndex:
+            columns:
+              - column:
+                  name: destination_address_string
+                  type: varchar(255)
+            indexName: idx_connection_link_destination_address_string
+            tableName: connection_link
+
+        - createIndex:
+            columns:
+              - column:
+                  name: alive
+                  type: boolean
+            indexName: idx_connection_link_alive
+            tableName: connection_link
+
+        - createIndex:
+            columns:
+              - column:
+                  name: source_process_name
+                  type: varchar(255)
+            indexName: idx_connection_link_source_process_name
+            tableName: connection_link
+
+        - createIndex:
+            columns:
+              - column:
+                  name: destination_process_name
+                  type: varchar(255)
+            indexName: idx_connection_link_destination_process_name
+            tableName: connection_link
+
+        - createIndex:
+            columns:
+              - column:
+                  name: source_username
+                  type: varchar(255)
+            indexName: idx_connection_link_source_username
+            tableName: connection_link
+
+        - createIndex:
+            columns:
+              - column:
+                  name: destination_username
+                  type: varchar(255)
+            indexName: idx_connection_link_destination_username
             tableName: connection_link
 
         - addForeignKeyConstraint:

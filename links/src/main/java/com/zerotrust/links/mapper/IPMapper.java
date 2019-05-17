@@ -2,7 +2,7 @@ package com.zerotrust.links.mapper;
 
 import com.google.common.net.InetAddresses;
 import com.zerotrust.links.exception.InvalidIPAddress;
-import com.zerotrust.model.IPAddress;
+import com.zerotrust.model.entity.IPAddress;
 import org.springframework.stereotype.Service;
 
 import java.net.InetAddress;

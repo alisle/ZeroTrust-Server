@@ -1,35 +1,33 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <mat-sidenav-container>
   <mat-sidenav #sidenav role="navigation">
-    <mat-nav-list>
+    <mat-nav-list *ngIf="!authService.isAuthenticated()">
       <a mat-list-item>
-        <mat-icon class="icon">input</mat-icon>
+        <mat-icon class="icon">login</mat-icon>
         <span class="label">Login</span>
       </a>
-      <a mat-list-item>
-        <mat-icon class="icon">home</mat-icon>
-        <span class="label">Home</span>
-      </a>
-      <a mat-list-item>
-        <mat-icon class="icon">dashboard</mat-icon>
-        <span class="label">Dashboard</span>
-      </a>
-      <a mat-list-item>
-        <mat-icon class="icon">group_work</mat-icon>
-        <span class="label">Networks</span>
-      </a>
-      <a mat-list-item>
-        <mat-icon class="icon">computer</mat-icon>
-        <span class="label">Agents</span>
-      </a>
-      <a mat-list-item>
-        <mat-icon class="icon">fingerprint</mat-icon>
-        <span class="label">Links</span>
-      </a>
-      <a mat-list-item type="button">
-        <mat-icon class="icon">input</mat-icon>
-        <span class="label">Logout</span>
-      </a>
+    </mat-nav-list>
+    <mat-nav-list *ngIf="authService.isAuthenticated()">
+        <a mat-list-item>
+          <mat-icon class="icon">dashboard</mat-icon>
+          <span class="label">Dashboard</span>
+        </a>
+        <a mat-list-item>
+          <mat-icon class="icon">group_work</mat-icon>
+          <span class="label">Networks</span>
+        </a>
+        <a mat-list-item>
+          <mat-icon class="icon">computer</mat-icon>
+          <span class="label">Agents</span>
+        </a>
+        <a mat-list-item>
+          <mat-icon class="icon">fingerprint</mat-icon>
+          <span class="label">Links</span>
+        </a>
+        <a mat-list-item type="button">
+          <mat-icon class="icon">input</mat-icon>
+          <span class="label">Logout</span>
+        </a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
@@ -45,45 +43,47 @@
         </a>
       </div>
       <div fxFlex fxLayout fxLayoutAlign="flex-end"  fxHide.xs>
-        <ul fxLayout fxLayoutGap="20px" class="navigation-items">
+        <ul *ngIf="!authService.isAuthenticated()" fxLayout fxLayoutGap="20px" class="navigation-items">
           <li>
-            <a>
+            <a routerLink="/login">
               <mat-icon class="icon">input</mat-icon>
               <span  class="label">Login</span>
             </a>
           </li>
+        </ul>
+        <ul *ngIf="authService.isAuthenticated()" fxLayout fxLayoutGap="20px" class="navigation-items">
           <li>
             <a routerLink="/">
-              <mat-icon class="icon">home</mat-icon>
-              <span class="label">Home</span>
-            </a>
-          </li>
-          <li>
-            <a routerLink="/dashboard">
               <mat-icon class="icon">dashboard</mat-icon>
               <span class="label">Dashboard</span>
             </a>
           </li>
-          <li>
+          <li *ngIf="authService.hasAuthority('networks_read')">
             <a routerLink="/networks">
               <mat-icon class="icon">group_work</mat-icon>
               <span class="label">Networks</span>
             </a>
           </li>
-          <li>
+          <li *ngIf="authService.hasAuthority('agents_read')">
             <a routerLink="/agents">
               <mat-icon class="icon">computer</mat-icon>
               <span class="label">Agents</span>
             </a>
           </li>
-          <li>
+          <li *ngIf="authService.hasAuthority('connections_read')">
             <a routerLink="/connection_links">
               <mat-icon class="icon">fingerprint</mat-icon>
               <span class="label">Links</span>
             </a>
           </li>
+          <li *ngIf="authService.hasAuthority('admin')">
+            <a routerLink="/admin">
+              <mat-icon class="icon">build</mat-icon>
+              <span class="label">Admin</span>
+            </a>
+          </li>
           <li>
-            <a>
+            <a routerLink="/logout">
               <mat-icon class="icon">input</mat-icon>
               <span class="label">Log Out</span>
             </a>

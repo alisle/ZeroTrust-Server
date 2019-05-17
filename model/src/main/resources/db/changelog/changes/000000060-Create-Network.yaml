@@ -51,6 +51,31 @@ databaseChangeLog:
                   constraints:
                     unique: false
                     nullable: false
+
+        - createIndex:
+            columns:
+              - column:
+                  name: name
+                  type: varchar(1024)
+            indexName: idx_network_name
+            tableName: network
+
+        - createIndex:
+            columns:
+              - column:
+                  name: address_string
+                  type: varchar(255)
+            indexName: idx_network_address_string
+            tableName: network
+
+        - createIndex:
+            columns:
+              - column:
+                  name: mask_string
+                  type: varchar(255)
+            indexName: idx_network_mask_string
+            tableName: network
+
         - insert:
             tableName: network
             columns:
@@ -150,3 +175,4 @@ databaseChangeLog:
               - column:
                   name: "description"
                   value: "Automatically created network for the 10.0.0.0/8 range"
+

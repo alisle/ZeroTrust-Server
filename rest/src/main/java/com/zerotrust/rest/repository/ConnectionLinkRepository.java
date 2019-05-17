@@ -1,6 +1,6 @@
 package com.zerotrust.rest.repository;
 
-import com.zerotrust.model.ViewConnectionLink;
+import com.zerotrust.model.entity.ViewConnectionLink;
 import com.zerotrust.rest.projections.DefaultConnectionLinkProjection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

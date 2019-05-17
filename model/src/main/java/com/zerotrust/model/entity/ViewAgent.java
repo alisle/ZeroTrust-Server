@@ -1,6 +1,9 @@
-package com.zerotrust.model;
+package com.zerotrust.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.zerotrust.model.entity.Connection;
+import com.zerotrust.model.entity.IPAddress;
+import com.zerotrust.model.entity.Network;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
