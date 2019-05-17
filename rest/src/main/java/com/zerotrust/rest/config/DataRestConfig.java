@@ -16,5 +16,6 @@ public class DataRestConfig implements RepositoryRestConfigurer {
         ExposureConfiguration exposureConfiguration = config.getExposureConfiguration();
         exposureConfiguration.withItemExposure(((metdata, httpMethods) -> httpMethods.disable(HttpMethod.PUT, HttpMethod.POST, HttpMethod.PATCH, HttpMethod.DELETE)))
                 .withCollectionExposure((metdata, httpMethods) -> httpMethods.disable(HttpMethod.PUT, HttpMethod.POST, HttpMethod.PATCH, HttpMethod.DELETE));
+
     }
 }
