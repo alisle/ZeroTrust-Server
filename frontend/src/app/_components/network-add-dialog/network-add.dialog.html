@@ -1,0 +1,51 @@
+<mat-card class="mat-elevation-z0">
+  <mat-card-header>
+    <mat-card-title>Add Network</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+
+    <div style="display: flex; flex-flow: column; align-content: stretch; min-width: 100%;">
+        <div fxFlex="100">
+          <mat-form-field class="full-width">
+            <input [(ngModel)]="dto.name" matInput placeholder="Name" [formControl]="nameFormControls">
+          </mat-form-field>
+        </div>
+        <div fxFlex="100">
+          <mat-form-field class="full-width">
+            <textarea [(ngModel)]="dto.description" rows="5" matInput placeholder="Description" [formControl]="noFormControls"></textarea>
+            <mat-error *ngIf="noFormControls.hasError('maxLength')">
+              Maximum description length exceeded.
+            </mat-error>
+
+          </mat-form-field>
+        </div>
+        <div fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+          <div fxFlex="45">
+            <mat-form-field class="full-width">
+              <input [(ngModel)]="dto.network" matInput placeholder="Network Address" [formControl]="addressFormControls">
+              <mat-error *ngIf="addressFormControls.hasError('pattern') && !addressFormControls.hasError('required')">
+                Please enter a valid network address.
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div fxFlex="45">
+            <mat-form-field class="full-width">
+              <input [(ngModel)]="dto.mask" matInput placeholder="Network Mask" [formControl]="maskFormControls">
+              <mat-error *ngIf="maskFormControls.hasError('pattern') && !maskFormControls.hasError('required')">
+                Please enter a valid netmask address.
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+      <div fxFlex fxLayout="row" fxLayoutAlign="flex-end flex-end">
+        <div fxFlex="20">
+          <button mat-flat-button color="primary" [disabled]="!enabled()" [mat-dialog-close]="dto">Add</button>
+        </div>
+        <div fxFlex="20">
+          <button mat-flat-button color="warn" (click)="cancel()" >Cancel</button>
+        </div>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>
+

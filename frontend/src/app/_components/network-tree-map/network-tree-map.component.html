@@ -1,5 +1,5 @@
 <div *ngIf="nodes.length > 0 else empty">
-  <div style="width: 100%; height: 500px">
+  <div style="width: 100%; height: 50px">
     <ngx-charts-tree-map
       [scheme]="scheme"
       [results]="nodes">
@@ -8,8 +8,8 @@
 </div>
 
 <ng-template #empty>
-    <svg width="100%" height="500px">
-      <rect height="98%" width="98%" x="0" y="0" style="fill: white; stroke-width: 1; stroke: gray;"></rect>
+    <svg width="100%" height="50px">
+      <rect height="30px" width="99%" x="0px" y="10px" style="fill: white; stroke-width: 1; stroke: gray;"></rect>
       <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">So much empty..</text>
     </svg>
 

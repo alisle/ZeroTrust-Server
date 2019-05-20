@@ -1,11 +1,14 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, Inject, OnInit, ViewChild} from '@angular/core';
 import {NetworksService} from "../../_services/networks/networks.service";
 import {LogWriter} from "../../log-writer";
 import {Network} from "../../_model/Network";
 import {PageableDataSource} from "../../_services/pageable-data-source";
-import {MatPaginator} from "@angular/material";
+import {MatDialog, MatPaginator, MatSnackBar} from "@angular/material";
 import {LoadableObject} from "../../_model/LoadableObject";
 import {AgentCount} from "../../_model/AgentCount";
+import {NetworkAddDialog} from "../network-add-dialog/network-add.dialog";
+import {NetworkNewDTO} from "../../_model/NetworkNewDTO";
+import {AuthService} from "../../_services/auth/auth.service";
 
 @Component({
   selector: 'app-networks',
@@ -17,8 +20,33 @@ export class NetworksComponent implements OnInit {
   private networks : NetworkMeta[] = [];
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(private service: NetworksService) { }
+  constructor(private service: NetworksService, public authService: AuthService, public dialog: MatDialog, private snackBar: MatSnackBar ) { }
+
   dataSource = new PageableDataSource<Network>(this.service.allNetworks());
+
+  openDialog(): void {
+    this.log.debug("opening new network dialog");
+
+    const dialogRef = this.dialog.open(NetworkAddDialog, {
+      width: '500px',
+      data : new NetworkNewDTO()
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.log.debug("the dialog was closed", result);
+      if(result == null) {
+        this.log.debug("the dialog was canceled");
+      } else {
+        let newNetwork : NetworkNewDTO = result;
+        this.log.debug("this is the new network", newNetwork);
+
+        this.service.add(newNetwork).subscribe(( success : boolean) => {
+          this.snackBar.open('Network Added!', null, { duration: 2000 });
+          this.dataSource.get(0);
+        });
+      }
+    })
+  }
 
   ngOnInit() {
     this.dataSource.length$.subscribe(size => {
@@ -57,3 +85,4 @@ class NetworkMeta {
 
   constructor(public network : Network) {}
 }
+

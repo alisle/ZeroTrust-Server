@@ -55,7 +55,8 @@ public class UserServiceImpl implements UserService  {
                 new Role( "admin"),
                 new Role("agents_read"),
                 new Role("connections_read"),
-                new Role( "networks_read")
+                new Role( "networks_read"),
+                new Role("networks_write")
         });
     }
 

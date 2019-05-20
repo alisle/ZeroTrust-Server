@@ -8,7 +8,22 @@
   <div fxLayout="row" fxLayoutAlign="center center" class="content">
     <mat-card class="card main-container">
       <mat-card-header>
-        <mat-card-title> Networks </mat-card-title>
+        <div style="display: flex; flex-flow: column; align-content: stretch; min-width: 100%;">
+          <div fxFlex>
+            <div fxFlex fxLayout="row" fxLayoutAlign="center center">
+              <div fxFlex="50" fxLayout="column" fxLayoutAlign="center start">
+                <mat-card-title>
+                  Networks
+                </mat-card-title>
+              </div>
+              <div fxFlex="50" fxLayout="column" fxLayoutAlign="center end" style="margin-right: 50px">
+                <button mat-mini-fab color="primary" (click)="openDialog()" *ngIf="authService.hasAuthority('networks_write')">
+                  <mat-icon>add</mat-icon>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       </mat-card-header>
       <mat-card-content>
         <div style="display: flex; flex-flow: column; align-content: stretch">
@@ -20,23 +35,6 @@
                 <mat-card-subtitle> Address: {{meta.network.addressString}}, Mask: {{meta.network.maskString}}</mat-card-subtitle>
               </mat-card-header>
               <mat-card-content fxLayout="column">
-                <div fxFlex>
-                  <div fxFlex fxLayout="row" fxLayoutAlign="center center">
-                    <div fxFlex="50" fxLayout="column" fxLayoutAlign="center center">
-                      <div class="graph-header">Active Source Agents</div>
-                      <div fxFlex style="width: 100%; height: 500px">
-                        <app-network-tree-map [observable]="meta.sourceObjects.value$"></app-network-tree-map>
-                      </div>
-                    </div>
-                    <div fxFlex="50" fxLayout="column" fxLayoutAlign="center center">
-                      <div class="graph-header">Active Destination Agents</div>
-                      <div fxFlex style="width: 100%; height: 500px">
-                        <app-network-tree-map [observable]="meta.destinationObjects.value$"></app-network-tree-map>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
                 <div fxflex>
                   {{meta.network.description}}
                 </div>
@@ -51,6 +49,24 @@
                     <span class="bold">No. of Active Links From:</span> {{meta.network.activeSourceConnectionCount}}
                   </div>
                 </div>
+
+                <div fxFlex>
+                  <div fxFlex fxLayout="row" fxLayoutAlign="center center">
+                    <div fxFlex="50" fxLayout="column" fxLayoutAlign="center center">
+                      <div class="graph-header">Active Source Agents</div>
+                      <div fxFlex style="width: 100%; height: 50px">
+                        <app-network-tree-map [observable]="meta.sourceObjects.value$"></app-network-tree-map>
+                      </div>
+                    </div>
+                    <div fxFlex="50" fxLayout="column" fxLayoutAlign="center center">
+                      <div class="graph-header">Active Destination Agents</div>
+                      <div fxFlex style="width: 100%; height: 50px">
+                        <app-network-tree-map [observable]="meta.destinationObjects.value$"></app-network-tree-map>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
               </mat-card-content>
             </mat-card>
           </div>

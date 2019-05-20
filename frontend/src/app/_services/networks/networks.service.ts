@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import {DefaultService} from "../default.service";
 import {Network} from "../../_model/Network";
-import {HttpClient, HttpParams} from "@angular/common/http";
+import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {PageableClient} from "../pageable-client";
 import {Observable} from "rxjs";
 import {AgentCount} from "../../_model/AgentCount";
-import {map} from "rxjs/operators";
+import {catchError, map} from "rxjs/operators";
 import {AuthService} from "../auth/auth.service";
+import {NetworkNewDTO} from "../../_model/NetworkNewDTO";
 
 @Injectable()
 export class NetworksService extends DefaultService<Network> {
@@ -16,6 +17,21 @@ export class NetworksService extends DefaultService<Network> {
 
   allNetworks() : PageableClient<Network> {
     return this.default();
+  }
+
+  add(network : NetworkNewDTO) : Observable<boolean> {
+    let url = `${DefaultService.base_url}${this.URL}`;
+    return this.http.post(
+      url,
+      network,
+      {
+        headers : new HttpHeaders({'Content-Type' : 'application/json'})
+      }
+    ).pipe(
+      map(() => {
+        return true;
+      })
+    );
   }
 
   countActiveSourceConnections(network : string) : Observable<AgentCount[]> {

@@ -29,7 +29,7 @@ import {NgxGraphModule} from "@swimlane/ngx-graph";
 import { ActiveConnectionsGraphComponent } from './_components/active-connections-graph/active-connections-graph.component';
 import { ConnectionLinkGraphComponent } from './_components/connection-link-graph/connection-link-graph.component';
 import {AgentOutboundConnectionsGraphComponent} from "./_components/agent-outbound-connections-graph/agent-outbound-connections-graph.component";
-import { NetworksComponent } from './_components/networks/networks.component';
+import {NetworksComponent} from './_components/networks/networks.component';
 import {NetworksService} from "./_services/networks/networks.service";
 import { NetworkTreeMapComponent } from './_components/network-tree-map/network-tree-map.component';
 import {AuthGuardService} from "./_guards/auth-guard.service";
@@ -40,6 +40,7 @@ import {ErrorInterceptor} from "./_helpers/error-interceptor/error.interceptor";
 import {AuthInterceptor} from "./_helpers/auth-interceptor/auth.interceptor";
 import { LogoutComponent } from './_components/logout/logout.component';
 import { AdminComponent } from './_components/admin/admin.component';
+import { NetworkAddDialog } from './_components/network-add-dialog/network-add.dialog';
 
 @NgModule({
   declarations: [
@@ -59,9 +60,11 @@ import { AdminComponent } from './_components/admin/admin.component';
     AgentOutboundConnectionsGraphComponent,
     NetworksComponent,
     NetworkTreeMapComponent,
+    NetworkAddDialog,
     LoginComponent,
     LogoutComponent,
-    AdminComponent
+    AdminComponent,
+    NetworkAddDialog
   ],
   imports: [
     BrowserModule,
@@ -88,7 +91,8 @@ import { AdminComponent } from './_components/admin/admin.component';
     { provide: HTTP_INTERCEPTORS, multi: true, useClass: AuthInterceptor },
   ],
   entryComponents: [
-    ConnectionLinksDetailsDialog
+    ConnectionLinksDetailsDialog,
+    NetworkAddDialog
   ],
   bootstrap: [AppComponent]
 })
