@@ -4,6 +4,7 @@ import * as d3 from 'd3';
 import {ConnectionLink} from "../../_model/ConnectionLink";
 import {ConnectionGraphNode} from "../../_model/graphs/ConnectionGraphNode";
 import {ConnectionGraph} from "../../_model/graphs/ConnectionGraph";
+import {LogWriter} from "../../log-writer";
 
 
 @Component({
@@ -12,6 +13,7 @@ import {ConnectionGraph} from "../../_model/graphs/ConnectionGraph";
   styleUrls: ['./connection-link-graph.component.css']
 })
 export class ConnectionLinkGraphComponent implements OnInit, AfterViewInit {
+  private log : LogWriter = new LogWriter("connection-links-component");
   static currentID = 0;
   public id : string = "CLGRAPH" + ConnectionLinkGraphComponent.currentID;
   private svg = null;
@@ -26,6 +28,7 @@ export class ConnectionLinkGraphComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.svg = d3.select("#" + this.id);
     this.graph = this.setupGraph(this.svg);
+    this.log.debug("this is my links", this.links);
     this.links.forEach((link : ConnectionLink) => {
       this.addConnectionLink(link);
     });

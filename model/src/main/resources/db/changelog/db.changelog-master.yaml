@@ -19,3 +19,5 @@ databaseChangeLog:
     file: db/changelog/changes/010000010-Create-Agent-View.yaml
 - include:
     file: db/changelog/changes/010000020-Create-Connection-Link-View.yaml
+- include:
+    file: db/changelog/changes/000000120-Create-User.yaml

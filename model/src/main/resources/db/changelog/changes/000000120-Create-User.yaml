@@ -1,0 +1,20 @@
+databaseChangeLog:
+  - changeSet:
+      id: 000000120-Create-User
+      author: alisle
+      changes:
+        - createTable:
+            tableName: user
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false

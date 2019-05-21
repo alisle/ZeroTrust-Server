@@ -17,7 +17,10 @@ import java.util.*;
 
 @SuppressWarnings("unused")
 @PreAuthorize("hasAuthority('agents_read')")
-@RepositoryRestResource(exported = true, path = "agents", collectionResourceRel = "agents", itemResourceRel = "agent")
+@RepositoryRestResource(exported = true,
+        path = "agents",
+        collectionResourceRel = "agents",
+        itemResourceRel = "agent")
 public interface AgentRepository extends JpaRepository<ViewAgent, UUID> {
 
     @RestResource(exported = true)

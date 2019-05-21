@@ -16,7 +16,7 @@ databaseChangeLog:
       value: float
       dbms: mysql, oracle, mssql
   - changeSet:
-      id: 000000100-Create-Connection
+      id: 000000110-Create-Connection
       author: alisle
       changes:
         - createTable:

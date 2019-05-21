@@ -49,12 +49,12 @@ public class ViewConnectionLink {
     private int destinationPort;
 
     @ManyToOne
-    @JoinColumn(name="source_agent_id", nullable = false)
-    private ViewAgent sourceAgent;
+    @JoinColumn(name="source_agent_id", nullable = true)
+    private Agent sourceAgent;
 
     @ManyToOne
-    @JoinColumn(name="destination_agent_id", nullable = false)
-    private ViewAgent destinationAgent;
+    @JoinColumn(name="destination_agent_id", nullable = true)
+    private Agent destinationAgent;
 
     @OneToOne
     @JoinColumn(name="source_connection_id", nullable = true)
@@ -65,11 +65,9 @@ public class ViewConnectionLink {
     private Connection destinationConnection;
 
 
-    // This is horrible, got to find a better way of doing this.
     @Column(name = "source_agent_name")
     private String sourceAgentName;
 
-    // Mate, this too is horrible.
     @Column(name = "destination_agent_name")
     private String destinationAgentName;
 

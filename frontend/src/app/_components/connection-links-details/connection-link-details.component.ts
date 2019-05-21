@@ -40,6 +40,7 @@ export class ConnectionLinkDetailsComponent implements OnInit, AfterViewInit {
   @ViewChildren('diagram', { read: ElementRef })  diagramElementContainer: QueryList<ElementRef>;
 
   createClient(link : ConnectionLink) : PageableClient<ConnectionLink> {
+    this.log.debug(`creating client for link`, link);
     let client : PageableClient<ConnectionLink> = null;
     if(link.sourceAgent != null && link.destinationAgent != null) {
       client = this.service.connectionsBetweenAgents(link.sourceAgent.uuid, link.destinationAgent.uuid);
@@ -54,6 +55,7 @@ export class ConnectionLinkDetailsComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     const id = (this.connectionID == null) ? this.route.snapshot.paramMap.get('id') : this.connectionID;
+    this.log.debug(`my id is ${id}`);
 
     this.linkLoad.bind(this.service.get(id, "DefaultConnectionLinkProjection"));
     this.linkLoad.value$.subscribe((link : ConnectionLink) => {
@@ -63,6 +65,8 @@ export class ConnectionLinkDetailsComponent implements OnInit, AfterViewInit {
     this.linkLoad.value$.subscribe((link : ConnectionLink) => {
       if(link != null) {
         let client : PageableClient<ConnectionLink> = this.createClient(link);
+        this.log.debug(`my client is ${client}`);
+
         if(client == null) {
           this.graphLoad.succeed(null);
           this.connectionCountLoad.succeed(0);
@@ -79,10 +83,18 @@ export class ConnectionLinkDetailsComponent implements OnInit, AfterViewInit {
       this.connectionCount = value;
     });
 
+    this.graphLoad.loading$.subscribe((loading : boolean) => {
+      if(!loading) {
+       this.log.debug("finished loading links");
+      }
+    });
+
     this.graphLoad.value$.subscribe((page : Page<ConnectionLink>) => {
       if( page != null) {
         this.links = page.items;
       }
+
+      this.log.debug("setting links", page);
     });
 
   }
