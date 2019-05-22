@@ -133,6 +133,9 @@ databaseChangeLog:
         - column:
             name: command_line
             type: varchar(5120)
+            constraints:
+              nullable: true
+
 
     - createIndex:
         columns:

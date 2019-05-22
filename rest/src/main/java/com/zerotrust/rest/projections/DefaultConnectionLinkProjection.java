@@ -10,6 +10,7 @@ import org.springframework.data.rest.core.config.Projection;
 import java.time.Instant;
 import java.util.UUID;
 
+@SuppressWarnings("unused")
 @Projection(name="defaultConnectionLinkProjection", types = {ViewConnectionLink.class})
 public interface DefaultConnectionLinkProjection {
 

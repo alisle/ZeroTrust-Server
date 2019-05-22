@@ -155,6 +155,20 @@ databaseChangeLog:
                   constraints:
                     nullable: true
 
+              - column:
+                  name: source_identity_id
+                  type: uuid
+                  constraints:
+                    nullable: true
+
+              - column:
+                  name: destination_identity_id
+                  type: uuid
+                  constraints:
+                    nullable: true
+
+
+
         - createIndex:
             columns:
               - column:
@@ -277,6 +291,22 @@ databaseChangeLog:
             indexName: idx_connection_link_destination_username
             tableName: connection_link
 
+        - createIndex:
+            columns:
+              - column:
+                  name: source_identity_id
+                  type: uuid
+            indexName: idx_connection_link_source_identity_id
+            tableName: connection_link
+
+        - createIndex:
+            columns:
+              - column:
+                  name: destination_identity_id
+                  type: uuid
+            indexName: idx_connection_link_destination_identity_id
+            tableName: connection_link
+
         - addForeignKeyConstraint:
             baseColumnNames: source_agent_id
             baseTableName: connection_link
@@ -319,3 +349,16 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: network
 
+        - addForeignKeyConstraint:
+            baseColumnNames: source_identity_id
+            baseTableName: connection_link
+            constraintName: fk_connection_link_source_identity_id
+            referencedColumnNames: id
+            referencedTableName: identity
+
+        - addForeignKeyConstraint:
+            baseColumnNames: destination_identity_id
+            baseTableName: connection_link
+            constraintName: fk_connection_link_destination_identity_id
+            referencedColumnNames: id
+            referencedTableName: identity

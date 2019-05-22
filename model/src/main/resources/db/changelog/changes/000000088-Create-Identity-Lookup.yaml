@@ -1,0 +1,68 @@
+databaseChangeLog:
+  - changeSet:
+      id: 000000088-Create-Identity-Lookup
+      author: alisle
+      changes:
+        - createTable:
+            tableName: identity_lookup
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+
+              - column:
+                  name: username
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: agent_id
+                  type: uuid
+                  constraints:
+                    nullable: true
+
+              - column:
+                  name: identity_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+
+        - createIndex:
+            columns:
+              - column:
+                  name: username
+                  type: varchar(255)
+              - column:
+                  name: agent_id
+                  type: uuid
+            indexName: idx_identity_lookup_username_agent_id
+            tableName: identity_lookup
+
+        - createIndex:
+            columns:
+              - column:
+                  name: identity_id
+                  type: uuid
+            indexName: idx_identity_lookup_identity_id
+            tableName: identity_lookup
+
+        - addForeignKeyConstraint:
+            baseColumnNames: identity_id
+            baseTableName: identity_lookup
+            constraintName: fk_identity_lookup_identity_id
+            referencedColumnNames: id
+            referencedTableName: identity
+
+        - addForeignKeyConstraint:
+            baseColumnNames: agent_id
+            baseTableName: identity_lookup
+            constraintName: fk_identity_lookup_agent_id
+            referencedColumnNames: id
+            referencedTableName: agent
+
+
+

@@ -1,10 +1,10 @@
 databaseChangeLog:
   - changeSet:
-      id: 000000076-Create-User
+      id: 000000076-Create-Identity
       author: alisle
       changes:
         - createTable:
-            tableName: agent_user
+            tableName: identity
             columns:
               - column:
                   name: id
@@ -24,15 +24,15 @@ databaseChangeLog:
               - column:
                   name: id
                   type: uuid
-            indexName: idx_agent_user_id
-            tableName: agent_user
+            indexName: idx_identity_id
+            tableName: identity
 
         - createIndex:
             columns:
               - column:
                   name: name
                   type: varchar(255)
-            indexName: idx_agent_user_name
-            tableName: agent_user
+            indexName: idx_identity_name
+            tableName: identity
 
 

@@ -1,10 +1,10 @@
 databaseChangeLog:
   - changeSet:
-      id: 000000087-Create-Agent-User
+      id: 000000087-Create-Agent-Identity
       author: alisle
       changes:
         - createTable:
-            tableName: agent_agent_user
+            tableName: agent_identity
             columns:
               - column:
                   name: agent_id
@@ -12,26 +12,26 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: agent_user_id
+                  name: identity_id
                   type: uuid
                   constraints:
                     nullable: false
 
         - addPrimaryKey:
-            columnNames: agent_id, agent_user_id
-            tableName: agent_agent_user
+            columnNames: agent_id, identity_id
+            tableName: agent_identity
 
         - addForeignKeyConstraint:
             baseColumnNames: agent_id
-            baseTableName: agent_agent_user
-            constraintName: fk_agent_agent_user_agent_id
+            baseTableName: agent_identity
+            constraintName: fk_agent_identity_agent_id
             referencedColumnNames: id
             referencedTableName: agent
 
         - addForeignKeyConstraint:
-            baseColumnNames: agent_user_id
-            baseTableName: agent_agent_user
-            constraintName: fk_agent_agent_user_agent_user_id
+            baseColumnNames: identity_id
+            baseTableName: agent_identity
+            constraintName: fk_agent_identity_identity_id
             referencedColumnNames: id
-            referencedTableName: agnet_user
+            referencedTableName: identity
 
