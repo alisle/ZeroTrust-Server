@@ -75,7 +75,7 @@ export class ConnectionLinksTableComponent implements OnInit, AfterViewInit {
   }
 
   openDialog(link : ConnectionLink): void {
-    this.log.debug("opening details dialog");
+    this.log.debug(`opening details dialog for link:${link.uuid}`, link);
 
     const dialogRef = this.dialog.open(ConnectionLinksDetailsDialog, {
       width: '95%',
@@ -95,6 +95,7 @@ export class ConnectionLinksTableComponent implements OnInit, AfterViewInit {
 export class ConnectionLinksDetailsDialog {
   private log : LogWriter = new LogWriter("connectlinks-details-dialog");
   id : string;
+
   constructor(
     public dialogRef: MatDialogRef<ConnectionLinksDetailsDialog>,
     @Inject(MAT_DIALOG_DATA) public data: string) {

@@ -10,7 +10,7 @@ import org.springframework.data.rest.core.config.Projection;
 import java.time.Instant;
 import java.util.UUID;
 
-@Projection(name="DefaultConnectionLinkProjection", types = {ViewConnectionLink.class})
+@Projection(name="defaultConnectionLinkProjection", types = {ViewConnectionLink.class})
 public interface DefaultConnectionLinkProjection {
 
     @Value("#{target.id}")
@@ -22,7 +22,10 @@ public interface DefaultConnectionLinkProjection {
     long getDuration();
 
     String getSourceAgentName();
+
+    @Value("#{target.sourceAgent}")
     ViewAgent  getSourceAgent();
+
     String getSourceString();
     int getSourceAddress();
     int getSourcePort();
@@ -31,7 +34,10 @@ public interface DefaultConnectionLinkProjection {
     String getSourceNetworkName();
 
     String getDestinationAgentName();
-    ViewAgent  getDestinationAgent();
+
+    @Value("#{target.destinationAgent}")
+    ViewAgent getDestinationAgent();
+
     Connection getDestinationConnection();
     Network getDestinationNetwork();
     String getDestinationNetworkName();

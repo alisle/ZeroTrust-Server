@@ -25,7 +25,7 @@ export class ActiveConnectionsGraphComponent implements OnInit, AfterViewInit {
   constructor(private service : ConnectionLinkService) { }
 
   ngOnInit() {
-    this.activeConnections.bind(this.pageableClient.page(0, "DefaultConnectionLinkProjection"));
+    this.activeConnections.bind(this.pageableClient.page(0, "defaultConnectionLinkProjection"));
   }
 
   ngAfterViewInit(): void {

@@ -1,6 +1,9 @@
 package com.zerotrust.model.entity;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -15,6 +18,10 @@ public class ViewConnectionLink {
 
     @Id
     private UUID id;
+
+    @ToString.Exclude
+    @Formula("id")
+    @EqualsAndHashCode.Exclude private UUID uuid;
 
     @NotNull
     @Column(name = "connection_hash")
@@ -50,11 +57,11 @@ public class ViewConnectionLink {
 
     @ManyToOne
     @JoinColumn(name="source_agent_id", nullable = true)
-    private Agent sourceAgent;
+    private ViewAgent sourceAgent;
 
     @ManyToOne
     @JoinColumn(name="destination_agent_id", nullable = true)
-    private Agent destinationAgent;
+    private ViewAgent destinationAgent;
 
     @OneToOne
     @JoinColumn(name="source_connection_id", nullable = true)

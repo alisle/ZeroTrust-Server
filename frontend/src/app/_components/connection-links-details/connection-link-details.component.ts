@@ -57,7 +57,7 @@ export class ConnectionLinkDetailsComponent implements OnInit, AfterViewInit {
     const id = (this.connectionID == null) ? this.route.snapshot.paramMap.get('id') : this.connectionID;
     this.log.debug(`my id is ${id}`);
 
-    this.linkLoad.bind(this.service.get(id, "DefaultConnectionLinkProjection"));
+    this.linkLoad.bind(this.service.get(id, "defaultConnectionLinkProjection"));
     this.linkLoad.value$.subscribe((link : ConnectionLink) => {
       this.connectionLink = link;
     });
