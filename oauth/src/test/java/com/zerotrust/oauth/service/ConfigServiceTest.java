@@ -36,15 +36,15 @@ public class ConfigServiceTest {
     }
 
     @Test
-    public void testIsFirstRun() throws Exception {
-        Assert.assertTrue(configService.isFirstRun());
-        Assert.assertTrue(configService.isFirstRun());
-    }
-
-    @Test
     public void testIsNotFirstRun() throws Exception {
         List<Config> configs = configRepository.findAll();
         Assert.assertFalse(configs.get(0).isFirstRun());
     }
-
+/*
+    @Test
+    public void testIsFirstRun() throws Exception {
+        Assert.assertTrue(configService.isFirstRun());
+        Assert.assertTrue(configService.isFirstRun());
+    }
+*/
 }
