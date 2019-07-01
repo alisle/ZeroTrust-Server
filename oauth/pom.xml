@@ -110,6 +110,12 @@
 			<artifactId>spring-data-rest-core</artifactId>
 			<scope>compile</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.passay</groupId>
+			<artifactId>passay</artifactId>
+			<version>1.5.0</version>
+		</dependency>
+
 	</dependencies>
 	<build>
 		<plugins>
