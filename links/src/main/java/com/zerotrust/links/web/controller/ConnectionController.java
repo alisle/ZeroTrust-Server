@@ -29,14 +29,14 @@ public class ConnectionController {
     @RequestMapping(value = "/open", method = RequestMethod.POST, produces = MediaTypes.HAL_JSON_VALUE)
     public ResponseEntity open(@Valid @RequestBody ConnectionOpenDTO dto) throws InsertFailedException {
         log.debug("REST Request to open connection: " + dto.getId());
-        connectionService.open(dto).orElseThrow(() -> new InsertFailedException());
+        connectionService.open(dto).orElseThrow(InsertFailedException::new);
         return new ResponseEntity(HttpStatus.OK);
     }
 
     @RequestMapping(value = "/close", method = RequestMethod.POST, produces = MediaTypes.HAL_JSON_VALUE)
     public ResponseEntity close(@Valid @RequestBody ConnectionCloseDTO dto) throws NoConnectionFoundException {
         log.debug("REST Request to close connection: " + dto.getId());
-        connectionService.close(dto).orElseThrow(() -> new NoConnectionFoundException());
+        connectionService.close(dto).orElseThrow(NoConnectionFoundException::new);
         return new ResponseEntity(HttpStatus.OK);
     }
 }

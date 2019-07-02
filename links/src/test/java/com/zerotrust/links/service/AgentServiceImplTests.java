@@ -66,7 +66,7 @@ public class AgentServiceImplTests {
     public void testSeenUnknown() {
         UUID uuid = UUID.randomUUID();
         service.seen(uuid);
-        Agent agent = service.get(uuid).orElseThrow(() -> new RuntimeException("Oh Dear"));
+        Agent agent = service.get(uuid).orElseThrow(RuntimeException::new);
         Assert.assertEquals(uuid, agent.getId());
     }
 
@@ -75,7 +75,7 @@ public class AgentServiceImplTests {
         String name = "TestOnline";
         UUID uuid = UUID.randomUUID();
         Agent agent = service.online(uuid, name);
-        Agent newAgent = service.get(agent.getId()).orElseThrow(() -> new RuntimeException("Oh Dear"));
+        Agent newAgent = service.get(agent.getId()).orElseThrow(RuntimeException::new);
 
         Assert.assertEquals(agent.getName(), newAgent.getName());
         Assert.assertEquals(agent.getId(), uuid);
@@ -90,7 +90,7 @@ public class AgentServiceImplTests {
         service.online(uuid, name);
         service.offline(uuid);
 
-        Agent agent = service.get(uuid).orElseThrow(() -> new RuntimeException());
+        Agent agent = service.get(uuid).orElseThrow(RuntimeException::new);
         Assert.assertEquals(true, agent.getKnown());
         Assert.assertEquals(false, agent.getAlive());
     }
@@ -126,7 +126,7 @@ public class AgentServiceImplTests {
         service.updateIPs(uuid, firstTemplate.toArray(new IPAddress[firstTemplate.size()]));
 
 
-        Agent agent = service.get(uuid).orElseThrow(() -> new RuntimeException());
+        Agent agent = service.get(uuid).orElseThrow(RuntimeException::new);
         Set<IPAddress> addresses = agent.getAddresses();
 
         Assert.assertEquals(4, addresses.size());
@@ -136,7 +136,7 @@ public class AgentServiceImplTests {
         }
 
         service.updateIPs(uuid, secondTemplate.toArray(new IPAddress[secondTemplate.size()]));
-        agent = service.get(uuid).orElseThrow(() -> new RuntimeException());
+        agent = service.get(uuid).orElseThrow(RuntimeException::new);
         addresses = agent.getAddresses();
         Assert.assertEquals(2, addresses.size());
 

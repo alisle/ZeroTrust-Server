@@ -55,7 +55,7 @@ public class AgentControllerTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        Agent agent = service.get(UUID.fromString("2608cd33-740c-45d1-ab17-6d0d0bec44f9")).orElseThrow(() -> new RuntimeException("oh dear"));
+        Agent agent = service.get(UUID.fromString("2608cd33-740c-45d1-ab17-6d0d0bec44f9")).orElseThrow(RuntimeException::new);
         Assert.assertEquals(true, agent.getKnown());
         Assert.assertEquals(true, agent.getAlive());
 
@@ -64,7 +64,7 @@ public class AgentControllerTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        agent = service.get(UUID.fromString("2608cd33-740c-45d1-ab17-6d0d0bec44f9")).orElseThrow(() -> new RuntimeException("oh dear"));
+        agent = service.get(UUID.fromString("2608cd33-740c-45d1-ab17-6d0d0bec44f9")).orElseThrow(RuntimeException::new);
         Assert.assertEquals(true, agent.getKnown());
         Assert.assertEquals(false, agent.getAlive());
 
@@ -99,7 +99,7 @@ public class AgentControllerTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        Agent agent  = service.get(agentdto.getId()).orElseThrow(() -> new RuntimeException("oh dear"));
+        Agent agent  = service.get(agentdto.getId()).orElseThrow(RuntimeException::new);
         Assert.assertEquals(2, agent.getAddresses().size());
     }
 

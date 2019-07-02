@@ -75,14 +75,14 @@ public class AgentServiceImpl implements AgentService {
 
     @Override
     public void offline(UUID uuid) throws AgentNotFoundException {
-        Agent agent = agentRepository.findById(uuid).orElseThrow(() -> new AgentNotFoundException());
+        Agent agent = agentRepository.findById(uuid).orElseThrow(AgentNotFoundException::new);
         agent.setAlive(false);
         agentRepository.save(agent);
     }
 
     @Override
     public void updateIPs(UUID uuid, IPAddress[] ips) throws AgentNotFoundException {
-        Agent agent = agentRepository.findById(uuid).orElseThrow(() -> new AgentNotFoundException());
+        Agent agent = agentRepository.findById(uuid).orElseThrow(AgentNotFoundException::new);
         updateIPs(agent, ips);
     }
 

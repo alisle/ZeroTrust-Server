@@ -25,7 +25,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: name
-                  value: "password"
+                  value: "encryptedPassword"
 
         - insert:
             tableName: oauth_authorized_grant_type

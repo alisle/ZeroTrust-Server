@@ -1,6 +1,7 @@
 package com.zerotrust.oauth.service;
 
 import com.zerotrust.oauth.AuthorizationServerApplication;
+import com.zerotrust.oauth.model.EmailPassword;
 import com.zerotrust.oauth.model.Role;
 import com.zerotrust.oauth.model.User;
 import com.zerotrust.oauth.model.dto.CreatedUserDTO;
@@ -31,11 +32,11 @@ public class UserServiceTest {
     @Test
     public void testCreateAdminUser() throws Exception {
         String email = UUID.randomUUID().toString() + "@localhost.com";
-        String password = "I am a password";
+        String password = "I am a encryptedPassword";
 
-        User user = service.createAdmin(email, password).orElseThrow(() -> new RuntimeException());
+        User user = service.createAdmin(email, password).orElseThrow(RuntimeException::new);
         Assert.assertEquals(email, user.getEmail());
-        Assert.assertTrue(passwordEncoder.matches(password, user.getPassword()));
+        Assert.assertTrue(passwordEncoder.matches(password, user.getEncryptedPassword()));
 
         Assert.assertNotNull(service.getUser(email));
         Assert.assertEquals(user.getRoles(), service.getUser(email).get().getRoles());
@@ -44,14 +45,14 @@ public class UserServiceTest {
     @Test
     public void testCreateUser() throws Exception {
         String email = UUID.randomUUID().toString() + "@localhost.com";
-        String password = "I am a password";
+        String password = "I am a encryptedPassword";
         Role[] roles = new Role[] {
                 new Role("admin")
         };
 
-        User user = service.createUser(email, password, roles).orElseThrow(() -> new RuntimeException());
+        User user = service.createUser(email, password, roles).orElseThrow(RuntimeException::new);
         Assert.assertEquals(email, user.getEmail());
-        Assert.assertTrue(passwordEncoder.matches(password, user.getPassword()));
+        Assert.assertTrue(passwordEncoder.matches(password, user.getEncryptedPassword()));
 
         Assert.assertNotNull(service.getUser(email).get());
         Assert.assertEquals(user.getRoles(), service.getUser(email).get().getRoles());
@@ -60,16 +61,16 @@ public class UserServiceTest {
     @Test
     public void testAsUserDetails() throws Exception {
         String email = UUID.randomUUID().toString() + "@localhost.com";
-        String password = "I am a password";
+        String password = "I am a encryptedPassword";
         Role[] roles = new Role[] {
                 new Role("admin")
         };
 
-        User user = service.createUser(email, password, roles).orElseThrow(() -> new RuntimeException());
+        User user = service.createUser(email, password, roles).orElseThrow(RuntimeException::new);
         UserDetails details = user.asUserDetails();
 
         Assert.assertEquals(user.getEmail(), details.getUsername());
-        Assert.assertEquals(user.getPassword(), details.getPassword());
+        Assert.assertEquals(user.getEncryptedPassword(), details.getPassword());
         Assert.assertEquals(!user.isCredentialsExpired(), details.isCredentialsNonExpired());
         Assert.assertEquals(user.isEnabled(), details.isEnabled());
         Assert.assertEquals(!user.isExpired(), details.isAccountNonExpired());
@@ -83,12 +84,12 @@ public class UserServiceTest {
                 new Role("admin")
         };
 
-        CreatedUserDTO dto = service.createUser(email, roles).orElseThrow(() -> new RuntimeException());
+        EmailPassword dto = service.createUser(email, roles).orElseThrow(RuntimeException::new);
         Assert.assertEquals(email, dto.getEmail());
-        Assert.assertFalse(dto.getPassword().isEmpty());
+        Assert.assertFalse(dto.getUnencryptedPassword().isEmpty());
 
-        User user = service.getUser(email).orElseThrow(() -> new RuntimeException());
-        Assert.assertTrue(passwordEncoder.matches(dto.getPassword(), user.getPassword()));
+        User user = service.getUser(email).orElseThrow(RuntimeException::new);
+        Assert.assertTrue(passwordEncoder.matches(dto.getUnencryptedPassword(), user.getEncryptedPassword()));
     }
 
     @Test
@@ -98,7 +99,7 @@ public class UserServiceTest {
                 new Role("admin")
         };
 
-        service.createUser(email, roles).orElseThrow(() -> new RuntimeException());
+        service.createUser(email, roles).orElseThrow(RuntimeException::new);
         Assert.assertTrue(service.deleteUser(email));
         Assert.assertFalse(service.getUser(email).isPresent());
     }
@@ -110,14 +111,14 @@ public class UserServiceTest {
                 new Role("admin")
         };
 
-        CreatedUserDTO first = service.createUser(email, roles).orElseThrow(() -> new RuntimeException());
-        CreatedUserDTO second = service.resetUser(email).orElseThrow(() -> new RuntimeException());
+        EmailPassword first = service.createUser(email, roles).orElseThrow(RuntimeException::new);
+        EmailPassword second = service.resetUser(email).orElseThrow(RuntimeException::new);
 
-        Assert.assertNotEquals(first.getPassword(), second.getPassword());
+        Assert.assertNotEquals(first.getUnencryptedPassword(), second.getUnencryptedPassword());
         Assert.assertEquals(first.getEmail(), second.getEmail());
 
-        User user = service.getUser(email).orElseThrow(() -> new RuntimeException());
-        Assert.assertTrue(passwordEncoder.matches(second.getPassword(), user.getPassword()));
+        User user = service.getUser(email).orElseThrow(RuntimeException::new);
+        Assert.assertTrue(passwordEncoder.matches(second.getUnencryptedPassword(), user.getEncryptedPassword()));
     }
 
     @Test
@@ -127,10 +128,10 @@ public class UserServiceTest {
                 new Role("admin")
         };
 
-        service.createUser(email, roles).orElseThrow(() -> new RuntimeException());
+        service.createUser(email, roles).orElseThrow(RuntimeException::new);
         User user = service.updateUser(email, new Role[] {
                 new Role("agents_read")
-        }).orElseThrow(() -> new RuntimeException());
+        }).orElseThrow(RuntimeException::new);
         Assert.assertEquals(1, user.getRoles().size());
         Assert.assertTrue(user.getRoles().contains(new Role("agents_read")));
     }

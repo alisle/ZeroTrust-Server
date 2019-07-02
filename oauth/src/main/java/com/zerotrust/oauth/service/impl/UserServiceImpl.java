@@ -2,6 +2,7 @@ package com.zerotrust.oauth.service.impl;
 
 import com.zerotrust.oauth.exception.NoSuchUserException;
 import com.zerotrust.oauth.exception.UserAlreadyExistsException;
+import com.zerotrust.oauth.model.EmailPassword;
 import com.zerotrust.oauth.model.Role;
 import com.zerotrust.oauth.model.User;
 import com.zerotrust.oauth.model.dto.CreatedUserDTO;
@@ -16,7 +17,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.provider.NoSuchClientException;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -54,7 +54,20 @@ public class UserServiceImpl implements UserService  {
         rules[0] = new CharacterRule(EnglishCharacterData.LowerCase);
         rules[1] = new CharacterRule(EnglishCharacterData.UpperCase);
         rules[2] = new CharacterRule(EnglishCharacterData.Digit);
-        rules[3] = new CharacterRule(EnglishCharacterData.Special);
+        rules[3] = new CharacterRule(
+                new CharacterData() {
+                    @Override
+                    public String getErrorCode() {
+                        return ERROR_CODE;
+                    }
+
+                    @Override
+                    public String getCharacters() {
+                        return "!@#$%&*()+=_-";
+                    }
+                }
+        );
+
 
         Arrays.stream(rules).forEach(x -> {
             x.setNumberOfCharacters(4);
@@ -74,7 +87,7 @@ public class UserServiceImpl implements UserService  {
     public Optional<User> createUser(String email, String password, Role[] roles) {
         User user = new User();
         user.setEmail(email);
-        user.setPassword(passwordEncoder.encode(password));
+        user.setEncryptedPassword(passwordEncoder.encode(password));
         user.setRoles(new HashSet<>(Arrays.asList(roles)));
 
         return Optional.ofNullable(repository.save(user));
@@ -92,14 +105,14 @@ public class UserServiceImpl implements UserService  {
     }
 
     @Override
-    public Optional<CreatedUserDTO> createUser(String email, Role[] roles) throws UserAlreadyExistsException {
+    public Optional<EmailPassword> createUser(String email, Role[] roles) throws UserAlreadyExistsException {
         if(getUser(email).isPresent()) {
             throw new UserAlreadyExistsException();
         }
 
         String password = generatePassword();
         if(createUser(email, password, roles).isPresent()) {
-            return Optional.of(new CreatedUserDTO(email, password));
+            return Optional.of(new EmailPassword(email, password));
         } else {
             return Optional.empty();
         }
@@ -107,30 +120,30 @@ public class UserServiceImpl implements UserService  {
 
     @Override
     public boolean deleteUser(String email) throws NoSuchUserException {
-        getUser(email).orElseThrow(() -> new NoSuchUserException());
+        getUser(email).orElseThrow(NoSuchUserException::new);
         repository.deleteById(email);
 
         return true;
     }
 
     @Override
-    public Optional<CreatedUserDTO> resetUser(String email) throws NoSuchUserException {
+    public Optional<EmailPassword> resetUser(String email) throws NoSuchUserException {
         String password = generatePassword();
-        User user = getUser(email).orElseThrow(() -> new NoSuchUserException());
+        User user = getUser(email).orElseThrow(NoSuchUserException::new);
 
-        user.setPassword(passwordEncoder.encode(password));
+        user.setEncryptedPassword(passwordEncoder.encode(password));
         user = repository.save(user);
 
         if(user == null) {
             return Optional.empty();
         } else {
-            return Optional.of(new CreatedUserDTO(email, password));
+            return Optional.of(new EmailPassword(email, password));
         }
     }
 
     @Override
     public Optional<User> updateUser(String email, Role[] roles) throws NoSuchUserException {
-        User user = getUser(email).orElseThrow(() -> new NoSuchUserException());
+        User user = getUser(email).orElseThrow(NoSuchUserException::new);
         user.setRoles(Arrays.stream(roles).collect(Collectors.toSet()));
         user = repository.save(user);
         return Optional.ofNullable(user);

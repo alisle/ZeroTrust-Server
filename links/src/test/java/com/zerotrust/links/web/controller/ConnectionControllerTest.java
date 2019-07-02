@@ -53,7 +53,7 @@ public class ConnectionControllerTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        service.get(UUID.fromString("2608cd33-740c-45d1-ab17-6d0d0bec44f9")).orElseThrow(() -> new RuntimeException("oh dear"));
+        service.get(UUID.fromString("2608cd33-740c-45d1-ab17-6d0d0bec44f9")).orElseThrow(RuntimeException::new);
     }
 
     @Test
@@ -84,7 +84,7 @@ public class ConnectionControllerTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        Connection connection = service.get(UUID.fromString("2608cd33-740c-45d1-ab17-6d0d0bec44f9")).orElseThrow(() -> new RuntimeException("oh dear"));
+        Connection connection = service.get(UUID.fromString("2608cd33-740c-45d1-ab17-6d0d0bec44f9")).orElseThrow(RuntimeException::new);
         Assert.assertNotNull(connection.getStart());
         Assert.assertNotNull(connection.getEnd());
         Assert.assertTrue(connection.getDuration() > 0);

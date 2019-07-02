@@ -34,9 +34,9 @@ public class OAuth2ClientServiceTest {
     @Test
     public void testCreateRestClient() throws Exception {
         String id = UUID.randomUUID().toString();
-        String password = "I am a password";
+        String password = "I am a encryptedPassword";
 
-        OAuth2Client client = service.createRestClient(id, password).orElseThrow(() -> new RuntimeException());
+        OAuth2Client client = service.createRestClient(id, password).orElseThrow(RuntimeException::new);
         Assert.assertEquals(id, client.getClientId());
         Assert.assertTrue(passwordEncoder.matches(password, client.getClientSecret()));
 
@@ -58,7 +58,7 @@ public class OAuth2ClientServiceTest {
                 new AuthorizedGrantTypes("implicit")
         };
 
-        OAuth2Client client = service.createClient(clientId, password, scopes, types).orElseThrow(() -> new RuntimeException());
+        OAuth2Client client = service.createClient(clientId, password, scopes, types).orElseThrow(RuntimeException::new);
         Assert.assertEquals(clientId, client.getClientId());
         Assert.assertTrue(passwordEncoder.matches(password, client.getClientSecret()));
         Assert.assertTrue(client.getScopes().contains(scopes[0]));
@@ -70,7 +70,7 @@ public class OAuth2ClientServiceTest {
         String clientId = UUID.randomUUID().toString();
         String secret = UUID.randomUUID().toString();
 
-        OAuth2Client client = service.createRestClient(clientId, secret).orElseThrow(() -> new RuntimeException());
+        OAuth2Client client = service.createRestClient(clientId, secret).orElseThrow(RuntimeException::new);
         ClientDetails clientDetails = client.asClientDetails();
 
         Assert.assertNotNull(clientDetails);

@@ -60,8 +60,8 @@ public class ConnectionServiceImplTests {
 
         close.setId(open.getId());
 
-        Connection openConnection = service.open(open).orElseThrow(() -> new RuntimeException("oh dear"));
-        Connection closeConnection = service.close(close).orElseThrow(() -> new RuntimeException("oh dear"));
+        Connection openConnection = service.open(open).orElseThrow(RuntimeException::new);
+        Connection closeConnection = service.close(close).orElseThrow(RuntimeException::new);
 
         Assert.assertEquals(open.getId(), closeConnection.getId());
         Assert.assertEquals(open.getTimestamp(), openConnection.getStart());
@@ -74,8 +74,8 @@ public class ConnectionServiceImplTests {
     @Test
     public void testGet() {
         ConnectionOpenDTO open = CreationUtils.ConnectionNewDTO();
-        Connection openConnection = service.open(open).orElseThrow(() -> new RuntimeException("oh dear"));
-        Connection getConnection = service.get(openConnection.getId()).orElseThrow(() -> new RuntimeException("Oh dear"));
+        Connection openConnection = service.open(open).orElseThrow(RuntimeException::new);
+        Connection getConnection = service.get(openConnection.getId()).orElseThrow(RuntimeException::new);
 
         Assert.assertEquals(openConnection.getId(), getConnection.getId());
 
@@ -91,9 +91,9 @@ public class ConnectionServiceImplTests {
         close.setAgent(open.getAgent());
         newOpen.setAgent(open.getAgent());
 
-        service.open(open).orElseThrow(() -> new RuntimeException("oh dear"));
-        service.open(newOpen).orElseThrow(() -> new RuntimeException("oh dear"));
-        service.close(close).orElseThrow(() -> new RuntimeException("oh dear"));
+        service.open(open).orElseThrow(RuntimeException::new);
+        service.open(newOpen).orElseThrow(RuntimeException::new);
+        service.close(close).orElseThrow(RuntimeException::new);
 
         List<Connection> connectionList = service.findAliveConnections(newOpen.getAgent());
 
@@ -110,9 +110,9 @@ public class ConnectionServiceImplTests {
 
         close.setId(open.getId());
 
-        service.open(open).orElseThrow(() -> new RuntimeException("oh dear"));
-        service.open(newOpen).orElseThrow(() -> new RuntimeException("oh dear"));
-        service.close(close).orElseThrow(() -> new RuntimeException("oh dear"));
+        service.open(open).orElseThrow(RuntimeException::new);
+        service.open(newOpen).orElseThrow(RuntimeException::new);
+        service.close(close).orElseThrow(RuntimeException::new);
 
         List<Connection> connectionList = service.findAliveConnections(newOpen.getAgent());
 
@@ -124,7 +124,7 @@ public class ConnectionServiceImplTests {
     @Test
     public void testAliveConnections() throws Exception {
         ConnectionOpenDTO open = CreationUtils.ConnectionNewDTO();
-        service.open(open).orElseThrow(() -> new RuntimeException("oh dear"));
+        service.open(open).orElseThrow(RuntimeException::new);
         List<Connection> connectionList = service.findAliveConnections(open.getAgent());
 
         Assert.assertEquals(1, connectionList.size());
@@ -152,7 +152,7 @@ public class ConnectionServiceImplTests {
                 aliveHashes.add(open.getHash());
             }
 
-            service.open(open).orElseThrow(() -> new RuntimeException("oh dear"));
+            service.open(open).orElseThrow(RuntimeException::new);
         }
 
         Assert.assertEquals(100, service.findAliveConnections(agent).size());

@@ -23,7 +23,7 @@ public class User {
 
     @NotNull
     @Column(name = "password", nullable = false)
-    private String password;
+    private String encryptedPassword;
 
     @NotNull
     @Column(name = "expired", nullable =  false)
@@ -62,7 +62,7 @@ public class User {
 
             @Override
             public String getPassword() {
-                return password;
+                return encryptedPassword;
             }
 
             @Override
