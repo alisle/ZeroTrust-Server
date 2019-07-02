@@ -12,9 +12,12 @@ import com.zerotrust.oauth.model.dto.UpdateUserDTO;
 import com.zerotrust.oauth.model.dto.UserDetailsDTO;
 import com.zerotrust.oauth.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -32,6 +35,7 @@ public class UserController {
         this.mapper = mapper;
     }
 
+    @PreAuthorize("hasAuthority('admin')")
     @RequestMapping(value = "/{email}", method = RequestMethod.GET, produces = MediaTypes.HAL_JSON_VALUE)
     public ResponseEntity<UserDetailsDTO> get(@PathVariable("email") String email) throws NoSuchUserException {
         User user = userService.getUser(email).orElseThrow(NoSuchUserException::new);
@@ -39,6 +43,7 @@ public class UserController {
         return new ResponseEntity<>(dto, null, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('admin')")
     @RequestMapping(value = "", method = RequestMethod.POST, produces = MediaTypes.HAL_JSON_VALUE)
     public ResponseEntity<EmailPassword> post(@Valid @RequestBody NewUserDTO dto) throws UserAlreadyExistsException, InvalidRoleException {
         Role[] roles = Arrays.stream(dto.getRoles()).map(x -> new Role(x)).toArray(Role[]::new);
@@ -46,18 +51,21 @@ public class UserController {
         return new ResponseEntity<>(emailPassword, null, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasAuthority('admin')")
     @RequestMapping(value = "/{email}", method = RequestMethod.DELETE, produces = MediaTypes.HAL_JSON_VALUE)
     public ResponseEntity delete(@PathVariable("email") String email)  throws NoSuchUserException {
         userService.deleteUser(email);
         return new ResponseEntity(HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('admin')")
     @RequestMapping(value = "/reset/{email}", method = RequestMethod.POST, produces = MediaTypes.HAL_JSON_VALUE)
     public ResponseEntity<EmailPassword> reset(@PathVariable("email") String email) throws NoSuchUserException {
         EmailPassword emailPassword = userService.resetUser(email).orElseThrow(NoSuchUserException::new);
         return new ResponseEntity<>(emailPassword, null, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('admin')")
     @RequestMapping(value = "/{email}", method = RequestMethod.PUT, produces = MediaTypes.HAL_JSON_VALUE)
     public ResponseEntity<UserDetailsDTO> update(@PathVariable("email") String email, @Valid @RequestBody UpdateUserDTO dto) throws NoSuchUserException {
         Role[] roles = Arrays.stream(dto.getRoles()).map(x -> new Role(x)).toArray(Role[]::new);
@@ -67,4 +75,12 @@ public class UserController {
     }
 
 
+    @PreAuthorize("hasAuthority('admin')")
+    @RequestMapping(value = "", method = RequestMethod.GET, produces = MediaTypes.HAL_JSON_VALUE)
+    public ResponseEntity<Page<UserDetailsDTO>> get(Pageable pageable) {
+        Page<User> users = userService.list(pageable);
+        Page<UserDetailsDTO> details = users.map(x -> mapper.userToUserDetailsDTO(x));
+
+        return new ResponseEntity<>(details, null, HttpStatus.OK);
+    }
 }
