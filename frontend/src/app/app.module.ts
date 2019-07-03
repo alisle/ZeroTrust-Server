@@ -41,6 +41,8 @@ import {AuthInterceptor} from "./_helpers/auth-interceptor/auth.interceptor";
 import { LogoutComponent } from './_components/logout/logout.component';
 import { AdminComponent } from './_components/admin/admin.component';
 import { NetworkAddDialog } from './_components/network-add-dialog/network-add.dialog';
+import { AdminUsersTableComponent } from './_components/admin-users-table/admin-users-table.component';
+import {AuthUsersService} from "./_services/auth-users/auth-users.service";
 
 @NgModule({
   declarations: [
@@ -64,7 +66,8 @@ import { NetworkAddDialog } from './_components/network-add-dialog/network-add.d
     LoginComponent,
     LogoutComponent,
     AdminComponent,
-    NetworkAddDialog
+    NetworkAddDialog,
+    AdminUsersTableComponent
   ],
   imports: [
     BrowserModule,
@@ -86,6 +89,7 @@ import { NetworkAddDialog } from './_components/network-add-dialog/network-add.d
     NetworksService,
     AuthGuardService,
     AuthService,
+    AuthUsersService,
     // Interceptors
     { provide: HTTP_INTERCEPTORS, multi: true, useClass: ErrorInterceptor  },
     { provide: HTTP_INTERCEPTORS, multi: true, useClass: AuthInterceptor },

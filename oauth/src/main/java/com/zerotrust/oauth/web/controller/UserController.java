@@ -14,7 +14,8 @@ import com.zerotrust.oauth.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.hateoas.MediaTypes;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -29,10 +30,12 @@ import java.util.Arrays;
 public class UserController {
     private final UserService userService;
     private final UserMapper mapper;
+    private final PagedResourcesAssembler assembler;
 
-    public UserController(UserService userService, UserMapper mapper) {
+    public UserController(UserService userService, UserMapper mapper, PagedResourcesAssembler assembler) {
         this.userService = userService;
         this.mapper = mapper;
+        this.assembler = assembler;
     }
 
     @PreAuthorize("hasAuthority('admin')")
@@ -77,10 +80,11 @@ public class UserController {
 
     @PreAuthorize("hasAuthority('admin')")
     @RequestMapping(value = "", method = RequestMethod.GET, produces = MediaTypes.HAL_JSON_VALUE)
-    public ResponseEntity<Page<UserDetailsDTO>> get(Pageable pageable) {
+    public ResponseEntity<PagedResources<UserDetailsDTO>> get(Pageable pageable) {
         Page<User> users = userService.list(pageable);
         Page<UserDetailsDTO> details = users.map(x -> mapper.userToUserDetailsDTO(x));
+        PagedResources<UserDetailsDTO> resources = assembler.toResource(details);
 
-        return new ResponseEntity<>(details, null, HttpStatus.OK);
+        return new ResponseEntity<>(resources, null, HttpStatus.OK);
     }
 }

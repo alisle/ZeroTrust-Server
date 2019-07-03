@@ -11,7 +11,6 @@ import {LoadableObject} from "../../_model/LoadableObject";
 import {AgentCount} from "../../_model/AgentCount";
 import {ChartNode} from "../../_model/graphs/ChartNode";
 
-import * as d3 from 'd3';
 import {GraphScheme} from "../../_model/graphs/GraphScheme";
 
 @Component({

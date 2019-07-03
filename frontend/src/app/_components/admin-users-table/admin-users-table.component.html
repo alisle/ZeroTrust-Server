@@ -1,0 +1,44 @@
+<mat-table #table [dataSource]="dataSource" matSort>
+  <ng-container matColumnDef="email">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Email</mat-header-cell>
+    <mat-cell *matCellDef="let user">{{ user.email }}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="expired">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Expired</mat-header-cell>
+    <mat-cell *matCellDef="let user">
+      <mat-icon *ngIf="user.expired" class="icon">check</mat-icon>
+      <mat-icon *ngIf="!user.expired" class="icon">close</mat-icon>
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="locked">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Locked</mat-header-cell>
+    <mat-cell *matCellDef="let user">
+      <mat-icon *ngIf="user.locked" class="icon">check</mat-icon>
+      <mat-icon *ngIf="!user.locked" class="icon">close</mat-icon>
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="credentialsExpired">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Credentials Expired</mat-header-cell>
+    <mat-cell *matCellDef="let user">
+      <mat-icon *ngIf="user.credentailsExpired" class="icon">check</mat-icon>
+      <mat-icon *ngIf="!user.credentailsExpired" class="icon">close</mat-icon>
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="enabled">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Enabled</mat-header-cell>
+    <mat-cell *matCellDef="let user">
+      <mat-icon *ngIf="user.enabled" class="icon">check</mat-icon>
+      <mat-icon *ngIf="!user.enabled" class="icon">close</mat-icon>
+    </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayColumns; sticky: true"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayColumns;" (click)="selectRow(row)">
+  </mat-row>
+
+</mat-table>
+<mat-paginator [pageSizeOptions]="[10, 20, 50, 100]" showFirstLastButtons></mat-paginator>
