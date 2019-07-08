@@ -35,7 +35,7 @@ import { NetworkTreeMapComponent } from './_components/network-tree-map/network-
 import {AuthGuardService} from "./_guards/auth-guard.service";
 import {AuthService} from "./_services/auth/auth.service";
 import { LoginComponent } from './_components/login/login.component';
-import {ReactiveFormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ErrorInterceptor} from "./_helpers/error-interceptor/error.interceptor";
 import {AuthInterceptor} from "./_helpers/auth-interceptor/auth.interceptor";
 import { LogoutComponent } from './_components/logout/logout.component';
@@ -43,6 +43,8 @@ import { AdminComponent } from './_components/admin/admin.component';
 import { NetworkAddDialog } from './_components/network-add-dialog/network-add.dialog';
 import { AdminUsersTableComponent } from './_components/admin-users-table/admin-users-table.component';
 import {AuthUsersService} from "./_services/auth-users/auth-users.service";
+import { AdminUsersAddDialog } from './_components/admin-users-add-dialog/admin-users-add.dialog';
+import { AdminUsersComponent } from './_components/admin-users/admin-users.component';
 
 @NgModule({
   declarations: [
@@ -67,7 +69,9 @@ import {AuthUsersService} from "./_services/auth-users/auth-users.service";
     LogoutComponent,
     AdminComponent,
     NetworkAddDialog,
-    AdminUsersTableComponent
+    AdminUsersTableComponent,
+    AdminUsersComponent,
+    AdminUsersAddDialog
   ],
   imports: [
     BrowserModule,
@@ -80,6 +84,7 @@ import {AuthUsersService} from "./_services/auth-users/auth-users.service";
     NgxChartsModule,
     NgxGraphModule,
     ReactiveFormsModule,
+    FormsModule,
   ],
   providers: [
     AgentsService,
@@ -96,7 +101,9 @@ import {AuthUsersService} from "./_services/auth-users/auth-users.service";
   ],
   entryComponents: [
     ConnectionLinksDetailsDialog,
-    NetworkAddDialog
+    NetworkAddDialog,
+    AdminUsersAddDialog
+
   ],
   bootstrap: [AppComponent]
 })

@@ -45,6 +45,9 @@ export class AdminUsersTableComponent implements OnInit, AfterViewInit {
     this.dataSource.get(0);
   }
 
+  refresh() {
+    this.dataSource.get(0);
+  }
 
   ngAfterViewInit(): void {
     merge(this.paginator.page, this.sort.sortChange)
@@ -63,3 +66,5 @@ export class AdminUsersTableComponent implements OnInit, AfterViewInit {
     this.selectedRow = row;
   }
 }
+
+

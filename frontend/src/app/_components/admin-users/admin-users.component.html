@@ -1,0 +1,4 @@
+<div *ngIf="authService.hasAuthority('admin')">
+  <app-admin-users-table></app-admin-users-table>
+  <button mat-flat-button color="primary" (click)="openDialog()">Add User</button>
+</div>

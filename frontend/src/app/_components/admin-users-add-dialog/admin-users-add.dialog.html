@@ -1,0 +1,44 @@
+<ng-template #submitted>
+  <div style="display: flex; flex-flow: row; align-content: stretch; min-width: 100%;">
+    <mat-progress-spinner fxFlex="100" *ngIf="(this.returnedObject.loading$ | async)" color="primary" mode="indeterminate" value=50></mat-progress-spinner>
+    <mat-card  fxFlex="100" *ngIf="!(this.returnedObject.loading$ | async)" class="mat-elevation-z0">
+      <mat-card-header>
+        <mat-card-title>{{this.emailPassword.email}} has been created</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        Password is <span style="font-weight: bolder">{{ this.emailPassword.password }}</span>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+</ng-template>
+
+<mat-card class="mat-elevation-z0">
+  <mat-card-header>
+    <mat-card-title>Add New User</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <div style="display: flex; flex-flow: column; align-content: stretch; min-width: 100%;" *ngIf="!hasSubmitted else submitted">
+      <div fxFlex="100">
+        <mat-form-field class="full-width">
+          <input matInput placeholder="Email" value="" [(ngModel)]="dto.email" [formControl]="emailFormControl" [errorStateMatcher]="matcher" >
+          <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')"></mat-error>
+        </mat-form-field>
+        <div>
+          <span class="mat-title">Roles</span>
+          <div fxLayout="column" fxLayoutAlign="center flex-begin">
+            <mat-checkbox fxFlex="50" *ngFor="let role of roles" [(ngModel)]="checked[role.name]"> {{role.displayName}}</mat-checkbox>
+          </div>
+        </div>
+      </div>
+      <div fxFlex fxLayout="row" fxLayoutAlign="flex-end flex-end" class="full-width">
+        <div fxFlex="20">
+          <button mat-flat-button color="primary"  [disabled]="isDisabled()" (click)="submit()" >Add</button>
+        </div>
+        <div fxFlex="20">
+          <button mat-flat-button color="warn" (click)="cancel()" >Cancel</button>
+        </div>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>
