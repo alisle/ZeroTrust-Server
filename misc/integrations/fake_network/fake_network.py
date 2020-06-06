@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/local/bin/python3
 
 from datetime import datetime, timedelta
 from ipaddress import IPv4Address
@@ -49,7 +49,7 @@ SERVICES_INTERNAL = [
 CONNECTIONS = []
 
 
-print "Welcome to the Fake Network!"
+print("Welcome to the Fake Network!")
 
 def create_machine_names():
     names = []
@@ -79,8 +79,8 @@ def unleash_agents(number_of_agents, names, headers):
         agent_online = { 'name' : agent_name, 'uuid' : str(agent_uuid), 'interfaces': [ agent_ip ] }
         agent_online_response = requests.post(SERVER + "/agents/online", json=agent_online, headers=headers)
         if agent_online_response.status_code != 200:
-            print SERVER + "/agents/online"
-            print "Unable to set agent online", agent_online_response.status_code
+            print(SERVER + "/agents/online")
+            print("Unable to set agent online: " + str(agent_online_response.status_code))
         else:
             agent = {}
             agent["name"] = agent_name
@@ -146,7 +146,7 @@ def post_open(is_source, payload, timestamp, service, headers):
     response = requests.post(SERVER + "/connections/open", json=payload, headers=headers)
 
     if response.status_code != 200:
-        print "Unable to post connection", response.status_code
+        print("Unable to post connection" + str(response.status_code))
 
     return payload
 
@@ -154,7 +154,7 @@ def post_close(payload, headers):
     payload["timestamp"] = payload["timestamp"].isoformat()  + "+00:00"
     response = requests.post(SERVER + "/connections/close", json=payload, headers=headers)
     if response.status_code != 200:
-        print "Unable to post connection", response.status_code
+        print("Unable to post connection" + str(response.status_code))
 
     return payload
 
@@ -193,25 +193,25 @@ def process_connections(connections, headers):
     for index, connection in enumerate(connections):
         if connection["source"]["timestamp"] < current:
             if connection["destination"] is not None:
-                print "Closing  internal connection between " + str(connection["source"]["agent"]) + " -> " + str(connection["destination"]["agent"])
+                print("Closing  internal connection between " + str(connection["source"]["agent"]) + " -> " + str(connection["destination"]["agent"]))
                 post_close(connection["destination"], headers)
             else:
-                print "Closing external connection " + str(connection["source"]["agent"])
+                print("Closing external connection " + str(connection["source"]["agent"]))
 
             post_close(connection["source"], headers)
             connection["dead"] = True
 
     return [ x for x in CONNECTIONS if x["dead"] is False ]
 
-print "Loading Machine Names"
+print("Loading Machine Names")
 names = create_machine_names()
-print "Loaded " + str(len(names)) + " machine names"
+print("Loaded " + str(len(names)) + " machine names")
 
-print "Loading Usernames"
+print("Loading Usernames")
 usernames = create_usernames()
-print "Loaded " + str(len(usernames)) + " usernames"
+print("Loaded " + str(len(usernames)) + " usernames")
 
-print "Online Agents"
+print("Online Agents")
 agents = unleash_agents(NUM_OF_AGENTS, names, HEADERS)
 
 ticker = 0
@@ -223,11 +223,11 @@ while True:
     destination_agent = agents[sample[1]]
 
     if ticker % 3 == 0:
-        print "Creating external connection from " + str(source_agent["uuid"])
+        print("Creating external connection from " + str(source_agent["uuid"]))
         process_sample = random.sample(range(0, len(SERVICES_EXTERNAL)), 1)
         make_external_connection(source_agent, SERVICES_EXTERNAL[process_sample[0]], random.randint(0, 100), HEADERS) #10800), HEADERS)
     else:
-        print "Creating internal connection between "  + str(source_agent["uuid"]) + " -> " + str(destination_agent["uuid"])
+        print("Creating internal connection between "  + str(source_agent["uuid"]) + " -> " + str(destination_agent["uuid"]))
         process_sample = random.sample(range(0, len(SERVICES_INTERNAL)), 1)
         make_internal_connection(source_agent, destination_agent, SERVICES_INTERNAL[process_sample[0]], ticker, random.randint(0, 100), HEADERS) #10800), HEADERS)
 
